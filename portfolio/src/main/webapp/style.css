@@ -5,13 +5,14 @@
 }
 
 #information_container {
-  display: inline;
+  float: left;
 }
 
 #image_and_description {
   float: left;
   width: calc(50% - 1em);
   margin-right: 1em;
+  border-right: 1px solid black;
 }
 
 #my_gallery {
@@ -30,6 +31,7 @@
 
 .justify_text {
   text-align: justify;
+  width: 99%;
 }
 
 #randomPicture_and_description_container {
