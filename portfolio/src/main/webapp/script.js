@@ -13,16 +13,33 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random picture with its description to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+function getRandomImage() {
+  const pictures_and_description = [
+    {
+      img_src: "food_picture.jpg",
+      description: "My first time eating at a restaurant near the university. The flavor changed my life forever."
+    },
+    {
+      img_src: "canada_picture.jpg",
+      description: "A family vacation in Canada. Who would have thought that they have amazing views."
+    },
+    {
+      img_src: "monterrey_picture.JPG",
+      description: "An amazing view from my city Monterrey!"
+    }
+  ];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  // Pick a random Object
+  const singlePair = pictures_and_description[Math.floor(Math.random() * pictures_and_description.length)];
+
+  // Insert image to the page
+  const pictureContainer = document.getElementById('random_picture_container');
+  pictureContainer.src = './images/' + singlePair.img_src;
+
+  // Insert image description to the page
+  const descriptionContainer = document.getElementById('picture_description_container');
+  descriptionContainer.innerText = singlePair.description;
 }

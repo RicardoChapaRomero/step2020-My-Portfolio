@@ -13,7 +13,7 @@
         <!-- Image and Description Container -->
         <div id="image_and_description">
           <h1>Ricardo Chapa's Portfolio</h1>
-          <img class="my_picture" src = "/../images/AGT_2630.jpg"></img>
+          <img class="my_picture" src = "/../images/profile_picture.jpg"></img>
           <!-- Information (Text) Container -->
           <div id="paragraph_container">
             <p class="justify_text">
@@ -32,6 +32,7 @@
               also enjoy a good time with my friends and familiy.
             </p>
           </div>
+          <hr>
           <!-- About me container -->
           <div id="about_me_container">
             <h2>More about me</h2>
@@ -59,19 +60,23 @@
                 </ul>
             </div>
           </div>
-          <p>Click here to get a random message:</p>
-          <button onclick="addRandomGreeting()">Hello</button>
-          <div id="quote-container"></div>
         </div>
-        <!-- Links and Talents Container -->
-        <div id="my_images">
+        <!-- Gallery Container -->
+        <div id="my_gallery">
           <h1>My Gallery</h1>
           <div id="paragraph_container">
             <p class="justify_text">
-              My name is Ricardo Chapa Romero, I'm 19 years old 
-              and I live in Mexico. I'm a STEP intern at Google
-              and a fun fact about me is that my record for sleeping time is 25 hours!
+              One hobby that I ocassionally have is taking pictures. 
+              Even thought I'm not much of taking pictures of everything I see, 
+              I really like to capture the moment of any special moment that I'm having in my life,
+              just for everytime I see that picture I can remember the feeling that I was having in that moment.
             </p>
+            <p>Click on the Button to get a random image.</p>
+            <button class = "random_picture_button" onclick="getRandomImage()">Click</button>
+            <div id="randomPicture_and_description_container">
+              <img id="random_picture_container"></img>
+              <div id="picture_description_container"></div>
+            </div>
           </div>
         </div>
       </div>
