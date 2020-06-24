@@ -1,7 +1,22 @@
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 100%;
+}
+
+#information_container {
+  display: inline;
+}
+
+#image_and_description {
+  float: left;
+  width: calc(50% - .5em);
+  margin-right: 1em;
+}
+
+#my_images {
+  float: left;
+  width: calc(50% - .5em);
 }
 
 #greeting-container {
@@ -9,12 +24,8 @@
 }
 
 .my_picture {
-  height: 300px;
-  width: 50%;
-}
-
-.paragraph_container {
-    width: 50%;
+  height: 30%;
+  width: 30%;
 }
 
 .justify_text {
