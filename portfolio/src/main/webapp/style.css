@@ -7,3 +7,16 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.my_picture {
+  height: 300px;
+  width: 50%;
+}
+
+.paragraph_container {
+    width: 50%;
+}
+
+.justify_text {
+  text-align: justify;
+}
