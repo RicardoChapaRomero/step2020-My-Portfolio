@@ -29,6 +29,18 @@ function getRandomImage() {
     {
       img_src: "monterrey_picture.JPG",
       description: "An amazing view from my city Monterrey!"
+    },
+    {
+      img_src: "building_picture.JPG",
+      description: "Really appreciate good architecture."
+    },
+    {
+      img_src: "firstday_picture.jpg",
+      description: "My first day as a Google STEP intern!"
+    },
+    {
+      img_src: "highview_picture.jpg",
+      description: "I get really excited when I have views like this."
     }
   ];
 

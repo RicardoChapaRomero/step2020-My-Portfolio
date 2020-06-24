@@ -10,13 +10,13 @@
 
 #image_and_description {
   float: left;
-  width: calc(50% - .5em);
+  width: calc(50% - 1em);
   margin-right: 1em;
 }
 
 #my_gallery {
   float: left;
-  width: calc(50% - .5em);
+  width: calc(50% - 1em);
 }
 
 #greeting-container {
