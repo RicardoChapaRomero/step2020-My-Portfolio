@@ -4,6 +4,8 @@
   width: 100%;
 }
 
+/* Peronsal and Profesional Information */
+
 #information_container {
   float: left;
 }
@@ -15,26 +17,20 @@
   border-right: 1px solid black;
 }
 
-#my_gallery {
-  float: left;
-  width: calc(50% - 1em);
-}
-
-#greeting-container {
-  margin-top: 20px;
-}
-
 .my_picture {
   height: 40%;
   width: 40%;
   display: block;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
+  border-radius: 6px;
 }
 
-.justify_text {
-  text-align: justify;
-  width: 99%;
+/* Gallery */
+
+#my_gallery {
+  float: left;
+  width: calc(50% - 1em);
 }
 
 #randomPicture_and_description_container {
@@ -46,4 +42,11 @@
   margin-top: 30px;
   height: 60%;
   width: 60%;
+}
+
+/* Generic */
+
+.justify_text {
+  text-align: justify;
+  width: 99%;
 }

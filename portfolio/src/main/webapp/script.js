@@ -17,7 +17,9 @@
  */
 
 function getRandomImage() {
-  const pictures_and_description = [
+  /** !Array<Objects> */
+  /* @type {{img_src: string, description: string }}  */
+  const galleryItems = [
     {
       img_src: "food_picture.jpg",
       description: "My first time eating at a restaurant near the university. The flavor changed my life forever."
@@ -44,14 +46,15 @@ function getRandomImage() {
     }
   ];
 
-  // Pick a random Object
-  const singlePair = pictures_and_description[Math.floor(Math.random() * pictures_and_description.length)];
+  // Pick a random gallery item
+  const singleGalleryItem = galleryItems[Math.floor(Math.random() * galleryItems.length)];
 
   // Insert image to the page
   const pictureContainer = document.getElementById('random_picture_container');
-  pictureContainer.src = './images/' + singlePair.img_src;
+  pictureContainer.src = './images/' + singleGalleryItem.img_src;
+  pictureContainer.alt = 'Ricardo\'s random pictures';
 
   // Insert image description to the page
   const descriptionContainer = document.getElementById('picture_description_container');
-  descriptionContainer.innerText = singlePair.description;
+  descriptionContainer.innerText = singleGalleryItem.description;
 }
