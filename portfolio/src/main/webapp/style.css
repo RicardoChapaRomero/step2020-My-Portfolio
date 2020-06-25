@@ -4,6 +4,14 @@
   width: 100%;
 }
 
+.page_headers {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page_sub-headers {
+  font-family: Geneva, sans-serif;
+}
+
 /* Peronsal and Profesional Information */
 
 #information_container {
