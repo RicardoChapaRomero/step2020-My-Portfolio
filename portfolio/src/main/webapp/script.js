@@ -21,7 +21,7 @@
   const GALLERY_ITEMS = [
     {
       imgSrc: "food_picture.jpg",
-      description: "My first time eating in Toshi Tiger near the university. The flavor changed my life forever.",
+      description: "My first time eating at Toshi Tiger near the university. The flavor changed my life forever.",
       altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread widh shrimp inside it."
     },
     {
@@ -61,7 +61,7 @@ function getRandomImage() {
   const PICTURE_CONTAINER = document.getElementById('random_picture_container');
   PICTURE_CONTAINER.src = './images/' + SINGLE_GALLERY_ITEM.imgSrc;
   PICTURE_CONTAINER.alt = SINGLE_GALLERY_ITEM.altText;
-  
+
   // Insert image description to the page
   const DESCRIPTION_CONTAINER = document.getElementById('picture_description_container');
   DESCRIPTION_CONTAINER.innerText = SINGLE_GALLERY_ITEM.description;
