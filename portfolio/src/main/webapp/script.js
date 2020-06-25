@@ -16,45 +16,53 @@
  * Adds a random picture with its description to the page.
  */
 
-function getRandomImage() {
   /** !Array<Objects> */
-  /* @type {{img_src: string, description: string }}  */
-  const galleryItems = [
+  /* @type {{imgSrc: string, description: string }}  */
+  const GALLERY_ITEMS = [
     {
-      img_src: "food_picture.jpg",
-      description: "My first time eating at a restaurant near the university. The flavor changed my life forever."
+      imgSrc: "food_picture.jpg",
+      description: "My first time eating in Toshi Tiger near the university. The flavor changed my life forever.",
+      altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread widh shrimp inside it."
     },
     {
-      img_src: "canada_picture.jpg",
-      description: "A family vacation in Canada. Who would have thought that they have amazing views."
+      imgSrc: "canada_picture.jpg",
+      description: "A family vacation in Canada. Who would have thought that they have amazing views.",
+      altText: "An amazing view of the Parlament of Canada and Ottawa River taken from Major's Hill Park."
     },
     {
-      img_src: "monterrey_picture.JPG",
-      description: "An amazing view from my city Monterrey!"
+      imgSrc: "monterrey_picture.JPG",
+      description: "An amazing sunset from my city Monterrey!",
+      altText: "A beautiful sunset with a deep blue sky with a mix of orange flaming rays of light over Monterrey, Mexico"
     },
     {
-      img_src: "building_picture.JPG",
-      description: "Really appreciate good architecture."
+      imgSrc: "building_picture.JPG",
+      description: "Really appreciate good architecture.",
+      altText: "A gothic styled building painted of orange with green roofs on Quebec City"
     },
     {
-      img_src: "firstday_picture.jpg",
-      description: "My first day as a Google STEP intern!"
+      imgSrc: "firstday_picture.jpg",
+      description: "My first day as a Google STEP intern!",
+      altText: "Me smiling with a top knot, wearing a purple shirt with the label 'Hacker', with my Google's Chromebook in front of me"
     },
     {
-      img_src: "highview_picture.jpg",
-      description: "I get really excited when I have views like this."
+      imgSrc: "highview_picture.jpg",
+      description: "I get really excited when I have views like this.",
+      altText: "A view of Montreal from the top of the Olympic Stadium"
     }
   ];
 
+function getRandomImage() {
+ 
+
   // Pick a random gallery item
-  const singleGalleryItem = galleryItems[Math.floor(Math.random() * galleryItems.length)];
+  const SINGLE_GALLERY_ITEM = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
 
   // Insert image to the page
-  const pictureContainer = document.getElementById('random_picture_container');
-  pictureContainer.src = './images/' + singleGalleryItem.img_src;
-  pictureContainer.alt = 'Ricardo\'s random pictures';
-
+  const PICTURE_CONTAINER = document.getElementById('random_picture_container');
+  PICTURE_CONTAINER.src = './images/' + SINGLE_GALLERY_ITEM.imgSrc;
+  PICTURE_CONTAINER.alt = SINGLE_GALLERY_ITEM.altText;
+  
   // Insert image description to the page
-  const descriptionContainer = document.getElementById('picture_description_container');
-  descriptionContainer.innerText = singleGalleryItem.description;
+  const DESCRIPTION_CONTAINER = document.getElementById('picture_description_container');
+  DESCRIPTION_CONTAINER.innerText = SINGLE_GALLERY_ITEM.description;
 }
