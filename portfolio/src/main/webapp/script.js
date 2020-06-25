@@ -17,12 +17,12 @@
  */
 
   /** !Array<Objects> */
-  /* @type {{imgSrc: string, description: string }}  */
+  /** @type {{imgSrc: string, description: string, altText: string }}  */
   const GALLERY_ITEMS = [
     {
       imgSrc: "food_picture.jpg",
       description: "My first time eating at Toshi Tiger near the university. The flavor changed my life forever.",
-      altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread widh shrimp inside it."
+      altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread with shrimp inside it."
     },
     {
       imgSrc: "canada_picture.jpg",
@@ -52,17 +52,16 @@
   ];
 
 function getRandomImage() {
- 
 
   // Pick a random gallery item
-  const SINGLE_GALLERY_ITEM = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+  const singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
 
   // Insert image to the page
-  const PICTURE_CONTAINER = document.getElementById('random_picture_container');
-  PICTURE_CONTAINER.src = './images/' + SINGLE_GALLERY_ITEM.imgSrc;
-  PICTURE_CONTAINER.alt = SINGLE_GALLERY_ITEM.altText;
+  const pictureContainer = document.getElementById('random_picture_container');
+  pictureContainer.src = './images/' + singleGalleryItem.imgSrc;
+  pictureContainer.alt = singleGalleryItem.altText;
 
   // Insert image description to the page
-  const DESCRIPTION_CONTAINER = document.getElementById('picture_description_container');
-  DESCRIPTION_CONTAINER.innerText = SINGLE_GALLERY_ITEM.description;
+  const descriptionContainer = document.getElementById('picture_description_container');
+  descriptionContainer.innerText = singleGalleryItem.description;
 }
