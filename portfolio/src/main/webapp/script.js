@@ -17,7 +17,7 @@
  */
 
 /** !Array<Objects> */
-/** @type {{imgSrc: string, description: string, altText: string }}  */
+/** @const {{imgSrc: string, description: string, altText: string }}  */
 const GALLERY_ITEMS = [
   {
     imgSrc: "food_picture.jpg",
@@ -53,16 +53,16 @@ const GALLERY_ITEMS = [
 
 const TIME_INTERVAL = 10000; // Constant time of 10 seconds
 let galleryItemsStack = []; // Stack to keep track of displayed images
-let randomImageEvent = false; // Bool to track onClick events
+let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
 
 function getRandomImage() {
 
-  // Change statuks of the event on every click
-  randomImageEvent = !randomImageEvent
+  // Change status of the cycle on every click
+  isCycling = !isCycling
   const randomButtonContainer = document.querySelector('.random_picture_button');
 
-  if(randomImageEvent) {
+  if(isCycling) {
 
     //Start the random image cycler
     intervalState= setInterval(setRandomImage,TIME_INTERVAL);
@@ -80,7 +80,9 @@ function getRandomImage() {
 function setRandomImage() {
 
   // Restart the stack if all images have been displayed in a cycle
-  if(galleryItemsStack.length === GALLERY_ITEMS.length) galleryItemsStack = [];
+  if(galleryItemsStack.length === GALLERY_ITEMS.length) {
+    galleryItemsStack = [];
+  }
 
   // Pick a random gallery item
   let singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
