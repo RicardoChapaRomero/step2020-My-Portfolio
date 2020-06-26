@@ -85,8 +85,9 @@ body {
 
 #random_picture_container {
   margin-top: 30px;
-  height: 60%;
-  width: 60%;
+  height: 350px;
+  width: 80%;
+  border-radius: 6px
 }
 
 .random_picture_button {
@@ -105,6 +106,13 @@ body {
 
 .random_picture_button:active {
   transform: scale(.95);
+}
+
+#picture_description_container {
+  width: 80%;
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 110%;
 }
 
 #hidden_talents_container {

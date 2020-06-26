@@ -31,7 +31,7 @@ const GALLERY_ITEMS = [
   },
   {
     imgSrc: "monterrey_picture.JPG",
-    description: "An amazing sunset from my city Monterrey!",
+    description: "An amazing sunset over my city Monterrey!",
     altText: "A beautiful sunset with a deep blue sky with a mix of orange flaming rays of light over Monterrey, Mexico"
   },
   {
@@ -58,6 +58,7 @@ let intervalState = null; // Variable to store the setInterval() status
 
 function getRandomImage() {
 
+  // Change statuks of the event on every click
   randomImageEvent = !randomImageEvent
   const randomButtonContainer = document.querySelector('.random_picture_button');
 
