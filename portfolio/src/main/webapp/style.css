@@ -1,3 +1,7 @@
+:root {
+  --general-color: rgba(236, 233, 227, 1);
+}
+
 body {
   background-color: #292929;
 }
@@ -18,7 +22,7 @@ body {
   width: calc(50% - 1.5em);
   margin-left: 1em;
   float: left;
-  color: rgba(236, 233, 227, 1);;
+  color: var(--general-color);
 }
 
 #media_wrapper {
@@ -39,7 +43,7 @@ body {
 /* Peronsal and Profesional Information */
 
 #information_container {
-  background-color: rgba(236, 233, 227, 1);
+  background-color: var(--general-color);
   float: left;
   border-bottom: 1px solid black;
 }
@@ -116,7 +120,7 @@ body {
 }
 
 #hidden_talents_container {
- background-color: rgba(236, 233, 227, 1);
+ background-color: var(--general-color);
 }
 
 #hidden_talents_wrapper {

@@ -1,3 +1,7 @@
+:root {
+  --icon-background: rgba(236, 233, 227, 1);
+  --icon-color: black;
+}
 
 .fa {
   margin-top: 1.5%;
@@ -19,21 +23,21 @@
 }
 
 .fa-linkedin {
-  background: rgba(236, 233, 227, 1);
-  color: black;
+  background: var(--icon-background);
+  color: var(--icon-color);
 }
 
 .fa-github {
-  background: rgba(236, 233, 227, 1);
-  color: black;
+  background: var(--icon-background);
+  color: var(--icon-color);
 }
 
 .fa-twitter {
-  background: rgba(236, 233, 227, 1);
-  color: black;
+  background: var(--icon-background);
+  color: var(--icon-color);
 }
 
 .fa-facebook {
-  background: rgba(236, 233, 227, 1);
-  color: black;
+  background: var(--icon-background);
+  color: var(--icon-color);
 }
