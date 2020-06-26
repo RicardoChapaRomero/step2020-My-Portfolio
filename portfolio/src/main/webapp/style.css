@@ -89,7 +89,7 @@ body {
 }
 
 .random_picture_button:hover {
-  background-color: #292929;
+  background-color: rgba(41, 41, 41, 0.9);
   color: white;
 }
 
