@@ -15,7 +15,8 @@ body {
 }
 
 #header_title {
-  width: 50%;
+ width: calc(50% - 1.5em);
+  margin-left: 1em;
   float: left;
 }
 
@@ -24,7 +25,7 @@ body {
 }
 
 #header_media {
-  width: 50%;
+  width: calc(50% - 1.5em);
   display: inline-block;
 }
 
@@ -43,8 +44,9 @@ body {
 
 #image_and_description {
   float: left;
-  width: calc(50% - 1em);
+  width: calc(50% - 1.5em);
   margin-right: 1em;
+  margin-left: 1em;
   border-right: 1px solid black;
 }
 
@@ -59,9 +61,11 @@ body {
 
 /* Gallery */
 
+
+
 #my_gallery {
   float: left;
-  width: calc(50% - 1em);
+  width: calc(50% - 1.5em);
 }
 
 #randomPicture_and_description_container {
@@ -75,8 +79,30 @@ body {
   width: 60%;
 }
 
+.random_picture_button {
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  transition: background-color 0.5s, color 0.2s;
+}
+
+.random_picture_button:hover {
+  background-color: #292929;
+  color: white;
+}
+
+.random_picture_button:active {
+  transform: scale(.95);
+}
+
 #hidden_talents_container {
   background-color: white;
+}
+
+#hidden_talents_wrapper {
+  margin-left: 1em;
 }
 
 /* Generic */
