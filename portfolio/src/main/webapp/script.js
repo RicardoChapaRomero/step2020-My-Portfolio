@@ -13,16 +13,55 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random picture with its description to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  /** !Array<Objects> */
+  /** @type {{imgSrc: string, description: string, altText: string }}  */
+  const GALLERY_ITEMS = [
+    {
+      imgSrc: "food_picture.jpg",
+      description: "My first time eating at Toshi Tiger near the university. The flavor changed my life forever.",
+      altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread with shrimp inside it."
+    },
+    {
+      imgSrc: "canada_picture.jpg",
+      description: "A family vacation in Canada. Who would have thought that they have amazing views.",
+      altText: "An amazing view of the Parlament of Canada and Ottawa River taken from Major's Hill Park."
+    },
+    {
+      imgSrc: "monterrey_picture.JPG",
+      description: "An amazing sunset from my city Monterrey!",
+      altText: "A beautiful sunset with a deep blue sky with a mix of orange flaming rays of light over Monterrey, Mexico"
+    },
+    {
+      imgSrc: "building_picture.JPG",
+      description: "Really appreciate good architecture.",
+      altText: "A gothic styled building painted of orange with green roofs on Quebec City"
+    },
+    {
+      imgSrc: "firstday_picture.jpg",
+      description: "My first day as a Google STEP intern!",
+      altText: "Me smiling with a top knot, wearing a purple shirt with the label 'Hacker', with my Google's Chromebook in front of me"
+    },
+    {
+      imgSrc: "highview_picture.jpg",
+      description: "I get really excited when I have views like this.",
+      altText: "A view of Montreal from the top of the Olympic Stadium"
+    }
+  ];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function getRandomImage() {
+
+  // Pick a random gallery item
+  const singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+
+  // Insert image to the page
+  const pictureContainer = document.getElementById('random_picture_container');
+  pictureContainer.src = './images/' + singleGalleryItem.imgSrc;
+  pictureContainer.alt = singleGalleryItem.altText;
+
+  // Insert image description to the page
+  const descriptionContainer = document.getElementById('picture_description_container');
+  descriptionContainer.innerText = singleGalleryItem.description;
 }
