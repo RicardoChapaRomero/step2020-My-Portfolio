@@ -112,6 +112,8 @@ body {
 .justify_text {
   text-align: justify;
   width: 97%;
+  line-height: 1.6;
+  font-size: 110%;
 }
 
 .page_headers {
