@@ -1,10 +1,14 @@
+body {
+  background-color: #292929;
+}
+
 #content {
-  margin-left: auto;
   margin-right: auto;
   width: 100%;
 }
 
 #header_container {
+  background-color: rgba(248,214,179,0.9);
   border-bottom: 1px solid black;
   overflow: hidden;
 }
@@ -70,7 +74,9 @@
 /* Peronsal and Profesional Information */
 
 #information_container {
+  background-color: white;
   float: left;
+  border-bottom: 1px solid black;
 }
 
 #image_and_description {
@@ -105,6 +111,10 @@
   margin-top: 30px;
   height: 60%;
   width: 60%;
+}
+
+#hidden_talents_container {
+  background-color: white;
 }
 
 /* Generic */
