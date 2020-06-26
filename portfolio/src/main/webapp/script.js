@@ -51,10 +51,34 @@ const GALLERY_ITEMS = [
   }
 ];
 
+const TIME_INTERVAL = 10000;
+let galleryItemsStack = [];
+let randomImageEvent = false;
+
 function getRandomImage() {
 
+  let intervalState; 
+  randomImageEvent = !randomImageEvent
+
+  if(!randomImageEvent) {
+    intervlState = setInterval(setRandomImage,TIME_INTERVAL);
+  } else {
+    galleryItemsStack = [];
+    clearInterval(intervalState);
+    intervalState = null;
+  }
+}
+
+function setRandomImage() {
+  console.log(galleryItemsStack.length);
+
   // Pick a random gallery item
-  const singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+  let singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+
+  while(galleryItemsStack.indexOf(singleGalleryItem) > -1) {
+    singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+  }
+  galleryItemsStack.push(singleGalleryItem);
 
   // Insert image to the page
   const pictureContainer = document.getElementById('random_picture_container');
