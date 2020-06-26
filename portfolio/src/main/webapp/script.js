@@ -85,11 +85,11 @@ function setRandomImage() {
   }
 
   // Pick a random gallery item
-  let singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+  let singleGalleryItem = GALLERY_ITEMS[getRandomIndex()];
 
   // Look for another image if the one has already been displayed in the cycle
   while(galleryItemsStack.indexOf(singleGalleryItem) > -1) {
-    singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+    singleGalleryItem = GALLERY_ITEMS[getRandomIndex()];
   }
 
   galleryItemsStack.push(singleGalleryItem);
@@ -102,6 +102,12 @@ function setRandomImage() {
   // Insert image description to the page
   const descriptionContainer = document.getElementById('picture_description_container');
   descriptionContainer.innerText = singleGalleryItem.description;
+}
+
+function getRandomIndex() {
+
+  // Get's a random index from gallery items
+  return Math.floor(Math.random() * GALLERY_ITEMS.length);
 }
 
 // When the page starts, display a random image.
