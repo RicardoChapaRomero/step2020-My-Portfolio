@@ -61,9 +61,17 @@ body {
   border-radius: 6px;
 }
 
+#aboutme_container {
+  width: 100%;
+}
+
+#projects_container {
+  width: 97%;
+  font-size: 105%;
+  line-height: 1.6;
+}
+
 /* Gallery */
-
-
 
 #my_gallery {
   float: left;
