@@ -16,8 +16,7 @@
  * Adds a random picture with its description to the page.
  */
 
-/** !Array<Objects> */
-/** @const {{imgSrc: string, description: string, altText: string }}  */
+/** @const {!Array<{imgSrc: string, description: string, altText: string }>}  */
 const GALLERY_ITEMS = [
   {
     imgSrc: "food_picture.jpg",
@@ -56,19 +55,16 @@ let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
 let galleryItemsIndex = 0; // Counter to keep track of the display of the images
 
-function getRandomImage() {
-
+function onClickImageCyclerButton() {
   // Change status of the cycle on every click
   isCycling = !isCycling
   const randomButtonContainer = document.querySelector('.random_picture_button');
 
   if(isCycling) {
-
     //Start the random image cycler
     intervalState = setInterval(setRandomImage,TIME_INTERVAL);
     randomButtonContainer.textContent = "Click to stop the random image cycler";
   } else {
-
     //Stop the random image cycler
     randomButtonContainer.textContent = "Click to start the random image cycler";
     clearInterval(intervalState);
@@ -77,10 +73,8 @@ function getRandomImage() {
 }
 
 function setRandomImage() {
-
   // Condition to check when new cycle has to begin
   if(galleryItemsIndex === GALLERY_ITEMS.length) {
-
     shuffleGalleryItems();
     galleryItemsIndex = 0;
   }
@@ -99,12 +93,9 @@ function setRandomImage() {
   galleryItemsIndex ++;
 }
 
-
 /** Suffles the array on every new cycle */
 function shuffleGalleryItems() {
-
   for(let index = GALLERY_ITEMS.length - 1; index > 0; index--) {
-
     //Looking for random index
     const randomItem = Math.floor(Math.random() * (index + 1));
     // Swaps Elements
