@@ -110,5 +110,12 @@ function getRandomIndex() {
   return Math.floor(Math.random() * GALLERY_ITEMS.length);
 }
 
+function setWebpage() {
+  setRandomImage();
+  fetch('/data').then(response => response.text()).then((greeting) => {
+    document.getElementById('fetch_container').innerHTML = greeting;
+  });
+}
+
 // When the page starts, display a random image.
-window.onload = setRandomImage;
+window.onload = setWebpage;

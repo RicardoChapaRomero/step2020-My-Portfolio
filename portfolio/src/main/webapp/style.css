@@ -119,12 +119,21 @@ body {
   font-size: 110%;
 }
 
+/*Hidden talents*/
+
 #hidden_talents_container {
  background-color: var(--general-color);
+ border-bottom: 1px solid black;
 }
 
 #hidden_talents_wrapper {
   margin-left: 1em;
+}
+
+/* Fetch */
+
+#fetch_container {
+ background-color: var(--general-color);
 }
 
 /* Generic */
