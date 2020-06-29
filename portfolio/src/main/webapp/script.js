@@ -85,11 +85,11 @@ function setRandomImage() {
   }
 
   // Pick a random gallery item
-  let singleGalleryItem = GALLERY_ITEMS[getRandomIndex()];
+  let singleGalleryItem = GALLERY_ITEMS[getRandomIndex(GALLERY_ITEMS)];
 
   // Look for another image if the one has already been displayed in the cycle
   while(galleryItemsStack.indexOf(singleGalleryItem) > -1) {
-    singleGalleryItem = GALLERY_ITEMS[getRandomIndex()];
+    singleGalleryItem = GALLERY_ITEMS[getRandomIndex(GALLERY_ITEMS)];
   }
 
   galleryItemsStack.push(singleGalleryItem);
@@ -104,16 +104,16 @@ function setRandomImage() {
   descriptionContainer.innerText = singleGalleryItem.description;
 }
 
-function getRandomIndex() {
+function getRandomIndex(Object) {
 
   // Get's a random index from gallery items
-  return Math.floor(Math.random() * GALLERY_ITEMS.length);
+  return Math.floor(Math.random() * Object.length);
 }
 
 function setWebpage() {
   setRandomImage();
-  fetch('/data').then(response => response.text()).then((greeting) => {
-    document.getElementById('fetch_container').innerHTML = greeting;
+  fetch('/data').then(response => response.json()).then((data) => {
+    document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
   });
 }
 
