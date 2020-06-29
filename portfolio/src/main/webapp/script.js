@@ -16,8 +16,7 @@
  * Adds a random picture with its description to the page.
  */
 
-/** !Array<Objects> */
-/** @const {{imgSrc: string, description: string, altText: string }}  */
+/** @const {!Array<{imgSrc: string, description: string, altText: string }>}  */
 const GALLERY_ITEMS = [
   {
     imgSrc: "food_picture.jpg",
@@ -52,47 +51,35 @@ const GALLERY_ITEMS = [
 ];
 
 const TIME_INTERVAL = 10000; // Constant time of 10 seconds
-let galleryItemsStack = []; // Stack to keep track of displayed images
 let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
+let galleryItemsIndex = 0; // Counter to keep track of the display of the images
 
-function getRandomImage() {
-
+function onClickImageCyclerButton() {
   // Change status of the cycle on every click
   isCycling = !isCycling
   const randomButtonContainer = document.querySelector('.random_picture_button');
 
   if(isCycling) {
-
     //Start the random image cycler
-    intervalState= setInterval(setRandomImage,TIME_INTERVAL);
+    intervalState = setInterval(setRandomImage,TIME_INTERVAL);
     randomButtonContainer.textContent = "Click to stop the random image cycler";
   } else {
-
     //Stop the random image cycler
     randomButtonContainer.textContent = "Click to start the random image cycler";
-    galleryItemsStack = [];
     clearInterval(intervalState);
     intervalState = null;
   }
 }
 
 function setRandomImage() {
-
-  // Restart the stack if all images have been displayed in a cycle
-  if(galleryItemsStack.length === GALLERY_ITEMS.length) {
-    galleryItemsStack = [];
+  // Condition to check when new cycle has to begin
+  if(galleryItemsIndex === GALLERY_ITEMS.length) {
+    shuffleGalleryItems();
+    galleryItemsIndex = 0;
   }
 
-  // Pick a random gallery item
-  let singleGalleryItem = GALLERY_ITEMS[getRandomIndex(GALLERY_ITEMS)];
-
-  // Look for another image if the one has already been displayed in the cycle
-  while(galleryItemsStack.indexOf(singleGalleryItem) > -1) {
-    singleGalleryItem = GALLERY_ITEMS[getRandomIndex(GALLERY_ITEMS)];
-  }
-
-  galleryItemsStack.push(singleGalleryItem);
+  let singleGalleryItem = GALLERY_ITEMS[galleryItemsIndex];
 
   // Insert image to the page
   const pictureContainer = document.getElementById('random_picture_container');
@@ -102,6 +89,8 @@ function setRandomImage() {
   // Insert image description to the page
   const descriptionContainer = document.getElementById('picture_description_container');
   descriptionContainer.innerText = singleGalleryItem.description;
+
+  galleryItemsIndex ++;
 }
 
 function getRandomIndex(Object) {
@@ -115,6 +104,16 @@ function setWebpage() {
   fetch('/data').then(response => response.json()).then((data) => {
     document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
   });
+}
+
+/** Suffles the array on every new cycle */
+function shuffleGalleryItems() {
+  for(let index = GALLERY_ITEMS.length - 1; index > 0; index--) {
+    //Looking for random index
+    const randomItem = Math.floor(Math.random() * (index + 1));
+    // Swaps Elements
+    [GALLERY_ITEMS[index], GALLERY_ITEMS[randomItem]] = [GALLERY_ITEMS[randomItem], GALLERY_ITEMS[index]];
+  }
 }
 
 // When the page starts, display a random image.
