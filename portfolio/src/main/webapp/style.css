@@ -1,19 +1,58 @@
+:root {
+  --general-color: rgba(236, 233, 227, 1);
+}
+
+body {
+  background-color: #292929;
+}
+
 #content {
-  margin-left: auto;
   margin-right: auto;
   width: 100%;
+}
+
+/* Header */
+#header_container {
+  background-color: rgba(1, 2, 3, 0.7);
+  border-bottom: 1px solid black;
+  overflow: hidden;
+}
+
+#header_title {
+  width: calc(50% - 1.5em);
+  margin-left: 1em;
+  float: left;
+  color: var(--general-color);
+}
+
+#media_wrapper {
+  text-align: right;
+}
+
+#header_media {
+  width: calc(50% - 1.5em);
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.nav_media li{
+  display: inline-block;
+  align-content: flex-end;
 }
 
 /* Peronsal and Profesional Information */
 
 #information_container {
+  background-color: var(--general-color);
   float: left;
+  border-bottom: 1px solid black;
 }
 
 #image_and_description {
   float: left;
-  width: calc(50% - 1em);
+  width: calc(50% - 1.5em);
   margin-right: 1em;
+  margin-left: 1em;
   border-right: 1px solid black;
 }
 
@@ -26,11 +65,21 @@
   border-radius: 6px;
 }
 
+#aboutme_container {
+  width: 100%;
+}
+
+#projects_container {
+  width: 97%;
+  font-size: 105%;
+  line-height: 1.6;
+}
+
 /* Gallery */
 
 #my_gallery {
   float: left;
-  width: calc(50% - 1em);
+  width: calc(50% - 1.5em);
 }
 
 #randomPicture_and_description_container {
@@ -40,13 +89,57 @@
 
 #random_picture_container {
   margin-top: 30px;
-  height: 60%;
-  width: 60%;
+  height: 350px;
+  width: 80%;
+  border-radius: 6px
+}
+
+.random_picture_button {
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  transition: background-color 0.5s, color 0.2s;
+}
+
+.random_picture_button:hover {
+  background-color: rgba(1, 2, 3, 0.9);
+  color: white;
+}
+
+.random_picture_button:active {
+  transform: scale(.95);
+}
+
+#picture_description_container {
+  width: 80%;
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 110%;
+}
+
+#hidden_talents_container {
+ background-color: var(--general-color);
+}
+
+#hidden_talents_wrapper {
+  margin-left: 1em;
 }
 
 /* Generic */
 
 .justify_text {
   text-align: justify;
-  width: 99%;
+  width: 97%;
+  line-height: 1.6;
+  font-size: 110%;
+}
+
+.page_headers {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page_sub-headers {
+  font-family: Geneva, sans-serif;
 }

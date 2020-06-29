@@ -16,45 +16,70 @@
  * Adds a random picture with its description to the page.
  */
 
-  /** !Array<Objects> */
-  /** @type {{imgSrc: string, description: string, altText: string }}  */
-  const GALLERY_ITEMS = [
-    {
-      imgSrc: "food_picture.jpg",
-      description: "My first time eating at Toshi Tiger near the university. The flavor changed my life forever.",
-      altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread with shrimp inside it."
-    },
-    {
-      imgSrc: "canada_picture.jpg",
-      description: "A family vacation in Canada. Who would have thought that they have amazing views.",
-      altText: "An amazing view of the Parlament of Canada and Ottawa River taken from Major's Hill Park."
-    },
-    {
-      imgSrc: "monterrey_picture.JPG",
-      description: "An amazing sunset from my city Monterrey!",
-      altText: "A beautiful sunset with a deep blue sky with a mix of orange flaming rays of light over Monterrey, Mexico"
-    },
-    {
-      imgSrc: "building_picture.JPG",
-      description: "Really appreciate good architecture.",
-      altText: "A gothic styled building painted of orange with green roofs on Quebec City"
-    },
-    {
-      imgSrc: "firstday_picture.jpg",
-      description: "My first day as a Google STEP intern!",
-      altText: "Me smiling with a top knot, wearing a purple shirt with the label 'Hacker', with my Google's Chromebook in front of me"
-    },
-    {
-      imgSrc: "highview_picture.jpg",
-      description: "I get really excited when I have views like this.",
-      altText: "A view of Montreal from the top of the Olympic Stadium"
-    }
-  ];
+/** @const {!Array<{imgSrc: string, description: string, altText: string }>}  */
+const GALLERY_ITEMS = [
+  {
+    imgSrc: "food_picture.jpg",
+    description: "My first time eating at Toshi Tiger near the university. The flavor changed my life forever.",
+    altText: "A picture of a table with a plate of noodles with meat and vegetables on its top with a plate of bread with shrimp inside it."
+  },
+  {
+    imgSrc: "canada_picture.jpg",
+    description: "A family vacation in Canada. Who would have thought that they have amazing views.",
+    altText: "An amazing view of the Parlament of Canada and Ottawa River taken from Major's Hill Park."
+  },
+  {
+    imgSrc: "monterrey_picture.JPG",
+    description: "An amazing sunset over my city Monterrey!",
+    altText: "A beautiful sunset with a deep blue sky with a mix of orange flaming rays of light over Monterrey, Mexico"
+  },
+  {
+    imgSrc: "building_picture.JPG",
+    description: "Really appreciate good architecture.",
+    altText: "A gothic styled building painted of orange with green roofs on Quebec City"
+  },
+  {
+    imgSrc: "firstday_picture.jpg",
+    description: "My first day as a Google STEP intern!",
+    altText: "Me smiling with a top knot, wearing a purple shirt with the label 'Hacker', with my Google's Chromebook in front of me"
+  },
+  {
+    imgSrc: "highview_picture.jpg",
+    description: "I get really excited when I have views like this.",
+    altText: "A view of Montreal from the top of the Olympic Stadium"
+  }
+];
 
-function getRandomImage() {
+const TIME_INTERVAL = 10000; // Constant time of 10 seconds
+let isCycling = false; // Bool to track if a cycle is active
+let intervalState = null; // Variable to store the setInterval() status
+let galleryItemsIndex = 0; // Counter to keep track of the display of the images
 
-  // Pick a random gallery item
-  const singleGalleryItem = GALLERY_ITEMS[Math.floor(Math.random() * GALLERY_ITEMS.length)];
+function onClickImageCyclerButton() {
+  // Change status of the cycle on every click
+  isCycling = !isCycling
+  const randomButtonContainer = document.querySelector('.random_picture_button');
+
+  if(isCycling) {
+    //Start the random image cycler
+    intervalState = setInterval(setRandomImage,TIME_INTERVAL);
+    randomButtonContainer.textContent = "Click to stop the random image cycler";
+  } else {
+    //Stop the random image cycler
+    randomButtonContainer.textContent = "Click to start the random image cycler";
+    clearInterval(intervalState);
+    intervalState = null;
+  }
+}
+
+function setRandomImage() {
+  // Condition to check when new cycle has to begin
+  if(galleryItemsIndex === GALLERY_ITEMS.length) {
+    shuffleGalleryItems();
+    galleryItemsIndex = 0;
+  }
+
+  let singleGalleryItem = GALLERY_ITEMS[galleryItemsIndex];
 
   // Insert image to the page
   const pictureContainer = document.getElementById('random_picture_container');
@@ -64,4 +89,19 @@ function getRandomImage() {
   // Insert image description to the page
   const descriptionContainer = document.getElementById('picture_description_container');
   descriptionContainer.innerText = singleGalleryItem.description;
+
+  galleryItemsIndex ++;
 }
+
+/** Suffles the array on every new cycle */
+function shuffleGalleryItems() {
+  for(let index = GALLERY_ITEMS.length - 1; index > 0; index--) {
+    //Looking for random index
+    const randomItem = Math.floor(Math.random() * (index + 1));
+    // Swaps Elements
+    [GALLERY_ITEMS[index], GALLERY_ITEMS[randomItem]] = [GALLERY_ITEMS[randomItem], GALLERY_ITEMS[index]];
+  }
+}
+
+// When the page starts, display a random image.
+window.onload = setRandomImage;
