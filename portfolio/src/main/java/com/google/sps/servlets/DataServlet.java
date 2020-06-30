@@ -15,6 +15,9 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -38,30 +41,43 @@ public class DataServlet extends HttpServlet {
   /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
     response.sendRedirect(
-      "https://8080-1a70d96e-39c0-4773-92eb-3774626a1f7d.us-central1.cloudshell.dev/"
+      "/../../../../../../index.html"
     );
+  }
+
+  /** Write a new message to DataStore */
+  private void writeMessageToDatastore(String message) throws IOException {
+    Entity messageEntity = new Entity("Message");
+
+    messageEntity.setProperty("message", message);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(messageEntity);
+  }
+
+  private void dataServletResponse(HttpServletResponse response) throws IOException {
+    response.setContentType("text/html;");
+    response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String value = request.getParameter("user-comment");
-
+   
     /** Redirection if value is empty or accidental click */
     if(value == null || value.length() == 0) {
       doRedirect(response);
     } else {
       messages.add(value); // Add every new submition to recorded messages 
       toJson();
+      writeMessageToDatastore(value);
     }
 
-    response.setContentType("text/html;");
-    response.getWriter().println(json);
+    dataServletResponse(response);
     doRedirect(response);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println(json);
+    dataServletResponse(response);
   }
 }
