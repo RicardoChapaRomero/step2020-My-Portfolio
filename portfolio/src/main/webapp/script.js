@@ -63,10 +63,10 @@ function onClickImageCyclerButton() {
   if(isCycling) {
     //Start the random image cycler
     intervalState = setInterval(setRandomImage,TIME_INTERVAL);
-    randomButtonContainer.textContent = "Click to stop the random image cycler";
+    randomButtonContainer.textContent = 'Click to stop the random image cycler';
   } else {
     //Stop the random image cycler
-    randomButtonContainer.textContent = "Click to start the random image cycler";
+    randomButtonContainer.textContent = 'Click to start the random image cycler';
     clearInterval(intervalState);
     intervalState = null;
   }
@@ -93,16 +93,9 @@ function setRandomImage() {
   galleryItemsIndex ++;
 }
 
-/** Function to get a random index if the comments needs to be displayed */
-// function getRandomIndex(Object) {
-//   // Get's a random index from gallery items
-//   return Math.floor(Math.random() * Object.length);
-// }
-
 function setWebpageDefaults() {
   setRandomImage();
-  fetch('/data').then(response => response.json()).then((data) => {
-    //document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
+  fetch('/comments').then(response => response.json()).then((data) => {
 
     /** TODO: Work or display the comments */
     console.log(data);
