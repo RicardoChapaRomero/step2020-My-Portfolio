@@ -27,19 +27,36 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> messages;
+  private List<String> messages = new ArrayList<>();
   private String json;
 
   @Override
   public void init() {
 
-    messages = new ArrayList<>();
-    messages.add("Hello World from DataServlet");
-    messages.add("This message has been delivered successfully");
-    messages.add("Working fine");
-
     Gson gson = new Gson();
     json = gson.toJson(messages);
+  }
+
+  private void doRedirect(HttpServletResponse response) throws IOException {
+    response.sendRedirect(
+      "https://8080-1a70d96e-39c0-4773-92eb-3774626a1f7d.us-central1.cloudshell.dev/"
+    );
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String value = request.getParameter("user-comment");
+
+    if(value == null || value.length() == 0) {
+      doRedirect(response);
+    } else {
+      messages.add(value);
+    }
+
+    init();
+    response.setContentType("text/html;");
+    response.getWriter().println(json);
+    doRedirect(response);
   }
 
   @Override

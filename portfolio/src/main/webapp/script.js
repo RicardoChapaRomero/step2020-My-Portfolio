@@ -102,7 +102,8 @@ function getRandomIndex(Object) {
 function setWebpageDefaults() {
   setRandomImage();
   fetch('/data').then(response => response.json()).then((data) => {
-    document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
+    //document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
+    console.log(data);
   });
 }
 
