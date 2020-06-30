@@ -31,32 +31,33 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private List<String> messages = new ArrayList<>();
-  private String json;
 
   /** Converts Messages ArrayList to Json */
-  public void toJson() throws IOException {
-    json = new Gson().toJson(messages);
+  public String toJson() throws IOException {
+   return new Gson().toJson(messages);
   }
 
   /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
-    response.sendRedirect(
-      "/../../../../../../index.html"
-    );
+    response.sendRedirect("/index.html");
   }
 
   /** Write a new message to DataStore */
-  private void writeMessageToDatastore(String message) throws IOException {
-    Entity messageEntity = new Entity("Message");
+  private void toDatastore(String comment) throws IOException {
+    // Create a new entity to save in datastore 
+    Entity newComment = new Entity("Comment");
 
-    messageEntity.setProperty("message", message);
+    // Set the entity's values { key: value } 
+    newComment.setProperty("comment", comment); 
+
+    // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(messageEntity);
+    datastore.put(newComment); // Write the entity into datastore 
   }
 
   private void dataServletResponse(HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.getWriter().println(json);
+    response.getWriter().println(toJson());
   }
 
   @Override
@@ -66,10 +67,11 @@ public class DataServlet extends HttpServlet {
     /** Redirection if value is empty or accidental click */
     if(value == null || value.length() == 0) {
       doRedirect(response);
+      return;
     } else {
       messages.add(value); // Add every new submition to recorded messages 
       toJson();
-      writeMessageToDatastore(value);
+      toDatastore(value);
     }
 
     dataServletResponse(response);
