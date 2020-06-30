@@ -18,6 +18,8 @@ import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -30,11 +32,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
 
-  private List<String> messages = new ArrayList<>();
+  private List<String> commentArray = new ArrayList<>();
 
-  /** Converts Messages ArrayList to Json */
+  /** Converts Comment ArrayList to Json */
   public String toJson() throws IOException {
-   return new Gson().toJson(messages);
+   return new Gson().toJson(commentArray);
   }
 
   /** Redirection to the main page */
@@ -60,6 +62,21 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(toJson());
   }
 
+  public void loadComments() throws IOException {
+    Query commentsQuery = new Query("Comment"); // Get previous stored comments
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    // Prepare ton instance the past stored comments
+    PreparedQuery comments = datastore.prepare(commentsQuery);
+
+    for(Entity commentEntity : comments.asIterable()) {
+      // Get the value of every stored comment
+      String comment = (String) commentEntity.getProperty("comment");
+      commentArray.add(comment); // Add the value to the comments array
+    }
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String value = request.getParameter("user-comment");
@@ -69,7 +86,7 @@ public class DataServlet extends HttpServlet {
       doRedirect(response);
       return;
     } else {
-      messages.add(value); // Add every new submition to recorded messages 
+      commentArray.add(value); // Add every new submition to recorded comments 
       toJson();
       toDatastore(value);
     }
@@ -80,6 +97,10 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /** Load previous stored comments */
+    if(commentArray.size() == 0) {
+      loadComments();
+    }
     dataServletResponse(response);
   }
 }
