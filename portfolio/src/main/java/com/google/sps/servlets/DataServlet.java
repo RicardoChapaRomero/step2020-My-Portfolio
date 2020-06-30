@@ -30,9 +30,7 @@ public class DataServlet extends HttpServlet {
   private List<String> messages = new ArrayList<>();
   private String json;
 
-  @Override
-  public void init() {
-
+  public void toJson() throws IOException {
     Gson gson = new Gson();
     json = gson.toJson(messages);
   }
@@ -53,7 +51,7 @@ public class DataServlet extends HttpServlet {
       messages.add(value);
     }
 
-    init();
+    toJson();
     response.setContentType("text/html;");
     response.getWriter().println(json);
     doRedirect(response);
@@ -61,7 +59,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     response.setContentType("text/html;");
     response.getWriter().println(json);
     //response.getWriter().println("<h1>Hello Ricardo!</h1>");
