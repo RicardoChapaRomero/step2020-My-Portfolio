@@ -93,7 +93,7 @@ function setRandomImage() {
   galleryItemsIndex ++;
 }
 
-/** Function to get a randome index if the comments needs to be displayed */
+/** Function to get a random index if the comments needs to be displayed */
 // function getRandomIndex(Object) {
 //   // Get's a random index from gallery items
 //   return Math.floor(Math.random() * Object.length);
