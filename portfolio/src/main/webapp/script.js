@@ -99,7 +99,7 @@ function getRandomIndex(Object) {
   return Math.floor(Math.random() * Object.length);
 }
 
-function setWebpage() {
+function setWebpageDefaults() {
   setRandomImage();
   fetch('/data').then(response => response.json()).then((data) => {
     document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
@@ -117,4 +117,4 @@ function shuffleGalleryItems() {
 }
 
 // When the page starts, display a random image.
-window.onload = setWebpage;
+window.onload = setWebpageDefaults;
