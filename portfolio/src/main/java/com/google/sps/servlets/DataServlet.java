@@ -30,11 +30,12 @@ public class DataServlet extends HttpServlet {
   private List<String> messages = new ArrayList<>();
   private String json;
 
+  /** Converts Messages ArrayList to Json */
   public void toJson() throws IOException {
-    Gson gson = new Gson();
-    json = gson.toJson(messages);
+    json = new Gson().toJson(messages);
   }
 
+  /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
     response.sendRedirect(
       "https://8080-1a70d96e-39c0-4773-92eb-3774626a1f7d.us-central1.cloudshell.dev/"
@@ -45,13 +46,14 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String value = request.getParameter("user-comment");
 
+    /** Redirection if value is empty or accidental click */
     if(value == null || value.length() == 0) {
       doRedirect(response);
     } else {
-      messages.add(value);
+      messages.add(value); // Add every new submition to recorded messages 
+      toJson();
     }
 
-    toJson();
     response.setContentType("text/html;");
     response.getWriter().println(json);
     doRedirect(response);
@@ -61,6 +63,5 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
     response.getWriter().println(json);
-    //response.getWriter().println("<h1>Hello Ricardo!</h1>");
   }
 }

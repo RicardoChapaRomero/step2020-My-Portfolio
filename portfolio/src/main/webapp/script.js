@@ -93,16 +93,18 @@ function setRandomImage() {
   galleryItemsIndex ++;
 }
 
-function getRandomIndex(Object) {
-
-  // Get's a random index from gallery items
-  return Math.floor(Math.random() * Object.length);
-}
+/** Function to get a randome index if the comments needs to be displayed */
+// function getRandomIndex(Object) {
+//   // Get's a random index from gallery items
+//   return Math.floor(Math.random() * Object.length);
+// }
 
 function setWebpageDefaults() {
   setRandomImage();
   fetch('/data').then(response => response.json()).then((data) => {
     //document.getElementById('fetch_container').innerHTML = data[getRandomIndex(data)];
+
+    /** TODO: Work or display the comments */
     console.log(data);
   });
 }
