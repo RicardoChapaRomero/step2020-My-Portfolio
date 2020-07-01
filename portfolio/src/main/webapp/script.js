@@ -63,10 +63,10 @@ function onClickImageCyclerButton() {
   if(isCycling) {
     //Start the random image cycler
     intervalState = setInterval(setRandomImage,TIME_INTERVAL);
-    randomButtonContainer.textContent = "Click to stop the random image cycler";
+    randomButtonContainer.textContent = 'Click to stop the random image cycler';
   } else {
     //Stop the random image cycler
-    randomButtonContainer.textContent = "Click to start the random image cycler";
+    randomButtonContainer.textContent = 'Click to start the random image cycler';
     clearInterval(intervalState);
     intervalState = null;
   }
@@ -93,6 +93,15 @@ function setRandomImage() {
   galleryItemsIndex ++;
 }
 
+function setWebpageDefaults() {
+  setRandomImage();
+  fetch('/comments').then(response => response.json()).then((data) => {
+
+    /** TODO: Work or display the comments */
+    console.log(data);
+  });
+}
+
 /** Suffles the array on every new cycle */
 function shuffleGalleryItems() {
   for(let index = GALLERY_ITEMS.length - 1; index > 0; index--) {
@@ -104,4 +113,4 @@ function shuffleGalleryItems() {
 }
 
 // When the page starts, display a random image.
-window.onload = setRandomImage;
+window.onload = setWebpageDefaults;

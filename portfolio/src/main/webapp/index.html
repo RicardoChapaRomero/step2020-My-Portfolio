@@ -13,19 +13,19 @@
       <!-- Portafolio Container -->
       <div id="header_container">
         <div>
-        <div id="header_display">
-          <div id="header_title">
-            <h1 class="page_headers">Ricardo Chapa's Portfolio</h1>
-          </div>
-          <div id="media_wrapper">
-            <div id="header_media">
-              <a href="https://www.linkedin.com/in/ricardo-chapa-romero-a4b277133/" class="fa fa-linkedin"></a>
-              <a href="https://github.com/RicardoChapaRomero" class="fa fa-github"></a>
-              <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter"></a>
-              <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook"></a>
+          <div id="header_display">
+            <div id="header_title">
+              <h1 class="page_headers">Ricardo Chapa's Portfolio</h1>
+            </div>
+            <div id="media_wrapper">
+              <div id="header_media">
+                <a href="https://www.linkedin.com/in/ricardo-chapa-romero-a4b277133/" class="fa fa-linkedin"></a>
+                <a href="https://github.com/RicardoChapaRomero" class="fa fa-github"></a>
+                <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter"></a>
+                <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook"></a>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
       <div id="information_container">
@@ -104,8 +104,16 @@
             I have to save more money because I may want something in the future... the weird part? 
             Most of the time it works.
           </p>
-          <br>
         </div>
+      </div>
+      <!-- Fetched Information Container -->
+      <div id="comments_container">
+        <form action="/comments" method="POST">
+          <p>Leave a comment!</p>
+          <input type="text" name="user-comment"/>
+          <br/><br/>
+          <input type="submit"/>
+        </form>
       </div>
     </div>
   </body>
