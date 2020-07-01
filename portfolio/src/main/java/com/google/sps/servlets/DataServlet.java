@@ -67,10 +67,10 @@ public class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
-    // Prepare ton instance the past stored comments
+    // Prepare to instance the past stored comments
     PreparedQuery comments = datastore.prepare(commentsQuery);
 
-    for(Entity commentEntity : comments.asIterable()) {
+    for (Entity commentEntity : comments.asIterable()) {
       // Get the value of every stored comment
       String comment = (String) commentEntity.getProperty("comment");
       commentArray.add(comment); // Add the value to the comments array
@@ -85,11 +85,10 @@ public class DataServlet extends HttpServlet {
     if(value == null || value.length() == 0) {
       doRedirect(response);
       return;
-    } else {
-      commentArray.add(value); // Add every new submition to recorded comments 
-      toJson();
-      toDatastore(value);
     }
+    commentArray.add(value); // Add every new submition to recorded comments 
+    toJson();
+    toDatastore(value);
 
     dataServletResponse(response);
     doRedirect(response);
