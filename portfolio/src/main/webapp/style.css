@@ -6,9 +6,21 @@ body {
   background-color: #292929;
 }
 
+#page_wrapper {
+  display: flex;
+}
+
 #content {
   margin-right: auto;
-  width: 100%;
+  width: 80%;
+  float: left;
+}
+
+#comment-wrapper {
+  width: calc(20% - .125em);
+  float: left;
+  background: var(--general-color);
+  border-right: 1px solid black;
 }
 
 /* Header */
@@ -133,7 +145,41 @@ body {
 /* Fetch */
 
 #comments_container {
- background-color: var(--general-color);
+  background-color: var(--general-color);
+}
+
+#comment_section_wrapper {
+  width: 90%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#comment-section {
+  width: 90%;
+  border: 1px solid darkgrey;
+  border-radius: 8px;
+}
+
+#comment-display-container {
+  width: 90%;
+  height: 150px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-y: scroll; 
+  border: 1px solid darkgrey;
+  border-radius: 8px;
+}
+
+#comment-display-container div{
+  border: 1px solid black;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 110%;
+  margin-bottom: 1em; 
+  width: 91%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Generic */

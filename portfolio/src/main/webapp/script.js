@@ -96,10 +96,20 @@ function setRandomImage() {
 function setWebpageDefaults() {
   setRandomImage();
   fetch('/comments').then(response => response.json()).then((data) => {
-
-    /** TODO: Work or display the comments */
-    console.log(data);
+    appendComments(data);
   });
+}
+
+function appendComments(comments) {
+  const commentContainer = document.getElementById('comment-display-container');
+  for (let index = 0; index < comments.length; index++) {
+    const comment = comments[index];
+    const commentDiv = document.createElement('DIV');
+    const commentText = document.createTextNode(comment);
+
+    commentDiv.appendChild(commentText);
+    commentContainer.appendChild(commentDiv);  
+  }
 }
 
 /** Suffles the array on every new cycle */

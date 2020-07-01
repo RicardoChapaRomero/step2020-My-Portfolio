@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,10 +34,47 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private List<String> commentArray = new ArrayList<>();
+  private int numberOfComments = 1;
 
-  /** Converts Comment ArrayList to Json */
-  public String toJson() throws IOException {
-   return new Gson().toJson(commentArray);
+  private int getNumberOfComments(HttpServletRequest request) throws IOException {
+    /*String numberOfCommentsString = request.getParameter("number-of-comments");
+
+    if(numberOfCommentsString == null || numberOfCommentsString.length() == 0) {
+       return numberOfComments;
+    } else {
+      numberOfComments = Integer.parseInt(numberOfCommentsString);
+    }
+    return numberOfComments;*/
+    return commentArray.size();
+  }
+
+  private List<String> shuffleCommentArray() throws IOException{
+    List<String> shuffledArray = commentArray;
+
+    for(int index = shuffledArray.size() - 1; index > 0; index--) {
+      int randomIndex = (int)(Math.random() * shuffledArray.size());
+
+      Collections.swap(shuffledArray, index, randomIndex);
+    }
+
+    return shuffledArray;
+  }
+
+  public List<String> getTrimmedCommentArray(HttpServletRequest request) throws IOException {
+
+    int numberOfComments = getNumberOfComments(request);
+    List<String> shuffledCommentArray = shuffleCommentArray();
+    List<String> trimmedCommentArray = new ArrayList<>();
+
+    if(numberOfComments >= shuffledCommentArray.size()) {
+      return shuffledCommentArray;
+    }
+
+    for (int index = 0; index < numberOfComments; index++) {
+      trimmedCommentArray.add(shuffledCommentArray.get(index));
+    }
+    System.out.println(trimmedCommentArray);
+    return trimmedCommentArray;
   }
 
   /** Redirection to the main page */
@@ -57,13 +95,14 @@ public class DataServlet extends HttpServlet {
     datastore.put(newComment); // Write the entity into datastore 
   }
 
-  private void dataServletResponse(HttpServletResponse response) throws IOException {
+  private void dataServletResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.getWriter().println(toJson());
+    response.getWriter().println(toJson(request));
   }
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
+    commentArray = new ArrayList<>();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
@@ -77,6 +116,11 @@ public class DataServlet extends HttpServlet {
     }
   }
 
+  /** Converts Comment ArrayList to Json */
+  public String toJson(HttpServletRequest request) throws IOException {
+   return new Gson().toJson(getTrimmedCommentArray(request));
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String value = request.getParameter("user-comment");
@@ -84,22 +128,20 @@ public class DataServlet extends HttpServlet {
     /** Redirection if value is empty or accidental click */
     if(value == null || value.length() == 0) {
       doRedirect(response);
+      dataServletResponse(request, response);
       return;
     }
     commentArray.add(value); // Add every new submition to recorded comments 
-    toJson();
     toDatastore(value);
 
-    dataServletResponse(response);
+    dataServletResponse(request, response);
     doRedirect(response);
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /** Load previous stored comments */
-    if(commentArray.size() == 0) {
-      loadComments();
-    }
-    dataServletResponse(response);
+    loadComments();
+    dataServletResponse(request, response);
   }
 }
