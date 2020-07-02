@@ -110,7 +110,9 @@ function appendComments(comments) {
     const userContainer = document.createElement('div');
     const boldUserContainer = document.createElement('B');
 
-    const commentUsername = document.createTextNode(userComment.user);
+
+    const commentUsername = (userComment.user === "") ? 
+            document.createTextNode("Anonymous") : document.createTextNode(userComment.user);
     const commentText = document.createTextNode(userComment.comment);
 
     boldUserContainer.appendChild(commentUsername);
