@@ -6,123 +6,136 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="font-awesome-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <script src="script.js"></script>
   </head>
   <body>
-    <div id="header_container">
-      <div>
-        <div id="header_display">
-          <div id="header_title">
-            <h1 class="page_headers">Ricardo Chapa's Portfolio</h1>
-          </div>
-          <div id="media_wrapper">
-            <div id="header_media">
-              <a href="https://www.linkedin.com/in/ricardo-chapa-romero-a4b277133/" class="fa fa-linkedin"></a>
-              <a href="https://github.com/RicardoChapaRomero" class="fa fa-github"></a>
-              <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter"></a>
-              <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook"></a>
+    <div id="page_container">
+      <div id="header_container">
+        <div>
+          <div id="header_display">
+            <div id="header_title">
+              <h1 class="page_headers">Ricardo Chapa's Portfolio</h1>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="page_wrapper">
-      <div id="comment-wrapper">
-         <!-- Fetched Information Container -->
-        <div id="comments_container">
-          <div id="comment_section_wrapper">
-            <form action="/comments" method="POST">
-              <h2 class="page_headers">Leave a comment!</h2>
-              <textarea type="text" name="user-comment" id="comment-section"></textarea>
-              <input type="text" name="user-name" id="comment-section"/>
-              <br/>
-              <br/>
-              <input type="submit"/>
-            </form>
-          </div>
-          <br/><br/>
-          <div id="comment-display-container">            
-          </div>
-        </div>
-      </div>
-      <div id="content">
-        <!-- Portafolio Container -->
-        <div id="information_container">
-          <!-- Image and Description Container -->
-          <div id="image_and_description">
-            <h2 class="page_headers">Profile</h2>
-            <img 
-              class="my_picture" 
-              src="/../images/profile_picture.jpg" 
-              alt="Picture taken in the library at Tecnologico de Monterrey of me, 
-                  smiling and wearing a hoodie with the RoBorregos logo in it (A robotic Lamb).">
-            </img>
-            <!-- Information (Text) Container -->
-            <div id="paragraph_container">
-              <p class="justify_text">
-                My name is Ricardo Chapa Romero, I'm 19 years old 
-                and I live in Mexico. I'm a STEP intern at Google
-                and a fun fact about me is that my record for sleeping time is 25 hours!
-              </p>
-              <p class="justify_text">
-                I'm a Digital Systems and Robotics student at ITESM, currently in 5th semester.
-                For the past 2 years I've been an active participant at the universities robotics team: RoBorregos.
-                The opportunity of being part of the robotics team has allowed me to learn various topics like Web Development,
-                Machine Learning and Robot Oriented Programming.
-              </p>
-              <p class="justify_text">
-                I really like playing videogames and watching TV series in my free time,
-                also enjoy a good time with my friends and familiy.
-              </p>
-            </div>
-            <hr>
-            <!-- About me container -->
-            <div id="about_me_container">
-              <h2 class="page_headers">Projects I've worked in</h2>
-              <!-- Projects Containers -->
-              <div id="projects_container">
-                  <ul>
-                    <li><b>RoBorrego's Warehouse: </b>Worked as PM and Front End developer.</li>
-                    <li><b>RoBorrego's Webpage: </b>Worked as Front End dveloper.</li>
-                    <li><b>English Course for ITESM: </b>Worked as Front End developer.</li>
-                    <li><b>RoboCup @Home Challenge: </b>Worked on the Navigation Team.</li>
-                    <li><b>RoboCup Soccer Lightweight Tournament: </b>Worked on Movements and Sensors of the Robots</li>
-                  </ul>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Container -->
-          <div id="my_gallery">
-            <h2 class="page_headers">My Gallery</h2>
-            <div id="paragraph_container">
-              <p class="justify_text">
-                One hobby that I ocassionally have is taking pictures. 
-                Even thought I'm not much of a photographer, 
-                I really like to capture the moment of any special time that I'm having in my life,
-                just for when I see that picture I can remember the feeling that I was having in that moment.
-              </p>
-              <button class = "random_picture_button" onclick="onClickImageCyclerButton()">Click to start the random image cycler</button>
-              <!-- Random Image Container -->
-              <div id="randomPicture_and_description_container">
-                <img id="random_picture_container"></img>
-                <div id="picture_description_container"></div>
+            <div id="media_wrapper">
+              <div id="header_media">
+                <a href="https://www.linkedin.com/in/ricardo-chapa-romero-a4b277133/" class="fa fa-linkedin"></a>
+                <a href="https://github.com/RicardoChapaRomero" class="fa fa-github"></a>
+                <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter"></a>
+                <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook"></a>
               </div>
             </div>
           </div>
         </div>
-        <!-- Hidden Talents Container -->
-        <div id="hidden_talents_container">
-          <div id="hidden_talents_wrapper">
-            <h2 class="page_headers">My Hidden Talent</h2>
-            <h3 class="page_sub-headers">I have healthy finances</h3>
-            <p class="justify_text"> 
-              For almost 8 years I have been responsible for my own finances.
-              I really like to depend only on the money I own and not on another one's. 
-              That's why I manage all my accounts and distribute the money for any needs 
-              I may have during a period of month. Even sometimes theres an instinct that tells me that 
-              I have to save more money because I may want something in the future... the weird part? 
-              Most of the time it works.
-            </p>
+      </div>
+      <div id="page_wrapper">
+        <div id="comment-wrapper">
+          <!-- Fetched Information Container -->
+          <div id="comments_container">
+            <div id="comment_section_wrapper">
+              <form action="/comments" method="POST">
+                <h2 class="page_headers">Leave a comment!</h2>
+                <textarea 
+                  type="text" 
+                  name="user-comment" 
+                  id="comment-section"
+                  placeholder="Add your comment here!"
+                ></textarea>
+                <input 
+                  type="text" 
+                  name="user-name" 
+                  id="comment-section"
+                  placeholder="Add your name (optional)"
+                />
+                <br/>
+                <br/>
+                <input type="submit" alt="Click to submit your comment"/>
+              </form>
+            </div>
+            <br/><br/>
+            <div id="comment-display-container">            
+            </div>
+          </div>
+        </div>
+        <div id="content">
+          <!-- Portafolio Container -->
+          <div id="information_container">
+            <!-- Image and Description Container -->
+            <div id="image_and_description">
+              <h2 class="page_headers">Profile</h2>
+              <img 
+                class="my_picture" 
+                src="/../images/profile_picture.jpg" 
+                alt="Picture taken in the library at Tecnologico de Monterrey of me, 
+                    smiling and wearing a hoodie with the RoBorregos logo in it (A robotic Lamb).">
+              </img>
+              <!-- Information (Text) Container -->
+              <div id="paragraph_container">
+                <p class="justify_text">
+                  My name is Ricardo Chapa Romero, I'm 19 years old 
+                  and I live in Mexico. I'm a STEP intern at Google
+                  and a fun fact about me is that my record for sleeping time is 25 hours!
+                </p>
+                <p class="justify_text">
+                  I'm a Digital Systems and Robotics student at ITESM, currently in 5th semester.
+                  For the past 2 years I've been an active participant at the universities robotics team: RoBorregos.
+                  The opportunity of being part of the robotics team has allowed me to learn various topics like Web Development,
+                  Machine Learning and Robot Oriented Programming.
+                </p>
+                <p class="justify_text">
+                  I really like playing videogames and watching TV series in my free time,
+                  also enjoy a good time with my friends and familiy.
+                </p>
+              </div>
+              <hr>
+              <!-- About me container -->
+              <div id="about_me_container">
+                <h2 class="page_headers">Projects I've worked in</h2>
+                <!-- Projects Containers -->
+                <div id="projects_container">
+                    <ul>
+                      <li><b>RoBorrego's Warehouse: </b>Worked as PM and Front End developer.</li>
+                      <li><b>RoBorrego's Webpage: </b>Worked as Front End dveloper.</li>
+                      <li><b>English Course for ITESM: </b>Worked as Front End developer.</li>
+                      <li><b>RoboCup @Home Challenge: </b>Worked on the Navigation Team.</li>
+                      <li><b>RoboCup Soccer Lightweight Tournament: </b>Worked on Movements and Sensors of the Robots</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Gallery Container -->
+            <div id="my_gallery">
+              <h2 class="page_headers">My Gallery</h2>
+              <div id="paragraph_container">
+                <p class="justify_text">
+                  One hobby that I ocassionally have is taking pictures. 
+                  Even thought I'm not much of a photographer, 
+                  I really like to capture the moment of any special time that I'm having in my life,
+                  just for when I see that picture I can remember the feeling that I was having in that moment.
+                </p>
+                <button class = "random_picture_button" onclick="onClickImageCyclerButton()">Click to start the random image cycler</button>
+                <!-- Random Image Container -->
+                <div id="randomPicture_and_description_container">
+                  <img id="random_picture_container"></img>
+                  <div id="picture_description_container"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Hidden Talents Container -->
+          <div id="hidden_talents_container">
+            <div id="hidden_talents_wrapper">
+              <h2 class="page_headers">My Hidden Talent</h2>
+              <h3 class="page_sub-headers">I have healthy finances</h3>
+              <p class="justify_text"> 
+                For almost 8 years I have been responsible for my own finances.
+                I really like to depend only on the money I own and not on another one's. 
+                That's why I manage all my accounts and distribute the money for any needs 
+                I may have during a period of month. Even sometimes theres an instinct that tells me that 
+                I have to save more money because I may want something in the future... the weird part? 
+                Most of the time it works.
+              </p>
+            </div>
           </div>
         </div>
       </div>

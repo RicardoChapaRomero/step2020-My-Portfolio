@@ -125,7 +125,6 @@ function appendComments(comments) {
 
     commentWrapper.appendChild(userCommentDiv); 
   }
-  console.log(comments);
 }
 
 /** Suffles the array on every new cycle */

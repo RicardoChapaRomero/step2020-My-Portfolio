@@ -1,6 +1,9 @@
 :root {
-  --icon-background: rgba(236, 233, 227, 1);
-  --icon-color: black;
+  /* --icon-background: rgba(236, 233, 227, 1);
+  --icon-color: black; */
+
+  --icon-background: rgba(117, 117, 117, 1);
+  --icon-color: white;
 }
 
 .fa {
