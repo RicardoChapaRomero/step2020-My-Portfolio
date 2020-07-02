@@ -102,6 +102,7 @@ function setWebpageDefaults() {
 
 function appendComments(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
+  
   for (let index = 0; index < comments.length; index++) {
     const userComment = comments[index];
 
@@ -111,8 +112,7 @@ function appendComments(comments) {
     const boldUserContainer = document.createElement('b');
 
 
-    const commentUsername = (userComment.user === "") ? 
-            document.createTextNode("Anonymous") : document.createTextNode(userComment.user);
+    const commentUsername = document.createTextNode(userComment.user);
     const commentText = document.createTextNode(userComment.comment);
 
     boldUserContainer.appendChild(commentUsername);
