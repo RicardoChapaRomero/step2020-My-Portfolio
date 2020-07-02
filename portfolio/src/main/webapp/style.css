@@ -171,15 +171,18 @@ body {
   border-radius: 8px;
 }
 
-#comment-display-container div{
+#comment-display-container div {
   border: 1px solid black;
   border-radius: 8px;
-  line-height: 1.6;
   font-size: 110%;
   margin-bottom: 1em; 
   width: 91%;
   margin-left: auto;
   margin-right: auto;
+}
+#comment-display-container div div {
+  border: none;
+  width: 100%;
 }
 
 /* Generic */

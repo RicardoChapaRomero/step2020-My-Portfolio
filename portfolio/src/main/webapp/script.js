@@ -101,15 +101,28 @@ function setWebpageDefaults() {
 }
 
 function appendComments(comments) {
-  /*const commentContainer = document.getElementById('comment-display-container');
+  const commentWrapper = document.getElementById('comment-display-container');
   for (let index = 0; index < comments.length; index++) {
-    const comment = comments[index];
-    const commentDiv = document.createElement('DIV');
-    const commentText = document.createTextNode(comment);
+    const userComment = comments[index];
 
-    commentDiv.appendChild(commentText);
-    commentContainer.appendChild(commentDiv);  
-  }*/
+    const userCommentDiv = document.createElement('DIV');
+    const commentContainer = document.createElement('P');
+    const userContainer = document.createElement('div');
+    const boldUserContainer = document.createElement('B');
+
+    const commentUsername = document.createTextNode(userComment.user);
+    const commentText = document.createTextNode(userComment.comment);
+
+    boldUserContainer.appendChild(commentUsername);
+
+    userContainer.appendChild(boldUserContainer);
+    commentContainer.appendChild(commentText);
+
+    userCommentDiv.appendChild(userContainer);
+    userCommentDiv.appendChild(commentContainer);
+
+    commentWrapper.appendChild(userCommentDiv); 
+  }
   console.log(comments);
 }
 
