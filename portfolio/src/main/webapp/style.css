@@ -31,6 +31,26 @@ body {
   border-right: 1px solid darkgrey;
 }
 
+#comment_submit {
+  background-color: transparent;
+  border: 1px solid darkgrey;
+  border-radius: 5px;  
+  color: black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  transition: background-color 0.5s, color 0.2s;
+  outline: 0;
+}
+
+#comment_submit:hover {
+  background-color: rgba(117, 117, 117, 1);
+  color: white;
+}
+
+#comment_submit:active {
+  transform: scale(.95);
+}
+
 /* Header */
 
 #header_container {
@@ -121,14 +141,16 @@ body {
 .random_picture_button {
   background-color: transparent;
   border: 1px solid darkgrey;
+  border-radius: 5px;  
   color: black;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 15px;
   transition: background-color 0.5s, color 0.2s;
+  outline: 0;
 }
 
 .random_picture_button:hover {
-  background-color: rgba(1, 2, 3, 0.9);
+  background-color: rgba(117, 117, 117, 1);
   color: white;
 }
 
@@ -147,14 +169,13 @@ body {
 
 #hidden_talents_container {
  background-color: var(--general-color);
- border-bottom: 1px solid darkgrey;
 }
 
 #hidden_talents_wrapper {
   margin-left: 1em;
 }
 
-/* Fetch */
+/* Comments */
 
 #comments_container {
   background-color: var(--general-color);
@@ -199,7 +220,7 @@ body {
   width: 100%;
   border-bottom: 1px solid black; 
   border-radius: 8px 8px 0px 0px;
-  background-color: rgba(48, 63, 159, 1);
+  background-color: rgba(255, 193, 7, 1);
   color: white;
 }
 

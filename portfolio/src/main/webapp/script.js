@@ -105,10 +105,10 @@ function appendComments(comments) {
   for (let index = 0; index < comments.length; index++) {
     const userComment = comments[index];
 
-    const userCommentDiv = document.createElement('DIV');
-    const commentContainer = document.createElement('P');
+    const userCommentDiv = document.createElement('div');
+    const commentContainer = document.createElement('p');
     const userContainer = document.createElement('div');
-    const boldUserContainer = document.createElement('B');
+    const boldUserContainer = document.createElement('b');
 
 
     const commentUsername = (userComment.user === "") ? 
