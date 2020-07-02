@@ -54,8 +54,9 @@
             </div>
             <br/><br/>
             <div id="comment-display-container"></div>
-            <form action="/new-comment" method="POST">
-              <input type="submit" alt="Click to submit your comment" id="comment_submit"/>
+            <form action="/load-comments" method="GET">
+              <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="1"/>
+              <input type="button" id="comment_submit" onclick="loadComments()" onsubmit="return false"/>
             </form>
           </div>
         </div>

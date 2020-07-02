@@ -32,51 +32,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/load-comments")
-public class LoadCommentServlet extends HttpServlet {
+@WebServlet("/comments-size")
+public class ServletSize extends HttpServlet {
 
-  private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments;
 
-  public void loadComments() throws IOException {
+  public int loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
-    commentArray = new ArrayList<>();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     // Prepare to instance the past stored comments
-    Iterable<Entity> comments = datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
+    PreparedQuery comments = datastore.prepare(commentsQuery);
 
-    for (Entity commentEntity : comments) {
-      // Get the value of every stored comment
-      String comment = (String) commentEntity.getProperty("comment");
-      String user = (String ) commentEntity.getProperty("user");
-
-      UserComments userCommentEntity = new UserComments(user,comment); 
-      commentArray.add(userCommentEntity); // Add the value to the comments array
-    }
+    return comments.countEntities();
   }
-
-  public String toJson() throws IOException {
-    //System.out.println(commentArray.size());
-    return new Gson().toJson(commentArray);
-  }
-
-  public int getNumberOfComments(HttpServletRequest request) throws IOException {
-    String value = request.getParameter("number-of-comments"); 
-    int selectedNumberOfComments;
-
-    selectedNumberOfComments = (value == null || value.length() == 0) ? 5 : Integer.parseInt(value);
-
-    return selectedNumberOfComments;
-  }
-
+  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    numberOfComments = getNumberOfComments(request);
-    loadComments();
-
-    response.setContentType("application/json;");
-    response.getWriter().println(toJson());
+    response.setContentType("text/html;");
+    response.getWriter().println(loadComments());
   }
 }

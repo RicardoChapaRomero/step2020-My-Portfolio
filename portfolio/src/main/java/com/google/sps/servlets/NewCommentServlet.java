@@ -55,12 +55,12 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String value = request.getParameter("user-comment");
+    String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");
 
-    /** Redirection if value is empty or accidental click */
+    /** Redirection if comment is empty or accidental click */
 
-    if(value == null || value.length() == 0) {
+    if(comment == null || comment.length() == 0) {
       doRedirect(response);
       return;
     }
@@ -69,8 +69,8 @@ public class NewCommentServlet extends HttpServlet {
       username = "Anonymous";
     }
 
-    UserComments newUserComment = new UserComments(value, username);
-    toDatastore(value,username);
+    UserComments newUserComment = new UserComments(comment, username);
+    toDatastore(comment,username);
     doRedirect(response);
   }
 }

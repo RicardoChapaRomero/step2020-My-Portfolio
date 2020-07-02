@@ -94,14 +94,36 @@ function setRandomImage() {
 }
 
 function setWebpageDefaults() {
+  setMaxNumberOfComments();
   setRandomImage();
-  fetch('/comments').then(response => response.json()).then((data) => {
+}
+
+function setMaxNumberOfComments() {
+  fetch('/comments-size').then(response => response.text()).then((commentArraySize)  => {
+    const maxArraySize = parseInt(commentArraySize)
+    const maxNumberofComments = document.getElementById('number-of-comments');
+
+    maxNumberofComments.max = maxArraySize.toString();
+  });
+}
+
+function loadComments() {
+  const numberOfComments = document.getElementById('number-of-comments').value;
+  fetch(`/load-comments?number-of-comments=${numberOfComments}`).then(response => response.json()).then((data) => {
     appendComments(data);
   });
 }
 
+function removePassedComments(commentWrapper) {
+  while(commentWrapper.firstChild) {
+    commentWrapper.removeChild(commentWrapper.firstChild);
+  }
+}
+
 function appendComments(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
+
+  removePassedComments(commentWrapper);
   
   for (let index = 0; index < comments.length; index++) {
     const userComment = comments[index];
