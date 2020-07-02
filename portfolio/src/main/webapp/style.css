@@ -80,6 +80,14 @@ body {
   border-right: 1px solid darkgrey;
 }
 
+#comment-selector-container {
+  width: 90%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 #comment_submit {
   background-color: transparent;
   border: 1px solid darkgrey;

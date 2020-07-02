@@ -54,10 +54,20 @@
             </div>
             <br/><br/>
             <div id="comment-display-container"></div>
-            <form action="/load-comments" method="GET">
-              <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="1"/>
-              <input type="button" id="comment_submit" onclick="loadComments()" onsubmit="return false"/>
-            </form>
+            <div id="comment-selector-container">
+              <form action="/load-comments" method="GET">
+                <label for="number-of-comments"> Number of Comments: </label>
+                <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="1"/>
+                <br/><br/>
+                <input 
+                  type="button" 
+                  id="comment_submit" 
+                  onclick="loadComments()" 
+                  onsubmit="return false"
+                  value="Load comments"
+                />
+              </form>
+            </div>
           </div>
         </div>
         <div id="content">
