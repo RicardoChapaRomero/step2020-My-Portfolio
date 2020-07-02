@@ -33,23 +33,27 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
 
-  private List<String> commentArray = new ArrayList<>();
+  private class UserComments {
+    public String user;
+    public String comment;
+
+    public UserComments(String userInput, String commentInput) {
+      user = userInput;
+      comment = commentInput;
+    }
+  }
+
+  private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments = 1;
 
   private int getNumberOfComments(HttpServletRequest request) throws IOException {
-    /*String numberOfCommentsString = request.getParameter("number-of-comments");
 
-    if(numberOfCommentsString == null || numberOfCommentsString.length() == 0) {
-       return numberOfComments;
-    } else {
-      numberOfComments = Integer.parseInt(numberOfCommentsString);
-    }
-    return numberOfComments;*/
+    /** TODO: Trim the array in parts*/
     return commentArray.size();
   }
 
-  private List<String> shuffleCommentArray() throws IOException{
-    List<String> shuffledArray = commentArray;
+  private List<UserComments> shuffleCommentArray() throws IOException{
+    List<UserComments> shuffledArray = commentArray;
 
     for(int index = shuffledArray.size() - 1; index > 0; index--) {
       int randomIndex = (int)(Math.random() * shuffledArray.size());
@@ -60,20 +64,24 @@ public class DataServlet extends HttpServlet {
     return shuffledArray;
   }
 
-  public List<String> getTrimmedCommentArray(HttpServletRequest request) throws IOException {
+  public List<UserComments> getTrimmedCommentArray(HttpServletRequest request) throws IOException {
 
     int numberOfComments = getNumberOfComments(request);
-    List<String> shuffledCommentArray = shuffleCommentArray();
-    List<String> trimmedCommentArray = new ArrayList<>();
+    List<UserComments> shuffledCommentArray = shuffleCommentArray();
+    List<UserComments> trimmedCommentArray = new ArrayList<>();
 
     if(numberOfComments >= shuffledCommentArray.size()) {
       return shuffledCommentArray;
     }
 
     for (int index = 0; index < numberOfComments; index++) {
-      trimmedCommentArray.add(shuffledCommentArray.get(index));
+      UserComments randomUserComment = shuffledCommentArray.get(index);
+      String userComment = randomUserComment.comment;
+      String userName = randomUserComment.user;
+
+      randomUserComment = new UserComments(userName,userComment);
+      trimmedCommentArray.add(randomUserComment);
     }
-    System.out.println(trimmedCommentArray);
     return trimmedCommentArray;
   }
 
@@ -83,12 +91,13 @@ public class DataServlet extends HttpServlet {
   }
 
   /** Write a new message to DataStore */
-  private void toDatastore(String comment) throws IOException {
+  private void toDatastore(String comment, String username) throws IOException {
     // Create a new entity to save in datastore 
     Entity newComment = new Entity("Comment");
 
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
+    newComment.setProperty("user",username);
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -112,7 +121,10 @@ public class DataServlet extends HttpServlet {
     for (Entity commentEntity : comments.asIterable()) {
       // Get the value of every stored comment
       String comment = (String) commentEntity.getProperty("comment");
-      commentArray.add(comment); // Add the value to the comments array
+      String user = (String ) commentEntity.getProperty("user");
+
+      UserComments userCommentEntity = new UserComments(user,comment); 
+      commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }
 
@@ -124,15 +136,22 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String value = request.getParameter("user-comment");
-   
+    String username = request.getParameter("user-name");
+
     /** Redirection if value is empty or accidental click */
     if(value == null || value.length() == 0) {
       doRedirect(response);
       dataServletResponse(request, response);
       return;
     }
-    commentArray.add(value); // Add every new submition to recorded comments 
-    toDatastore(value);
+
+    if(username == null || username.length() == 0) {
+      username = "";
+    }
+
+    UserComments newUserComment = new UserComments(value, username);
+    commentArray.add(newUserComment); // Add every new submition to recorded comments 
+    toDatastore(value,username);
 
     dataServletResponse(request, response);
     doRedirect(response);

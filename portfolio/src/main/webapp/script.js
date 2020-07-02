@@ -101,7 +101,7 @@ function setWebpageDefaults() {
 }
 
 function appendComments(comments) {
-  const commentContainer = document.getElementById('comment-display-container');
+  /*const commentContainer = document.getElementById('comment-display-container');
   for (let index = 0; index < comments.length; index++) {
     const comment = comments[index];
     const commentDiv = document.createElement('DIV');
@@ -109,7 +109,8 @@ function appendComments(comments) {
 
     commentDiv.appendChild(commentText);
     commentContainer.appendChild(commentDiv);  
-  }
+  }*/
+  console.log(comments);
 }
 
 /** Suffles the array on every new cycle */
