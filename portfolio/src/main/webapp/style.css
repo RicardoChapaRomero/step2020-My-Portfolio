@@ -43,6 +43,8 @@ body {
   border-radius: 8px;
 }
 
+/* Comment Display */
+
 #comment-display-container {
   width: 90%;
   height: 200px;
@@ -53,7 +55,7 @@ body {
   border-radius: 8px;
 }
 
-#comment-display-container div {
+#user-comment-container {
   border: 1px solid darkgrey;
   border-radius: 8px;
   font-size: 110%;
@@ -64,7 +66,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-#comment-display-container div div {
+#user-comment-header {
   border: none;
   width: 100%;
   border-bottom: 1px solid black; 
@@ -72,6 +74,28 @@ body {
   background-color: rgba(255, 193, 7, 1);
   color: white;
 }
+
+#comment-header-wrapper{
+  display: inline-block;
+  width: 100%;
+}
+
+#close-button-wrapper {
+  width:100%;
+  background-color: rgba(244, 67, 54, 1);
+  border-radius: 0px 0px 8px 8px;
+  text-align: center;
+}
+
+.single-fa {
+  display: inline !important;
+}
+
+#close-button-wrapper:active {
+  transform: scale(1.05);
+}
+
+/* Comment Selectors */
 
 #comment-wrapper {
   width: calc(20% - .125em);

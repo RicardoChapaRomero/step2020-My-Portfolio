@@ -54,6 +54,22 @@
             </div>
             <br/><br/>
             <div id="comment-display-container"></div>
+            <!-- Comment Header Template -->
+            <template>
+              <div id="user-comment-container">
+                <div id="user-comment-header">
+                  <div id="comment-header-wrapper">
+                    <b></b>
+                  </div>
+                </div>
+                <p></p>
+                <div id="comment-header-wrapper">
+                  <div id="close-button-wrapper">
+                    <i class= "single-fa fa fa-remove"></i>
+                  </div>
+                </div>
+              </div>
+            </template>
             <div id="comment-selector-container">
               <form action="/load-comments" method="GET">
                 <label for="number-of-comments"> Number of Comments: </label>

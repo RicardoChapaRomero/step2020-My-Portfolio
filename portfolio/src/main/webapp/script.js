@@ -128,24 +128,13 @@ function appendComments(comments) {
   for (let index = 0; index < comments.length; index++) {
     const userComment = comments[index];
 
-    const userCommentDiv = document.createElement('div');
-    const commentContainer = document.createElement('p');
-    const userContainer = document.createElement('div');
-    const boldUserContainer = document.createElement('b');
+    const userCommentTemplate = document.getElementsByTagName("template")[0];
+    const templateClone = userCommentTemplate.content.cloneNode(true);
 
+    templateClone.querySelector('b').textContent = userComment.user;
+    templateClone.querySelector('p').textContent = userComment.comment;
 
-    const commentUsername = document.createTextNode(userComment.user);
-    const commentText = document.createTextNode(userComment.comment);
-
-    boldUserContainer.appendChild(commentUsername);
-
-    userContainer.appendChild(boldUserContainer);
-    commentContainer.appendChild(commentText);
-
-    userCommentDiv.appendChild(userContainer);
-    userCommentDiv.appendChild(commentContainer);
-
-    commentWrapper.appendChild(userCommentDiv); 
+    commentWrapper.appendChild(templateClone); 
   }
 }
 
