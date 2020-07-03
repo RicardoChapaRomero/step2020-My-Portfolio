@@ -17,10 +17,13 @@ package com.google.sps.usercomment;
 public class UserComments {
   public String user;
   public String comment;
+  public long id;
 
-  public UserComments(String userInput, String commentInput) {
+
+  public UserComments(String userInput, String commentInput, long entityID) {
     user = userInput;
     comment = commentInput;
+    id = entityID;
   }
 
   public String getUser() {

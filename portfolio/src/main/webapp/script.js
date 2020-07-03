@@ -110,6 +110,7 @@ function setMaxNumberOfComments() {
 function loadComments() {
   const numberOfComments = document.getElementById('number-of-comments').value;
   fetch(`/load-comments?number-of-comments=${numberOfComments}`).then(response => response.json()).then((data) => {
+    setMaxNumberOfComments();
     appendComments(data);
   });
 }
@@ -134,8 +135,20 @@ function appendComments(comments) {
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
 
+    templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
+      deleteComment(userComment);
+    })
+
     commentWrapper.appendChild(templateClone); 
   }
+}
+
+function deleteComment(userComment) {
+  const dataStoreParams = new URLSearchParams();
+  dataStoreParams.append('id', userComment.id);
+  fetch('/delete-comment', {method: 'POST', body: dataStoreParams}).then(() => {
+    loadComments();
+  });
 }
 
 /** Suffles the array on every new cycle */

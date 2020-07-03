@@ -49,10 +49,11 @@ public class LoadCommentServlet extends HttpServlet {
 
     for (Entity commentEntity : comments) {
       // Get the value of every stored comment
+      long id = commentEntity.getKey().getId();
       String comment = (String) commentEntity.getProperty("comment");
       String user = (String ) commentEntity.getProperty("user");
 
-      UserComments userCommentEntity = new UserComments(user,comment); 
+      UserComments userCommentEntity = new UserComments(user,comment,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }

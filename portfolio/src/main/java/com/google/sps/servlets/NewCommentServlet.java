@@ -69,7 +69,6 @@ public class NewCommentServlet extends HttpServlet {
       username = "Anonymous";
     }
 
-    UserComments newUserComment = new UserComments(comment, username);
     toDatastore(comment,username);
     doRedirect(response);
   }

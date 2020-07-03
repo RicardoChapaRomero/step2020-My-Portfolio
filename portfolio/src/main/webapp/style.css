@@ -40,7 +40,8 @@ body {
 #comment-section {
   width: 98%;
   border: 1px solid darkgrey;
-  border-radius: 8px;
+  border-radius: 8px; 
+  outline: 0;
 }
 
 /* Comment Display */
@@ -250,7 +251,7 @@ body {
 /*Hidden talents*/
 
 #hidden_talents_container {
- background-color: var(--general-color);
+  background-color: var(--general-color);
 }
 
 #hidden_talents_wrapper {
