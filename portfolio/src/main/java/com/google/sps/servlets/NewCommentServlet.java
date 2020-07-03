@@ -23,14 +23,13 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that gets a new comment from the portfolio */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
   

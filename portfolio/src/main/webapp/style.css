@@ -19,9 +19,9 @@ body {
 }
 
 #content {
+  float: left;
   margin-right: auto;
   width: 80%;
-  float: left;
 }
 
 /* Comments */
@@ -31,29 +31,29 @@ body {
 }
 
 #comment_section_wrapper {
-  width: 90%;
   height: 100%;
   margin-left: auto;
   margin-right: auto;
+  width: 90%;
 }
 
 #comment-section {
-  width: 98%;
   border: 1px solid darkgrey;
   border-radius: 8px; 
   outline: 0;
+  width: 98%;
 }
 
 /* Comment Display */
 
 #comment-display-container {
-  width: 90%;
+  border: 1px solid darkgrey;
+  border-radius: 8px;
   height: 200px;
   margin-right: auto;
   margin-left: auto;
   overflow-y: scroll; 
-  border: 1px solid darkgrey;
-  border-radius: 8px;
+  width: 90%;
 }
 
 #user-comment-container {
@@ -61,32 +61,32 @@ body {
   border-radius: 8px;
   font-size: 110%;
   margin-bottom: 1em; 
-  width: 91%;
+  font-family: 'Roboto', sans-serif;
   margin-left: auto;
   margin-right: auto;
-  font-family: 'Roboto', sans-serif;
+  width: 91%;
 }
 
 #user-comment-header {
-  border: none;
-  width: 100%;
   border-bottom: 1px solid black; 
   border-radius: 8px 8px 0px 0px;
   background-color: rgba(255, 193, 7, 1);
+  border: none;
   color: white;
+  width: 100%;
 }
 
 #comment-header-wrapper{
   display: inline-block;
-  width: 100%;
   text-align: center;
+  width: 100%;
 }
 
 #close-button-wrapper {
-  width:100%;
   background-color: rgba(244, 67, 54, 1);
   border-radius: 0px 0px 8px 8px;
   text-align: center;
+  width: 100%;
 }
 
 .single-fa {
@@ -100,18 +100,18 @@ body {
 /* Comment Selectors */
 
 #comment-wrapper {
-  width: calc(20% - .125em);
-  float: left;
   background: var(--general-color);
   border-right: 1px solid darkgrey;
+  width: calc(20% - .125em);
+  float: left;
 }
 
 #comment-selector-container {
-  width: 90%;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100%;
   margin-left: auto;
   margin-right: auto;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 90%;
 }
 
 #comment_submit {
@@ -121,8 +121,8 @@ body {
   color: black;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 15px;
-  transition: background-color 0.5s, color 0.2s;
   outline: 0;
+  transition: background-color 0.5s, color 0.2s;
 }
 
 #comment_submit:hover {
@@ -140,16 +140,16 @@ body {
   background-color: rgba(3, 169, 244, 1);
   border: 1px solid darkgrey;
   border-radius: 8px;
+  margin-bottom: 1em;
   overflow: hidden;
   width: 100%;
-  margin-bottom: 1em;
 }
 
 #header_title {
-  width: calc(50% - 1.5em);
-  margin-left: 1em;
-  float: left;
   color: var(--general-color);
+  float: left;
+  margin-left: 1em;
+  width: calc(50% - 1.5em);
 }
 
 #media_wrapper {
@@ -157,38 +157,38 @@ body {
 }
 
 #header_media {
-  width: calc(50% - 1.5em);
   display: inline-block;
   margin-right: 1em;
+  width: calc(50% - 1.5em);
 }
 
 .nav_media li{
-  display: inline-block;
   align-content: flex-end;
+  display: inline-block;
 }
 
 /* Peronsal and Profesional Information */
 
 #information_container {
   background-color: var(--general-color);
-  float: left;
   border-bottom: 1px solid darkgrey;
+  float: left;
 }
 
 #image_and_description {
   float: left;
-  width: calc(50% - 1.5em);
+  border-right: 1px solid darkgrey;
   margin-right: 1em;
   margin-left: 1em;
-  border-right: 1px solid darkgrey;
+  width: calc(50% - 1.5em);
 }
 
 .my_picture {
-  width: 40%;
+  border-radius: 6px;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 6px;
+  width: 40%;
 }
 
 #aboutme_container {
@@ -196,9 +196,9 @@ body {
 }
 
 #projects_container {
-  width: 97%;
   font-size: 105%;
   line-height: 1.6;
+  width: 97%;
 }
 
 /* Gallery */
@@ -214,9 +214,9 @@ body {
 }
 
 #random_picture_container {
+  border-radius: 6px;
   margin-top: 30px;
   width: 80%;
-  border-radius: 6px
 }
 
 .random_picture_button {
@@ -240,11 +240,11 @@ body {
 }
 
 #picture_description_container {
-  width: 80%;
-  text-align: justify;
-  line-height: 1.6;
   font-size: 110%;
   font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  width: 80%;
+  text-align: justify;
 }
 
 /*Hidden talents*/
@@ -261,11 +261,11 @@ body {
 /* Generic */
 
 .justify_text {
-  text-align: justify;
-  width: 97%;
-  line-height: 1.6;
   font-size: 110%;
   font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  text-align: justify;
+  width: 97%;
 }
 
 .page_headers {

@@ -50,7 +50,7 @@ const GALLERY_ITEMS = [
   }
 ];
 
-const TIME_INTERVAL = 5000; // Constant time of 10 seconds
+const TIME_INTERVAL = 5000; // Constant time of 5 seconds
 let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
 let galleryItemsIndex = 0; // Counter to keep track of the display of the images
@@ -134,7 +134,7 @@ function appendComments(comments) {
     const userComment = comments[index];
 
     /** Defined template of the comment card */
-    const userCommentTemplate = document.getElementsByTagName("template")[0];
+    const userCommentTemplate = document.getElementsByTagName('template')[0];
     const templateClone = userCommentTemplate.content.cloneNode(true);
 
     /** Add the information to the card */

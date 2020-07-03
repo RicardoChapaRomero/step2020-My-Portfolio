@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -46,10 +46,10 @@
                   name="user-name" 
                   id="comment-section"
                   placeholder="Add your name (optional)"
-                />
+                >
                 <br/>
                 <br/>
-                <input type="submit" alt="Click to submit your comment" id="comment_submit"/>
+                <input type="submit" alt="Click to submit your comment" id="comment_submit">
               </form>
             </div>
             <br/><br/>
@@ -73,7 +73,7 @@
             <div id="comment-selector-container">
               <form action="/load-comments" method="GET">
                 <label for="number-of-comments"> Number of Comments: </label>
-                <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="0" value="0"/>
+                <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="0" value="0">
                 <br/><br/>
                 <input 
                   type="button" 
@@ -81,7 +81,7 @@
                   onclick="loadComments()" 
                   onsubmit="return false"
                   value="Load comments"
-                />
+                >
               </form>
             </div>
           </div>
@@ -96,8 +96,8 @@
                 class="my_picture" 
                 src="/../images/profile_picture.jpg" 
                 alt="Picture taken in the library at Tecnologico de Monterrey of me, 
-                    smiling and wearing a hoodie with the RoBorregos logo in it (A robotic Lamb).">
-              </img>
+                    smiling and wearing a hoodie with the RoBorregos logo in it (A robotic Lamb)."
+              >
               <!-- Information (Text) Container -->
               <div id="paragraph_container">
                 <p class="justify_text">
@@ -145,7 +145,7 @@
                 <button class = "random_picture_button" onclick="onClickImageCyclerButton()">Click to start the random image cycler</button>
                 <!-- Random Image Container -->
                 <div id="randomPicture_and_description_container">
-                  <img id="random_picture_container"></img>
+                  <img id="random_picture_container">
                   <div id="picture_description_container"></div>
                 </div>
               </div>

@@ -41,7 +41,7 @@ public class LoadCommentServlet extends HttpServlet {
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
-    commentArray = new ArrayList<>(); // Empty the array on every comments GET.
+    commentArray.clear(); // Empty the array on every comments GET.
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService(); // Get datastore service
     
@@ -60,7 +60,7 @@ public class LoadCommentServlet extends HttpServlet {
   }
 
   /** Translate Array List to JSON */
-  public String toJson() throws IOException {
+  public String commentsToJson() throws IOException {
     return new Gson().toJson(commentArray);
   }
 
@@ -82,6 +82,6 @@ public class LoadCommentServlet extends HttpServlet {
 
     /** Send Get response to the wepage */
     response.setContentType("application/json;");
-    response.getWriter().println(toJson());
+    response.getWriter().println(commentsToJson());
   }
 }
