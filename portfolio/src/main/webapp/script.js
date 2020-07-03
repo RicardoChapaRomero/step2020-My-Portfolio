@@ -50,7 +50,7 @@ const GALLERY_ITEMS = [
   }
 ];
 
-const TIME_INTERVAL = 10000; // Constant time of 10 seconds
+const TIME_INTERVAL = 5000; // Constant time of 10 seconds
 let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
 let galleryItemsIndex = 0; // Counter to keep track of the display of the images

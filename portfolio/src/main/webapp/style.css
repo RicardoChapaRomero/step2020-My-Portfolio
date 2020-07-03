@@ -183,7 +183,6 @@ body {
 }
 
 .my_picture {
-  height: 40%;
   width: 40%;
   display: block;
   margin-left: auto;
@@ -215,7 +214,6 @@ body {
 
 #random_picture_container {
   margin-top: 30px;
-  height: 350px;
   width: 80%;
   border-radius: 6px
 }
@@ -255,6 +253,7 @@ body {
 }
 
 #hidden_talents_wrapper {
+  margin-top: 1em;
   margin-left: 1em;
 }
 
