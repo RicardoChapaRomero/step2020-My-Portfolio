@@ -14,23 +14,18 @@
 
 package com.google.sps.usercomment;
 
+/**
+* Class object to define the structure of a user comment.
+*/
 public class UserComments {
   public String user;
   public String comment;
   public long id;
 
-
+  /** Constructor(String, String, long)*/
   public UserComments(String userInput, String commentInput, long entityID) {
     user = userInput;
     comment = commentInput;
     id = entityID;
-  }
-
-  public String getUser() {
-    return user;
-  }
-
-  public String getComment() {
-    return comment;
   }
 }

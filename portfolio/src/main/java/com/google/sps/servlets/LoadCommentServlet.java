@@ -35,20 +35,21 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
+  /** @private {!Array<{String user, String comment, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
-  private int numberOfComments;
+  private int numberOfComments; // Number of displayed comments selected by the user.
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
-    commentArray = new ArrayList<>();
+    commentArray = new ArrayList<>(); // Empty the array on every comments GET.
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService(); // Get datastore service
     
-    // Prepare to instance the past stored comments
+    // Prepare to instance the stored comments
     Iterable<Entity> comments = datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
 
     for (Entity commentEntity : comments) {
-      // Get the value of every stored comment
+      // Get the values of every stored comment
       long id = commentEntity.getKey().getId();
       String comment = (String) commentEntity.getProperty("comment");
       String user = (String ) commentEntity.getProperty("user");
@@ -58,15 +59,17 @@ public class LoadCommentServlet extends HttpServlet {
     }
   }
 
+  /** Translate Array List to JSON */
   public String toJson() throws IOException {
-    //System.out.println(commentArray.size());
     return new Gson().toJson(commentArray);
   }
 
+  /** Get the number of comments displayed selected by the user */
   public int getNumberOfComments(HttpServletRequest request) throws IOException {
-    String value = request.getParameter("number-of-comments"); 
+    String value = request.getParameter("number-of-comments");  // Get user input
     int selectedNumberOfComments;
 
+    // If the selector is empty then return 5 as default.
     selectedNumberOfComments = (value == null || value.length() == 0) ? 5 : Integer.parseInt(value);
 
     return selectedNumberOfComments;
@@ -77,6 +80,7 @@ public class LoadCommentServlet extends HttpServlet {
     numberOfComments = getNumberOfComments(request);
     loadComments();
 
+    /** Send Get response to the wepage */
     response.setContentType("application/json;");
     response.getWriter().println(toJson());
   }

@@ -55,21 +55,22 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the user inputs 
     String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");
 
-    /** Redirection if comment is empty or accidental click */
-
+    // Redirection if comment is empty or accidental click
     if(comment == null || comment.length() == 0) {
       doRedirect(response);
       return;
     }
 
+    // Anonymous for every comment that doesn't come with a name
     if(username == null || username.length() == 0) {
       username = "Anonymous";
     }
 
-    toDatastore(comment,username);
+    toDatastore(comment,username); // Add to datastore
     doRedirect(response);
   }
 }
