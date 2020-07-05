@@ -1,10 +1,13 @@
 :root {
-  --icon-background: rgba(236, 233, 227, 1);
-  --icon-color: black;
+  /* --icon-background: rgba(236, 233, 227, 1);
+  --icon-color: black; */
+
+  --icon-background: rgba(117, 117, 117, 1);
+  --icon-color: white;
 }
 
 .fa {
-  margin-top: 1.5%;
+  margin-top: 2.1%;
   width: 20px;
   text-align: center;
   text-decoration: none;

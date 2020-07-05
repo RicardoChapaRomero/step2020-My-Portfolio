@@ -50,7 +50,7 @@ const GALLERY_ITEMS = [
   }
 ];
 
-const TIME_INTERVAL = 10000; // Constant time of 10 seconds
+const TIME_INTERVAL = 5000; // Constant time of 5 seconds
 let isCycling = false; // Bool to track if a cycle is active
 let intervalState = null; // Variable to store the setInterval() status
 let galleryItemsIndex = 0; // Counter to keep track of the display of the images
@@ -92,13 +92,71 @@ function setRandomImage() {
 
   galleryItemsIndex ++;
 }
-
+/** Set webpage first actions before user interactions */
 function setWebpageDefaults() {
-  setRandomImage();
-  fetch('/comments').then(response => response.json()).then((data) => {
+  setMaxNumberOfComments(); // Takes the max number of comments thte user can display
+  setRandomImage(); // Displays a random image on the gallery cycler
+}
 
-    /** TODO: Work or display the comments */
-    console.log(data);
+/** Takes the max number of comments available to the user from datastore */
+function setMaxNumberOfComments() {
+  fetch('/comments-size').then(response => response.text()).then((commentArraySize)  => {
+    const maxArraySize = parseInt(commentArraySize);
+    const maxNumberofComments = document.getElementById('number-of-comments');
+
+    maxNumberofComments.max = maxArraySize.toString(); // Set the max number as attribute of the input
+  });
+}
+
+/** Takes the number of comments the user wants to see and displays them */
+function loadComments() {
+  const numberOfComments = document.getElementById('number-of-comments').value;
+  fetch(`/load-comments?number-of-comments=${numberOfComments}`).then(response => response.json()).then((comments) => {
+    setMaxNumberOfComments(); // Update the maximum number of comments available.
+    appendComments(comments);
+  });
+}
+
+/** Eliminate displayed comments to load a new set of them */
+function removePassedComments(commentWrapper) {
+  while(commentWrapper.firstChild) { // While there are comments left, remove them
+    commentWrapper.removeChild(commentWrapper.firstChild);
+  }
+}
+
+/** Display the number selected of comments */
+function appendComments(comments) {
+  const commentWrapper = document.getElementById('comment-display-container');
+
+  removePassedComments(commentWrapper); // Remove passed comments before loading new ones
+  
+  for (let index = 0; index < comments.length; index++) {
+    const userComment = comments[index];
+
+    /** Defined template of the comment card */
+    const userCommentTemplate = document.getElementsByTagName('template')[0];
+    const templateClone = userCommentTemplate.content.cloneNode(true);
+
+    /** Add the information to the card */
+    templateClone.querySelector('b').textContent = userComment.user;
+    templateClone.querySelector('p').textContent = userComment.comment;
+
+    /** If the remove buttons is clicked, remove the comment */
+    templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
+      deleteComment(userComment);
+    })
+
+    /** Add the comment to the comments container */
+    commentWrapper.appendChild(templateClone); 
+  }
+}
+
+/** Delete comment con event listener */
+function deleteComment(userComment) {
+  const dataStoreParams = new URLSearchParams();
+  dataStoreParams.append('id', userComment.id); // Append the comment datastore id as target.
+  fetch('/delete-comment', {method: 'POST', body: dataStoreParams}).then(() => {
+    loadComments();
   });
 }
 
