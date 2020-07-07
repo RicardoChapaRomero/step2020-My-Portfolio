@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +40,12 @@ public class NewCommentServlet extends HttpServlet {
     // Create a new entity to save in datastore 
     Entity newComment = new Entity("Comment");
 
+    UserService userService = UserServiceFactory.getUserService();
+
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
-    newComment.setProperty("user",username);
+    newComment.setProperty("user", username);
+    newComment.setProperty("email", userService.getCurrentUser().getEmail());
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

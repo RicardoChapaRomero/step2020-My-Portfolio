@@ -20,12 +20,14 @@ package com.google.sps.usercomment;
 public class UserComments {
   private String user;
   private String comment;
+  private String email;
   private long id;
 
   /** Constructor(String, String, long)*/
-  public UserComments(String userInput, String commentInput, long entityID) {
+  public UserComments(String userInput, String commentInput, String userEmail, long entityID) {
     user = userInput;
     comment = commentInput;
+    email = userEmail;
     id = entityID;
   }
 
@@ -35,6 +37,10 @@ public class UserComments {
 
   public String getComment() {
     return this.comment;
+  }
+
+  public String getEmail() {
+    return this.email;
   }
 
   public long getID() {
@@ -47,6 +53,10 @@ public class UserComments {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public void setID(long id) {

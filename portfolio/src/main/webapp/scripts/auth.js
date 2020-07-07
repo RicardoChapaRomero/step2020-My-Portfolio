@@ -41,9 +41,11 @@ function verifyAuth() {
   });
 }
 
+// Checks if the user is allowed to use Auth-required actions
 function handleUserAuth() {
   if(!verificationStatus) {
-    const userAuthRequest = confirm('You have to logged in to leave comments!');
+    // If the user isn't verified then alert with a log in button.
+    const userAuthRequest = confirm('You have to be logged in to use this section');
     
     if(userAuthRequest) {
       handleAuthRequest();
@@ -53,5 +55,5 @@ function handleUserAuth() {
 
 /** Refresh the page making the Auth API request */
 function handleAuthRequest() {
-  window.location.href =  window.location.href + auth_url;
+  window.location.href = auth_url;
 }
