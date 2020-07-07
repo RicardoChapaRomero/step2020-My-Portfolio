@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <script src="./scripts/script.js"></script>
     <script src="./scripts/servlet.js"></script>
+    <script src="./scripts/auth.js"></script>
   </head>
-  <body onload="setRandomImage(); setMaxNumberOfComments();">
+  <body onload="verifyAuth(); setRandomImage(); setMaxNumberOfComments();">
     <div id="page_container">
       <div id="header_container">
         <div>
@@ -24,6 +25,11 @@
                 <a href="https://github.com/RicardoChapaRomero" class="fa fa-github" target="_blank"></a>
                 <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter" target="_blank"></a>
                 <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook" target="_blank"></a>
+              </div>
+            </div>
+            <div id="auth_wrapper">
+              <div id="auth_container">
+                <button id="auth_button" onclick="handleAuthRequest()"></button>
               </div>
             </div>
           </div>
