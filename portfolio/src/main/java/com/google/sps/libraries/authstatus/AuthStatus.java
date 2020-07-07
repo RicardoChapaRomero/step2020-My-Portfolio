@@ -22,13 +22,13 @@ public class AuthStatus {
   private boolean isVerified;
   
 
-  /** Constructor()*/
+  /** Constructor() */
   public AuthStatus() {
     this.url = "";
     this.isVerified = false;
   }
   
-  /** Constructor(String, String, long)*/
+  /** Constructor(String, Boolean) */
   public AuthStatus(String url, boolean isVerified) {
     this.url = url;
     this.isVerified = isVerified;
@@ -47,6 +47,6 @@ public class AuthStatus {
   }
 
   public void setVerificationStatus(boolean isVerified) {
-    this. isVerified = isVerified;
+    this.isVerified = isVerified;
   }
 }

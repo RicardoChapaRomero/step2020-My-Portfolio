@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/auth")
 public class AuthServlet extends HttpServlet {
 
+  public static final String REDIRECT_URL = "/";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
@@ -33,7 +35,7 @@ public class AuthServlet extends HttpServlet {
 
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/";
+      String urlToRedirectToAfterUserLogsOut = REDIRECT_URL;
       //Redirect to the portfolio after log out
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
@@ -42,7 +44,7 @@ public class AuthServlet extends HttpServlet {
 
       response.getWriter().println(new Gson().toJson(authStatus));
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
+      String urlToRedirectToAfterUserLogsIn = REDIRECT_URL;
       //Redirect to the portfolio after log in
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
