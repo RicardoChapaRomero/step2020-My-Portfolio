@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Servlet to handle the user's log status */
 @WebServlet("/auth")
 public class AuthServlet extends HttpServlet {
 
@@ -33,23 +34,20 @@ public class AuthServlet extends HttpServlet {
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/";
+      //Redirect to the portfolio after log out
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      // response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      // response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-
       authStatus.setUrl(logoutUrl);
-      authStatus.setVerificationStatus(true);
+      authStatus.setVerificationStatus(/* Logged In = **/ true);
 
       response.getWriter().println(new Gson().toJson(authStatus));
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
+      //Redirect to the portfolio after log in
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      // response.getWriter().println("<p>Hello stranger.</p>");
-      // response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
       authStatus.setUrl(loginUrl);
-      authStatus.setVerificationStatus(false);
+      authStatus.setVerificationStatus(/* Logged In = **/ false);
 
       response.getWriter().println(new Gson().toJson(authStatus));
     }
