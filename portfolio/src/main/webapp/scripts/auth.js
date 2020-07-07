@@ -23,7 +23,7 @@ let verificationStatus = false; /** @type { bool } */
 let auth_url = ""; /** @type { string } */
 
 /** Change the text and display of the comment section  */
-function setAuthButtonText() {
+function setButtonAndCommentDisplay() {
   const authButton = document.getElementById('auth_button');
   const authLink = document.getElementById('auth_link');
   const commentSection = document.getElementById('comments_container').style;
@@ -51,6 +51,6 @@ function verifyAuth() {
     verificationStatus = authStatus.isVerified;
     auth_url = authStatus.url
 
-    setAuthButtonText(); // Set the status of the button on every refresh
+    setButtonAndCommentDisplay(); // Set the status of the button on every refresh
   });
 }

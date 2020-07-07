@@ -63,7 +63,6 @@ function appendComments(comments) {
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
-      //deleteComment(userComment);
       handleDeleteCommentRequest(userComment);
     });
 
@@ -72,19 +71,18 @@ function appendComments(comments) {
   }
 }
 
+/** Checks if the user is available to delete the comment  */
 function handleDeleteCommentRequest(userComment) {
-
-  /** TODO 
-      * Importar las funciones necesarias de auth a servlet (copiar y pegar)
-      * Generar variables globales en auth (window.miVariable = {} )
-        - Buscar Javascript correct way to define global variables para referencia
-      * Cambiar el user comment ID por el auth user ID 
- */
-
-  console.log(userComment);
   fetch(`/verify-user-comment-id?comment-email=${userComment.email}`)
     .then(response => response.text()).then((commentIsFromUser) => {
-      console.log(commentIsFromUser);
+
+      commentIsFromUser = commentIsFromUser.toString();
+
+      if(commentIsFromUser.includes('true')) {
+        deleteComment(userComment);
+      } else {
+        alert('You can\'t delete other\'s comments');
+      }
     });
 }
 

@@ -41,6 +41,6 @@ public class VerifyUserCommentID extends HttpServlet {
     String commentEmail = request.getParameter("comment-email"); // Get the comment Id
 
     response.setContentType("text/html");
-    response.getWriter().println(verifyCommentID(commentEmail));
+    response.getWriter().println(Boolean.toString(verifyCommentID(commentEmail)));
   }
 }
