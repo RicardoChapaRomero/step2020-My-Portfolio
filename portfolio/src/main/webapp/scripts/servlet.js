@@ -81,29 +81,11 @@ function handleDeleteCommentRequest(userComment) {
       * Cambiar el user comment ID por el auth user ID 
  */
 
-  handleUserAuth();
   console.log(userComment);
   fetch(`/verify-user-comment-id?comment-email=${userComment.email}`)
     .then(response => response.text()).then((commentIsFromUser) => {
       console.log(commentIsFromUser);
     });
-}
-
-// Checks if the user is allowed to use Auth-required actions
-function handleUserAuth() {
-  if(!verificationStatus) {
-    // If the user isn't verified then alert with a log in button.
-    const userAuthRequest = confirm('You have to be logged in to use this section');
-    
-    if(userAuthRequest) {
-      handleAuthRequest();
-    }
-  }
-}
-
-/** Refresh the page making the Auth API request */
-function handleAuthRequest() {
-  window.location.href =  window.location.href + auth_url;
 }
 
 /** Delete comment con event listener */

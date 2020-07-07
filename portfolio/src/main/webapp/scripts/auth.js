@@ -22,12 +22,26 @@ let verificationStatus = false; /** @type { bool } */
 // URL to redirect on any log in/out request
 let auth_url = ""; /** @type { string } */
 
-/** Change the text of the button  */
+/** Change the text and display of the comment section  */
 function setAuthButtonText() {
   const authButton = document.getElementById('auth_button');
+  const authLink = document.getElementById('auth_link');
+  const commentSection = document.getElementById('comments_container').style;
+  const loginRequirementMessage = document.getElementById('login_requirement_message').style;
 
-  authButton.innerText = (verificationStatus) ? 
-    authButton.innerText = 'Log Out' : authButton.innerText = 'Log In';
+  if(verificationStatus) {
+    authButton.innerHTML = 'Log Out';
+    commentSection.display = '';
+    loginRequirementMessage.display = 'none';
+  } else {
+    authButton.innerHTML = 'Log In';
+    authLink.innerHTML = 'Log In';
+    commentSection.display = 'none';
+    loginRequirementMessage.display = '';
+  }
+
+  authLink.href = auth_url;
+  auth_button.href = auth_url;
 }
 
 /** Get the Auth status on every refresh */
@@ -39,21 +53,4 @@ function verifyAuth() {
 
     setAuthButtonText(); // Set the status of the button on every refresh
   });
-}
-
-// Checks if the user is allowed to use Auth-required actions
-function handleUserAuth() {
-  if(!verificationStatus) {
-    // If the user isn't verified then alert with a log in button.
-    const userAuthRequest = confirm('You have to be logged in to use this section');
-    
-    if(userAuthRequest) {
-      handleAuthRequest();
-    }
-  }
-}
-
-/** Refresh the page making the Auth API request */
-function handleAuthRequest() {
-  window.location.href = auth_url;
 }

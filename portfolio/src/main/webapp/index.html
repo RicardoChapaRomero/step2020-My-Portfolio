@@ -29,7 +29,11 @@
             </div>
             <div id="auth_wrapper">
               <div id="auth_container">
-                <button id="auth_button" onclick="handleAuthRequest()"></button>
+                <!-- <button id="auth_button" onclick="handleAuthRequest()"></button> -->
+                <!-- <form id="auth_form"> -->
+                  <!-- <input type="submit" id="auth_button"> -->
+                  <a id="auth_button"></a>
+                <!-- </form> -->
               </div>
             </div>
           </div>
@@ -46,7 +50,6 @@
                   type="text" 
                   name="user-comment" 
                   id="comment-section"
-                  onclick = "handleUserAuth()"
                   placeholder="Add your comment here!"
                 ></textarea>
                 <input 
@@ -92,6 +95,9 @@
                 >
               </form>
             </div>
+          </div>
+          <div id="login_requirement_message">
+            <p><a id="auth_link"></a> to see the comment section</p>
           </div>
         </div>
         <div id="content">
