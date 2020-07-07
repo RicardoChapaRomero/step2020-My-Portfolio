@@ -41,6 +41,16 @@ function verifyAuth() {
   });
 }
 
+function handleUserAuth() {
+  if(!verificationStatus) {
+    const userAuthRequest = confirm('You have to logged in to leave comments!');
+    
+    if(userAuthRequest) {
+      handleAuthRequest();
+    }
+  }
+}
+
 /** Refresh the page making the Auth API request */
 function handleAuthRequest() {
   window.location.href =  window.location.href + auth_url;

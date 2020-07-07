@@ -49,7 +49,7 @@ public class NewCommentServlet extends HttpServlet {
 
   /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/");
   }
 
   @Override
