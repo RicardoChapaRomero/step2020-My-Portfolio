@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/verify-user-comment-id")
 public class VerifyUserCommentID extends HttpServlet {
 
-  public boolean verifyCommentID(String commentEmail) throws IOException {
+  public boolean verifyCommentEmail(String commentEmail) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
     String userEmail = userService.getCurrentUser().getEmail();
@@ -41,6 +41,6 @@ public class VerifyUserCommentID extends HttpServlet {
     String commentEmail = request.getParameter("comment-email"); // Get the comment Id
 
     response.setContentType("text/html");
-    response.getWriter().println(Boolean.toString(verifyCommentID(commentEmail)));
+    response.getWriter().println(Boolean.toString(verifyCommentEmail(commentEmail)));
   }
 }
