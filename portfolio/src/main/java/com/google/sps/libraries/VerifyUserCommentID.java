@@ -28,12 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/verify-user-comment-id")
 public class VerifyUserCommentID extends HttpServlet {
 
-  public boolean verifyCommentEmail(String commentEmail) throws IOException {
+  public boolean verifyCommentId(String userCommentID) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
     if(userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
-      return (commentEmail.equals(userEmail));
+      String userID = userService.getCurrentUser().getUserId();
+      return (userCommentID.equals(userID));
     }
 
     return false;
@@ -41,9 +41,9 @@ public class VerifyUserCommentID extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String commentEmail = request.getParameter("comment-email"); // Get the comment Id
+    String userCommentID = request.getParameter("comment-userID"); // Get the comment Id
 
     response.setContentType("text/html");
-    response.getWriter().println(Boolean.toString(verifyCommentEmail(commentEmail)));
+    response.getWriter().println(Boolean.toString(verifyCommentId(userCommentID)));
   }
 }

@@ -50,6 +50,7 @@ public class NewCommentServlet extends HttpServlet {
     newComment.setProperty("comment", comment); 
     newComment.setProperty("user", username);
     newComment.setProperty("email", userService.getCurrentUser().getEmail());
+    newComment.setProperty("userId", userService.getCurrentUser().getUserId());
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -63,8 +64,6 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-
     // Get the user inputs 
     String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");

@@ -54,8 +54,9 @@ public class LoadCommentServlet extends HttpServlet {
       String comment = (String) commentEntity.getProperty("comment");
       String user = (String) commentEntity.getProperty("user");
       String email = (String) commentEntity.getProperty("email");
+      String userId = (String) commentEntity.getProperty("userId");
 
-      UserComments userCommentEntity = new UserComments(user,comment,email,id); 
+      UserComments userCommentEntity = new UserComments(user,comment,email,userId,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }
