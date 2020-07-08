@@ -63,27 +63,12 @@ function appendComments(comments) {
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
-      handleDeleteCommentRequest(userComment);
+      deleteComment(userComment);
     });
 
     /** Add the comment to the comments container */
     commentWrapper.appendChild(templateClone); 
   }
-}
-
-/** Checks if the user is available to delete the comment  */
-function handleDeleteCommentRequest(userComment) {
-  fetch(`/verify-user-comment-id?comment-email=${userComment.email}`)
-    .then(response => response.text()).then((commentIsFromUser) => {
-
-      commentIsFromUser = commentIsFromUser.toString();
-
-      if(commentIsFromUser.includes('true')) {
-        deleteComment(userComment);
-      } else {
-        alert('You can\'t delete other\'s comments');
-      }
-    });
 }
 
 /** Delete comment con event listener */

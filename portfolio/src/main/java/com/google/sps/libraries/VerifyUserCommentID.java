@@ -31,9 +31,12 @@ public class VerifyUserCommentID extends HttpServlet {
   public boolean verifyCommentEmail(String commentEmail) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String userEmail = userService.getCurrentUser().getEmail();
+    if(userService.isUserLoggedIn()) {
+      String userEmail = userService.getCurrentUser().getEmail();
+      return (commentEmail.equals(userEmail));
+    }
 
-    return (commentEmail.equals(userEmail));
+    return false;
   }
 
   @Override

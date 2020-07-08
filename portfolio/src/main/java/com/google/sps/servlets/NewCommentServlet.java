@@ -42,6 +42,10 @@ public class NewCommentServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
 
+    if(!userService.isUserLoggedIn()) {
+      return;
+    }
+
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
     newComment.setProperty("user", username);
@@ -59,6 +63,8 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+
     // Get the user inputs 
     String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");

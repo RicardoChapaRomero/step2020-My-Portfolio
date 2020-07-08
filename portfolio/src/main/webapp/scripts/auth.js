@@ -54,3 +54,5 @@ function verifyAuth() {
     setButtonAndCommentDisplay(); // Set the status of the button on every refresh
   });
 }
+
+window.onload = verifyAuth;

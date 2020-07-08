@@ -40,7 +40,7 @@ public class AuthServlet extends HttpServlet {
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
       authStatus.setUrl(logoutUrl);
-      authStatus.setVerificationStatus(/* Logged In = **/ true);
+      authStatus.setVerificationStatus(/* Logged In = */ true);
 
       response.getWriter().println(new Gson().toJson(authStatus));
     } else {
@@ -49,7 +49,7 @@ public class AuthServlet extends HttpServlet {
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
       authStatus.setUrl(loginUrl);
-      authStatus.setVerificationStatus(/* Logged In = **/ false);
+      authStatus.setVerificationStatus(/* Logged In = */ false);
 
       response.getWriter().println(new Gson().toJson(authStatus));
     }
