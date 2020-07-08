@@ -31,24 +31,33 @@ function setMaxNumberOfComments() {
 function loadComments() {
   const numberOfComments = document.getElementById('number-of-comments').value;
   fetch(`/load-comments?number-of-comments=${numberOfComments}`)
-    .then(response => response.json()).then((comments) => {
-    setMaxNumberOfComments(); // Update the maximum number of comments available.
-    appendComments(comments);
+    .then(response => {
+      if(response.redirected) {
+        alert('Login to load the comments');
+        return;
+      } else {
+        response.json().then((comments) => {
+          setMaxNumberOfComments(); // Update the maximum number of comments available.
+          removeCommentsFromDOM(); // Remove passed comments before loading new ones
+          addCommentsToDOM(comments);
+        });
+      }
   });
 }
 
 /** Eliminate displayed comments to load a new set of them */
-function removePassedComments(commentWrapper) {
-  while(commentWrapper.firstChild) { // While there are comments left, remove them
+function removeCommentsFromDOM() {
+  const commentWrapper = document.getElementById('comment-display-container');
+
+  while(commentWrapper.firstChild) { 
+    // While there are comments left, remove them
     commentWrapper.removeChild(commentWrapper.firstChild);
   }
 }
 
 /** Display the number selected of comments */
-function appendComments(comments) {
+function addCommentsToDOM(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
-
-  removePassedComments(commentWrapper); // Remove passed comments before loading new ones
   
   for (let index = 0; index < comments.length; index++) {
     const userComment = comments[index];
@@ -73,7 +82,7 @@ function appendComments(comments) {
 
 /** Checks if the user is available to delete the comment  */
 function handleDeleteCommentRequest(userComment) {
-  fetch(`/verify-user-comment-id?comment-userID=${userComment.userId}`)
+  fetch(`/handle-delete-comment?comment-userID=${userComment.userId}`)
     .then(response => response.text()).then((commentIsFromUser) => {
 
         commentIsFromUser = commentIsFromUser.toString();

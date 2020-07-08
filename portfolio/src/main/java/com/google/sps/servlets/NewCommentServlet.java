@@ -36,15 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 public class NewCommentServlet extends HttpServlet {
   
   /** Write a new message to DataStore */
-  private void toDatastore(String comment, String username) throws IOException {
+  private void toDatastore(String comment, String username, UserService userService) throws IOException {
     // Create a new entity to save in datastore 
     Entity newComment = new Entity("Comment");
-
-    UserService userService = UserServiceFactory.getUserService();
-
-    if(!userService.isUserLoggedIn()) {
-      return;
-    }
 
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
@@ -64,6 +58,14 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    UserService userService = UserServiceFactory.getUserService();
+
+    if(!userService.isUserLoggedIn()) {
+      doRedirect(response);
+      return;
+    }
+    
     // Get the user inputs 
     String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");
@@ -79,7 +81,7 @@ public class NewCommentServlet extends HttpServlet {
       username = "Anonymous";
     }
 
-    toDatastore(comment,username); // Add to datastore
+    toDatastore(comment,username,userService); // Add to datastore
     doRedirect(response);
   }
 }

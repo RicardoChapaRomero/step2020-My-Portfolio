@@ -35,18 +35,16 @@ public class AuthServlet extends HttpServlet {
 
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = REDIRECT_URL;
       //Redirect to the portfolio after log out
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      String logoutUrl = userService.createLogoutURL(REDIRECT_URL);
 
       authStatus.setUrl(logoutUrl);
       authStatus.setVerificationStatus(/* Logged In = */ true);
 
       response.getWriter().println(new Gson().toJson(authStatus));
     } else {
-      String urlToRedirectToAfterUserLogsIn = REDIRECT_URL;
       //Redirect to the portfolio after log in
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      String loginUrl = userService.createLoginURL(REDIRECT_URL);
 
       authStatus.setUrl(loginUrl);
       authStatus.setVerificationStatus(/* Logged In = */ false);

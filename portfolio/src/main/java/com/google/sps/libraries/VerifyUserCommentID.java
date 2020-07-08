@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible to remove every comment requested by the user */
-@WebServlet("/verify-user-comment-id")
+/** Servlet responsible to verify if a user can delete a comment */
+@WebServlet("/handle-delete-comment")
 public class VerifyUserCommentID extends HttpServlet {
 
   public boolean verifyCommentId(String userCommentID) throws IOException {
