@@ -40,10 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
-  /** @private {!Array<{String user, String comment, long id}>} */
+  /** @private {!Array<{String user, String comment, String email, String userID, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments; // Number of displayed comments selected by the user.
   private String languageCode;
+  public static final String REDIRECT_URL = "/"; // Redirect to Portfolio
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
@@ -53,7 +54,8 @@ public class LoadCommentServlet extends HttpServlet {
     Translate translate = TranslateOptions.getDefaultInstance().getService();
     
     // Prepare to instance the stored comments
-    Iterable<Entity> comments = datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
+    Iterable<Entity> comments = 
+      datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
 
     for (Entity commentEntity : comments) {
       // Get the values of every stored comment
@@ -92,11 +94,10 @@ public class LoadCommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     UserService userService = UserServiceFactory.getUserService();
 
     if(!userService.isUserLoggedIn()) {
-      response.sendRedirect("/");
+      response.sendRedirect(REDIRECT_URL);
       return;
     }
     

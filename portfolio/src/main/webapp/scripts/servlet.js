@@ -34,16 +34,15 @@ function loadComments() {
 
   fetch(`/load-comments?number-of-comments=${numberOfComments}&language_code=${languageCode}`)
     .then(response => {
-      if(response.redirected) {
+      if (response.redirected) {
         alert('Login to load the comments');
         return;
-      } else {
-        response.json().then((comments) => {
-          setMaxNumberOfComments(); // Update the maximum number of comments available.
-          removeCommentsFromDOM(); // Remove passed comments before loading new ones
-          addCommentsToDOM(comments);
-        });
       }
+      response.json().then((comments) => {
+        setMaxNumberOfComments(); // Update the maximum number of comments available.
+        removeCommentsFromDOM(); // Remove passed comments before loading new ones
+        addCommentsToDOM(comments);
+      });
   });
 }
 
@@ -57,7 +56,7 @@ function removeCommentsFromDOM() {
   }
 }
 
-/** Display the number selected of comments */
+/** @param {!Array<{user: string, comment: string, email: string, userID: string, id: number}>} */
 function addCommentsToDOM(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
   
@@ -82,7 +81,7 @@ function addCommentsToDOM(comments) {
   }
 }
 
-/** Checks if the user is available to delete the comment  */
+/** @param {{user: string, comment: string, email: string, userID: string, id: number}} */
 function handleDeleteCommentRequest(userComment) {
   fetch(`/handle-delete-comment?comment-userID=${userComment.userId}`)
     .then(response => response.text()).then((commentIsFromUser) => {
@@ -90,7 +89,7 @@ function handleDeleteCommentRequest(userComment) {
         commentIsFromUser = commentIsFromUser.toString();
         const matchingID = commentIsFromUser.includes('true');
 
-        if(matchingID) {
+        if (matchingID) {
           deleteComment(userComment);
         } else {
           alert('You can\'t delete other\'s comments');
@@ -98,7 +97,7 @@ function handleDeleteCommentRequest(userComment) {
     });	 
 }
 
-/** Delete comment con event listener */
+/** @param {{user: string, comment: string, email: string, userID: string, id: number}} */
 function deleteComment(userComment) {
   const dataStoreParams = new URLSearchParams();
   dataStoreParams.append('id', userComment.id); // Append the comment datastore id as target.

@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that gets a new comment from the portfolio */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
+
+  public static final String MAIN_PAGE_URL = "/";
   
   /** Write a new message to DataStore */
   private void toDatastore(String comment, String username, UserService userService) throws IOException {
@@ -53,7 +55,7 @@ public class NewCommentServlet extends HttpServlet {
 
   /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
-    response.sendRedirect("/");
+    response.sendRedirect(MAIN_PAGE_URL);
   }
 
   @Override
