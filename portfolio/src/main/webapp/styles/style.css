@@ -265,11 +265,33 @@ body {
 
 #hidden_talents_container {
   background-color: var(--general-color);
+  border-bottom: 1px solid darkgrey;
 }
 
 #hidden_talents_wrapper {
   margin-top: 1em;
   margin-left: 1em;
+}
+
+/* Maps */
+
+#map_container {
+  background-color: var(--general-color);
+}
+
+#map_wrapper {
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+#map {
+  border: thin solid black;
+  border-radius: 8px;
+  height: 400px;
+  margin-bottom: 1em;
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
 }
 
 /* Generic */
