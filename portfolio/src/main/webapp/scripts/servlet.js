@@ -30,7 +30,9 @@ function setMaxNumberOfComments() {
 /** Takes the number of comments the user wants to see and displays them */
 function loadComments() {
   const numberOfComments = document.getElementById('number-of-comments').value;
-  fetch(`/load-comments?number-of-comments=${numberOfComments}`)
+  const languageCode = document.getElementById('language_selector').value;
+
+  fetch(`/load-comments?number-of-comments=${numberOfComments}&language_code=${languageCode}`)
     .then(response => {
       if(response.redirected) {
         alert('Login to load the comments');

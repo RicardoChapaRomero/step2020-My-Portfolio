@@ -20,6 +20,9 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
@@ -40,12 +43,14 @@ public class LoadCommentServlet extends HttpServlet {
   /** @private {!Array<{String user, String comment, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments; // Number of displayed comments selected by the user.
+  private String languageCode;
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
     commentArray.clear(); // Empty the array on every comments GET.
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService(); // Get datastore service
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
     
     // Prepare to instance the stored comments
     Iterable<Entity> comments = datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
@@ -53,12 +58,18 @@ public class LoadCommentServlet extends HttpServlet {
     for (Entity commentEntity : comments) {
       // Get the values of every stored comment
       long id = commentEntity.getKey().getId();
-      String comment = (String) commentEntity.getProperty("comment");
+      String originalComment = (String) commentEntity.getProperty("comment");
+
+      Translation commentTranslation =
+        translate.translate(originalComment, Translate.TranslateOption.targetLanguage(languageCode));
+
+      String translatedComment = (String) commentTranslation.getTranslatedText();
+
       String user = (String) commentEntity.getProperty("user");
       String email = (String) commentEntity.getProperty("email");
       String userId = (String) commentEntity.getProperty("userId");
 
-      UserComments userCommentEntity = new UserComments(user,comment,email,userId,id); 
+      UserComments userCommentEntity = new UserComments(user,translatedComment,email,userId,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }
@@ -90,8 +101,9 @@ public class LoadCommentServlet extends HttpServlet {
     }
     
     numberOfComments = getNumberOfComments(request);
+    languageCode = request.getParameter("language_code");
     loadComments();
-
+  
     /** Send Get response to the wepage */
     response.setContentType("application/json;");
     response.getWriter().println(commentsToJson());
