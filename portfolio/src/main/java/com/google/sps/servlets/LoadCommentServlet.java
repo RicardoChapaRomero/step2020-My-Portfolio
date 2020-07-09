@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.util.ArrayList;
@@ -35,9 +37,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
-  /** @private {!Array<{String user, String comment, long id}>} */
+  /** @private {!Array<{String user, String comment, String email, String userID, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments; // Number of displayed comments selected by the user.
+  public static final String REDIRECT_URL = "/"; // Redirect to Portfolio
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
@@ -52,9 +55,11 @@ public class LoadCommentServlet extends HttpServlet {
       // Get the values of every stored comment
       long id = commentEntity.getKey().getId();
       String comment = (String) commentEntity.getProperty("comment");
-      String user = (String ) commentEntity.getProperty("user");
+      String user = (String) commentEntity.getProperty("user");
+      String email = (String) commentEntity.getProperty("email");
+      String userId = (String) commentEntity.getProperty("userId");
 
-      UserComments userCommentEntity = new UserComments(user,comment,id); 
+      UserComments userCommentEntity = new UserComments(user,comment,email,userId,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }
@@ -77,6 +82,13 @@ public class LoadCommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+
+    if(!userService.isUserLoggedIn()) {
+      response.sendRedirect(REDIRECT_URL);
+      return;
+    }
+    
     numberOfComments = getNumberOfComments(request);
     loadComments();
 

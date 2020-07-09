@@ -3,11 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <title>Ricardo Chapa's Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="font-awesome-styles.css">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/font-awesome-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <script src="script.js"></script>
+    <script src="./scripts/auth.js"></script>
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/servlet.js"></script>
+    <script src="./scripts/onload.js"></script>
   </head>
   <body>
     <div id="page_container">
@@ -23,6 +26,11 @@
                 <a href="https://github.com/RicardoChapaRomero" class="fa fa-github" target="_blank"></a>
                 <a href="https://twitter.com/RomeroChapa" class="fa fa-twitter" target="_blank"></a>
                 <a href="https://www.facebook.com/ricardoabraham.chapa" class="fa fa-facebook" target="_blank"></a>
+              </div>
+            </div>
+            <div id="auth_wrapper">
+              <div id="auth_container">
+                <a id="auth_button"></a>
               </div>
             </div>
           </div>
@@ -84,6 +92,9 @@
                 >
               </form>
             </div>
+          </div>
+          <div id="login_requirement_message">
+            <p><a id="auth_link"></a> to see the comment section</p>
           </div>
         </div>
         <div id="content">

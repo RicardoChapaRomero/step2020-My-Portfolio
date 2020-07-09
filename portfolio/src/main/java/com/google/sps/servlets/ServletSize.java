@@ -14,7 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.gson.Gson;
 import com.google.sps.usercomment.UserComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -22,9 +21,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.FetchOptions;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +41,7 @@ public class ServletSize extends HttpServlet {
     // Prepare to instance the past stored comments
     PreparedQuery comments = datastore.prepare(commentsQuery);
 
-    return comments.countEntities();
+    return (int)comments.countEntities();
   }
   
   @Override

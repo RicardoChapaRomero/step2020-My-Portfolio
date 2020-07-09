@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +34,19 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that gets a new comment from the portfolio */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
+
+  public static final String MAIN_PAGE_URL = "/";
   
   /** Write a new message to DataStore */
-  private void toDatastore(String comment, String username) throws IOException {
+  private void toDatastore(String comment, String username, UserService userService) throws IOException {
     // Create a new entity to save in datastore 
     Entity newComment = new Entity("Comment");
 
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
-    newComment.setProperty("user",username);
+    newComment.setProperty("user", username);
+    newComment.setProperty("email", userService.getCurrentUser().getEmail());
+    newComment.setProperty("userId", userService.getCurrentUser().getUserId());
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -49,11 +55,19 @@ public class NewCommentServlet extends HttpServlet {
 
   /** Redirection to the main page */
   private void doRedirect(HttpServletResponse response) throws IOException {
-    response.sendRedirect("/index.html");
+    response.sendRedirect(MAIN_PAGE_URL);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    UserService userService = UserServiceFactory.getUserService();
+
+    if(!userService.isUserLoggedIn()) {
+      doRedirect(response);
+      return;
+    }
+    
     // Get the user inputs 
     String comment = request.getParameter("user-comment");
     String username = request.getParameter("user-name");
@@ -69,7 +83,7 @@ public class NewCommentServlet extends HttpServlet {
       username = "Anonymous";
     }
 
-    toDatastore(comment,username); // Add to datastore
+    toDatastore(comment,username,userService); // Add to datastore
     doRedirect(response);
   }
 }
