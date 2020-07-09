@@ -15,7 +15,7 @@
 package com.google.sps.libraries.authstatus;
 
 /**
-* Class object to define the structure of a user comment.
+* Class object define the Authentication status of a user
 */
 public class AuthStatus {
   private String url;
@@ -46,7 +46,7 @@ public class AuthStatus {
     this.url = url;
   }
 
-  public void setVerificationStatus(boolean isVerified) {
+  public void setLoggedInStatus(boolean isVerified) {
     this.isVerified = isVerified;
   }
 }

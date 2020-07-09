@@ -37,9 +37,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
-  /** @private {!Array<{String user, String comment, long id}>} */
+  /** @private {!Array<{String user, String comment, String email, String userID, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
   private int numberOfComments; // Number of displayed comments selected by the user.
+  public static final String REDIRECT_URL = "/"; // Redirect to Portfolio
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
@@ -81,11 +82,10 @@ public class LoadCommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     UserService userService = UserServiceFactory.getUserService();
 
     if(!userService.isUserLoggedIn()) {
-      response.sendRedirect("/");
+      response.sendRedirect(REDIRECT_URL);
       return;
     }
     

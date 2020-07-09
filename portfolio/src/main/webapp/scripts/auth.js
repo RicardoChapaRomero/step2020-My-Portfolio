@@ -16,11 +16,11 @@
  * Handles the Auth API requests
  */
 
-// Variable to keep track of the auth status in the current session
-let verificationStatus = false; /** @type { bool } */
+/** @type { boolean } */
+let verificationStatus = false; // Variable to keep track of the auth status in the current session
 
-// URL to redirect on any log in/out request
-let auth_url = ""; /** @type { string } */
+/** @type { string } */
+let auth_url = ""; // URL to redirect on any log in/out request
 
 /** Change the text and display of the comment section  */
 function setButtonAndCommentDisplay() {
@@ -29,7 +29,7 @@ function setButtonAndCommentDisplay() {
   const commentSection = document.getElementById('comments_container').style;
   const loginRequirementMessage = document.getElementById('login_requirement_message').style;
 
-  if(verificationStatus) {
+  if (verificationStatus) {
     authButton.innerHTML = 'Log Out';
     commentSection.display = '';
     loginRequirementMessage.display = 'none';
@@ -54,5 +54,3 @@ function verifyAuth() {
     setButtonAndCommentDisplay(); // Set the status of the button on every refresh
   });
 }
-
-window.onload = verifyAuth;
