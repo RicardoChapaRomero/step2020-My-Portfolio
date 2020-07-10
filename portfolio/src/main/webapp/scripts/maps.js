@@ -16,8 +16,15 @@
  * Handles the Map API requests
  */
 
+// Loads a map in th portfolio
 function createMap() {
-  const map = new google.maps.Map(
-        document.getElementById('map'),
-        {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+  const mapDiv = document.getElementById('map');
+  const coordinates = new google.maps.LatLng(25.770714, -100.274921);
+
+  const mapSettings = {
+    center: coordinates,
+    zoom: 16
+  };
+
+  const map = new google.maps.Map(mapDiv,mapSettings);
 }

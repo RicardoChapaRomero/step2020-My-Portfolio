@@ -17,6 +17,12 @@
  */
 
 window.addEventListener('load', () => {
+  const commentSection = document.getElementById('comments_container').style;
+  const loginRequirementMessage = document.getElementById('login_requirement_message').style;
+
+  commentSection.display = 'none';
+  loginRequirementMessage.display = 'none';
+
   verifyAuth();
   createMap();
   setRandomImage();
