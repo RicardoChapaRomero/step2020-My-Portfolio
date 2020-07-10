@@ -266,6 +266,7 @@ body {
 #hidden_talents_container {
   background-color: var(--general-color);
   border-bottom: 1px solid darkgrey;
+  float: left;
 }
 
 #hidden_talents_wrapper {

@@ -16,7 +16,9 @@
  * Handles the Map API requests
  */
 
-// Loads a map in th portfolio
+ let map;
+
+// Loads a map in the portfolio
 function createMap() {
   const mapDiv = document.getElementById('map');
   const coordinates = new google.maps.LatLng(25.770714, -100.274921);
@@ -26,5 +28,21 @@ function createMap() {
     zoom: 16
   };
 
-  const map = new google.maps.Map(mapDiv,mapSettings);
+  map = new google.maps.Map(mapDiv,mapSettings);
+  //setMarkers();
+}
+
+function setMarkers() {
+  //let placesJSON = JSON.parse(places);
+  console.log(places);
+  // const infowindow = new google.maps.InfoWindow({
+  //   content: contentString
+  // });
+
+
+  // const titosLocation = new google.maps.LatLng(25.771075, -100.268585);
+  // const marker = new google.maps.Marker({position: titosLocation, map: map});
+  // marker.addListener('click', function() {
+  //   infowindow.open(map, marker);
+  // });
 }
