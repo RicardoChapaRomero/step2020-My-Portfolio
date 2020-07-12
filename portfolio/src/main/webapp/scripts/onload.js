@@ -24,7 +24,6 @@ window.addEventListener('load', () => {
   loginRequirementMessage.display = 'none';
 
   verifyAuth();
-  createMap();
   setRandomImage();
   setMaxNumberOfComments();
 });

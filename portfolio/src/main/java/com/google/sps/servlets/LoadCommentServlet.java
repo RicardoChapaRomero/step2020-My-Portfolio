@@ -20,6 +20,9 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
@@ -56,6 +59,17 @@ public class LoadCommentServlet extends HttpServlet {
     return translatedText;
   }
 
+  public float getCommentSentiment(String comment) throws IOException{
+    Document sentimentDoc =
+      Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(sentimentDoc).getDocumentSentiment();
+    float sentimentScore = sentiment.getScore();
+    languageService.close();
+
+    return sentimentScore;
+  }
+
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
     commentArray.clear(); // Empty the array on every comments GET.
@@ -72,12 +86,14 @@ public class LoadCommentServlet extends HttpServlet {
       String comment = (String) commentEntity.getProperty("comment");
 
       String translatedComment = translateComment(comment);
+      float sentimentScore = getCommentSentiment(comment);
 
       String user = (String) commentEntity.getProperty("user");
       String email = (String) commentEntity.getProperty("email");
       String userId = (String) commentEntity.getProperty("userId");
 
-      UserComments userCommentEntity = new UserComments(user,translatedComment,email,userId,id); 
+      UserComments userCommentEntity = 
+        new UserComments(user,translatedComment,email,userId,sentimentScore,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }

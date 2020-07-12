@@ -39,6 +39,7 @@ function loadComments() {
         return;
       }
       response.json().then((comments) => {
+        console.log(comments);
         setMaxNumberOfComments(); // Update the maximum number of comments available.
         removeCommentsFromDOM(); // Remove passed comments before loading new ones
         addCommentsToDOM(comments);
@@ -56,7 +57,7 @@ function removeCommentsFromDOM() {
   }
 }
 
-/** @param {!Array<{user: string, comment: string, email: string, userID: string, id: number}>} */
+/** @param {!Array<{user: string, comment: string, email: string, userID: string,commentSentiment:number, id: number}>} */
 function addCommentsToDOM(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
   
@@ -66,10 +67,13 @@ function addCommentsToDOM(comments) {
     /** Defined template of the comment card */
     const userCommentTemplate = document.getElementsByTagName('template')[0];
     const templateClone = userCommentTemplate.content.cloneNode(true);
+    const commentHeaderColor = templateClone.getElementById('user-comment-header').style;
 
     /** Add the information to the card */
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
+
+    commentHeaderColor.backgroundColor = setHeaderColor(userComment);
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
@@ -79,6 +83,20 @@ function addCommentsToDOM(comments) {
     /** Add the comment to the comments container */
     commentWrapper.appendChild(templateClone); 
   }
+}
+
+function setHeaderColor(userComment) {
+
+  const commentSentiment = userComment.commentSentimentScore;
+
+  if(commentSentiment >= 0.5) {
+    return 'rgba(139, 195, 74, 1)'; // Green
+  }
+  else if(commentSentiment >= -.5) {
+    return 'rgba(189, 189, 189, 1)'; // Gray
+  }
+
+  return 'rgba(244, 67, 54, 1)' // Red
 }
 
 /** @param {{user: string, comment: string, email: string, userID: string, id: number}} */

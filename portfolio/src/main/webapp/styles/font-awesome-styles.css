@@ -1,9 +1,7 @@
 :root {
-  /* --icon-background: rgba(236, 233, 227, 1);
-  --icon-color: black; */
-
   --icon-background: rgba(117, 117, 117, 1);
   --icon-color: white;
+  --icon-color-transition: background-color 0.5s, color 0.2s;
 }
 
 .fa {
@@ -28,6 +26,12 @@
 .fa-linkedin {
   background: var(--icon-background);
   color: var(--icon-color);
+  transition: var(--icon-color-transition);
+}
+
+.fa-linkedin:hover{
+  background: var(--icon-color);
+  color: var(--icon-background);
 }
 
 .fa-github {
@@ -35,12 +39,28 @@
   color: var(--icon-color);
 }
 
+.fa-github:hover{
+  background: var(--icon-color);
+  color: var(--icon-background);
+}
+
+
 .fa-twitter {
   background: var(--icon-background);
   color: var(--icon-color);
 }
 
+.fa-twitter:hover{
+  background: var(--icon-color);
+  color: var(--icon-background);
+}
+
 .fa-facebook {
   background: var(--icon-background);
   color: var(--icon-color);
+}
+
+.fa-facebook:hover{
+  background: var(--icon-color);
+  color: var(--icon-background);
 }
