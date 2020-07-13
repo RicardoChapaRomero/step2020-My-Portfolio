@@ -43,18 +43,19 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
-  /** @private {!Array<{String user, String comment, String email, String userID, long id}>} */
+  /** @private {!Array<{String user, String comment, String email, String userID,float commentSentiment, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
-  private int numberOfComments; // Number of displayed comments selected by the user.
-  private String languageCode;
+  private int numberOfComments; // Number of displayed comments selected by the user
+  private String languageCode; // Language abreviation following ISO 639 standard
   public static final String REDIRECT_URL = "/"; // Redirect to Portfolio
 
+  // Get the comment translation using Google's Translate API
   public String translateComment(String comment) throws IOException {
-     // Do the translation.
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
-    Translation translation =
-        translate.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
-    String translatedText = translation.getTranslatedText();
+     // Do the comment translation.
+    Translate translateService = TranslateOptions.getDefaultInstance().getService();
+    Translation commentTranslation =
+        translateService.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
+    String translatedText = commentTranslation.getTranslatedText();
 
     return translatedText;
   }
@@ -66,6 +67,7 @@ public class LoadCommentServlet extends HttpServlet {
     LanguageServiceClient languageService = LanguageServiceClient.create();
     Sentiment sentiment = languageService.analyzeSentiment(sentimentDoc).getDocumentSentiment();
     float sentimentScore = sentiment.getScore();
+
     languageService.close();
 
     return sentimentScore;
@@ -115,6 +117,7 @@ public class LoadCommentServlet extends HttpServlet {
     return selectedNumberOfComments;
   }
 
+  // Get the language into which the comments will be translated
   public String getLanguageCode(HttpServletRequest request) throws IOException {
     String languageCode = request.getParameter("language_code");
 

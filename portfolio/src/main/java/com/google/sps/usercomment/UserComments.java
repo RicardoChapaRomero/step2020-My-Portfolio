@@ -25,7 +25,6 @@ public class UserComments {
   private float commentSentimentScore;
   private long id;
 
-  /** Constructor(String, String, long)*/
   public UserComments(
     String user, String comment, String email, 
     String userId, float commentSentimentScore, long id) {
