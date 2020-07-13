@@ -112,7 +112,7 @@ public class LoadCommentServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    if(!userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
       response.sendRedirect(REDIRECT_URL);
       return;
     }

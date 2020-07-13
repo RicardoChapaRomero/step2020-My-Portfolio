@@ -53,7 +53,7 @@ function loadComments() {
 function removeCommentsFromDOM() {
   const commentWrapper = document.getElementById('comment-display-container');
 
-  while(commentWrapper.firstChild) { 
+  while (commentWrapper.firstChild) { 
     // While there are comments left, remove them
     commentWrapper.removeChild(commentWrapper.firstChild);
   }
@@ -94,10 +94,10 @@ function addCommentsToDOM(comments) {
 // Set the header based on the sentiment of the comment
 /** @param {commentSentiment: number} @return {string} */
 function setHeaderColor(commentSentiment) {
-  if(commentSentiment >= 0.5) {
+  if (commentSentiment >= 0.5) {
     return 'rgba(139, 195, 74, 1)'; // Green
   }
-  else if(commentSentiment >= -.5) {
+  else if (commentSentiment >= -.5) {
     return 'rgba(189, 189, 189, 1)'; // Gray
   }
 
@@ -107,10 +107,10 @@ function setHeaderColor(commentSentiment) {
 // Set the header based on the sentiment of the comment
 /** @param {commentSentiment: number} @return {string} */
 function setCommentSentiment(commentSentiment) {
-  if(commentSentiment >= 0.5) {
+  if (commentSentiment >= 0.5) {
     return 'Happy'; 
   }
-  else if(commentSentiment >= -.5) {
+  else if (commentSentiment >= -.5) {
     return 'Neutral';  
   }
 

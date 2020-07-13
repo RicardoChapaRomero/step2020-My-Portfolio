@@ -80,7 +80,7 @@ public class NewCommentServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
 
-    if(!userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
       doRedirect(response);
       return;
     }
@@ -90,13 +90,13 @@ public class NewCommentServlet extends HttpServlet {
     String username = request.getParameter("user-name");
 
     // Redirection if comment is empty or accidental click
-    if(comment == null || comment.length() == 0) {
+    if (comment == null || comment.length() == 0) {
       doRedirect(response);
       return;
     }
 
     // Anonymous for every comment that doesn't come with a name
-    if(username == null || username.length() == 0) {
+    if (username == null || username.length() == 0) {
       username = "Anonymous";
     }
 
