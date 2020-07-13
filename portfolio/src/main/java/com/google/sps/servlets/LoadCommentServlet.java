@@ -59,6 +59,7 @@ public class LoadCommentServlet extends HttpServlet {
     return translatedText;
   }
 
+  // Get the comment sentiment using Google's Sentiment Analysis API
   public float getCommentSentiment(String comment) throws IOException{
     Document sentimentDoc =
       Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();

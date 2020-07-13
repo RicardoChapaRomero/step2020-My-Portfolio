@@ -29,8 +29,11 @@ function setMaxNumberOfComments() {
 
 /** Takes the number of comments the user wants to see and displays them */
 function loadComments() {
+  const commentWrapper = document.getElementById('comment-display-container');
   const numberOfComments = document.getElementById('number-of-comments').value;
   const languageCode = document.getElementById('language_selector').value;
+
+  commentWrapper.innerHTML = 'Loading Comments...'; // Loading Comment
 
   fetch(`/load-comments?number-of-comments=${numberOfComments}&language_code=${languageCode}`)
     .then(response => {
@@ -39,7 +42,6 @@ function loadComments() {
         return;
       }
       response.json().then((comments) => {
-        console.log(comments);
         setMaxNumberOfComments(); // Update the maximum number of comments available.
         removeCommentsFromDOM(); // Remove passed comments before loading new ones
         addCommentsToDOM(comments);
@@ -68,12 +70,16 @@ function addCommentsToDOM(comments) {
     const userCommentTemplate = document.getElementsByTagName('template')[0];
     const templateClone = userCommentTemplate.content.cloneNode(true);
     const commentHeaderColor = templateClone.getElementById('user-comment-header').style;
+    const sentimentContainer = templateClone.getElementById('sentiment');
 
     /** Add the information to the card */
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
 
-    commentHeaderColor.backgroundColor = setHeaderColor(userComment);
+    /** Set header color */
+    commentHeaderColor.backgroundColor = setHeaderColor(userComment.commentSentimentScore);
+    /** Set Sentiment in DOM*/
+    sentimentContainer.textContent = setCommentSentiment(userComment.commentSentimentScore);
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
@@ -85,10 +91,9 @@ function addCommentsToDOM(comments) {
   }
 }
 
-function setHeaderColor(userComment) {
-
-  const commentSentiment = userComment.commentSentimentScore;
-
+// Set the header based on the sentiment of the comment
+/** @param {commentSentiment: number} @return {number} */
+function setHeaderColor(commentSentiment) {
   if(commentSentiment >= 0.5) {
     return 'rgba(139, 195, 74, 1)'; // Green
   }
@@ -97,6 +102,19 @@ function setHeaderColor(userComment) {
   }
 
   return 'rgba(244, 67, 54, 1)' // Red
+}
+
+// Set the header based on the sentiment of the comment
+/** @param {commentSentiment: number} @return {string} */
+function setCommentSentiment(commentSentiment) {
+  if(commentSentiment >= 0.5) {
+    return 'Happy'; 
+  }
+  else if(commentSentiment >= -.5) {
+    return 'Neutral';  
+  }
+
+  return 'Angry' 
 }
 
 /** @param {{user: string, comment: string, email: string, userID: string, id: number}} */

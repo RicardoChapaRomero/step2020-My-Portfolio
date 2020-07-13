@@ -37,6 +37,7 @@
 .fa-github {
   background: var(--icon-background);
   color: var(--icon-color);
+  transition: var(--icon-color-transition);
 }
 
 .fa-github:hover{
@@ -48,6 +49,7 @@
 .fa-twitter {
   background: var(--icon-background);
   color: var(--icon-color);
+  transition: var(--icon-color-transition);
 }
 
 .fa-twitter:hover{
@@ -58,6 +60,7 @@
 .fa-facebook {
   background: var(--icon-background);
   color: var(--icon-color);
+  transition: var(--icon-color-transition);
 }
 
 .fa-facebook:hover{

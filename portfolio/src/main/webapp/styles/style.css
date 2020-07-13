@@ -49,7 +49,7 @@ body {
 #comment-display-container {
   border: 1px solid darkgrey;
   border-radius: 8px;
-  height: 200px;
+  height: 350px;
   margin-right: auto;
   margin-left: auto;
   overflow-y: scroll; 
@@ -72,18 +72,49 @@ body {
   border-radius: 8px 8px 0px 0px;
   border: none;
   color: white;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 #comment-header-wrapper{
-  display: inline-block;
+  flex: 25%;
+  overflow: hidden;
   text-align: center;
-  width: 100%;
+  width: 50%;
+}
+
+#sentiment_header_wrapper {
+  flex: 25%;
+  text-align: center;
+  width: 50%;
+}
+
+@media screen and (max-width: 992px) {
+  #comment-header-wrapper, #sentiment_header_wrapper{
+    flex: 50%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #user-comment-header {
+    flex-direction: column;
+  }
+
+   #comment-header-wrapper, #sentiment_header_wrapper{
+   width: 100%
+  }
 }
 
 #close-button-wrapper {
   background-color: black;
   border-radius: 0px 0px 8px 8px;
+  text-align: center;
+  width: 100%;
+}
+
+#close_button_container {
+  display: inline-block;
   text-align: center;
   width: 100%;
 }
