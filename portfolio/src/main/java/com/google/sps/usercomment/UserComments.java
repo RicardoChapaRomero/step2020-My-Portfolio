@@ -22,12 +22,12 @@ public class UserComments {
   private String comment;
   private String email;
   private String userId;
-  private float commentSentimentScore;
+  private double commentSentimentScore;
   private long id;
 
   public UserComments(
     String user, String comment, String email, 
-    String userId, float commentSentimentScore, long id) {
+    String userId, double commentSentimentScore, long id) {
 
     this.user = user;
     this.comment = comment;
@@ -53,7 +53,7 @@ public class UserComments {
     return this.userId;
   }
 
-  public float getCommentSentiment() {
+  public double getCommentSentiment() {
     return this.commentSentimentScore;
   }
 
@@ -77,7 +77,7 @@ public class UserComments {
     this.userId = userId;
   }
 
-  public void setCommentSentiment(float commentSentimentScore) {
+  public void setCommentSentiment(double commentSentimentScore) {
     this.commentSentimentScore = commentSentimentScore;
   }
 

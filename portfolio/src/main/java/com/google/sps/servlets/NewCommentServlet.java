@@ -23,6 +23,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -36,6 +39,19 @@ import javax.servlet.http.HttpServletResponse;
 public class NewCommentServlet extends HttpServlet {
 
   public static final String MAIN_PAGE_URL = "/";
+
+  // Get the comment sentiment using Google's Sentiment Analysis API
+  public float getCommentSentiment(String comment) throws IOException{
+    Document sentimentDoc =
+      Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(sentimentDoc).getDocumentSentiment();
+    float sentimentScore = sentiment.getScore();
+
+    languageService.close();
+
+    return sentimentScore;
+  }
   
   /** Write a new message to DataStore */
   private void toDatastore(String comment, String username, UserService userService) throws IOException {
@@ -45,6 +61,7 @@ public class NewCommentServlet extends HttpServlet {
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
     newComment.setProperty("user", username);
+    newComment.setProperty("sentiment-score", getCommentSentiment(comment));
     newComment.setProperty("email", userService.getCurrentUser().getEmail());
     newComment.setProperty("userId", userService.getCurrentUser().getUserId());
 
