@@ -92,7 +92,7 @@ function addCommentsToDOM(comments) {
 }
 
 // Set the header based on the sentiment of the comment
-/** @param {commentSentiment: number} @return {number} */
+/** @param {commentSentiment: number} @return {string} */
 function setHeaderColor(commentSentiment) {
   if(commentSentiment >= 0.5) {
     return 'rgba(139, 195, 74, 1)'; // Green
