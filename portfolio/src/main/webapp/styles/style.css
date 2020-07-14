@@ -41,6 +41,7 @@ body {
   border: 1px solid darkgrey;
   border-radius: 8px; 
   outline: 0;
+  resize: none;
   width: 98%;
 }
 
