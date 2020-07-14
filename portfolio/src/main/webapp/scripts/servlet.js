@@ -82,7 +82,7 @@ function addCommentsToDOM(comments) {
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
 
-    setHeaderProperties(commentHeaderColor,sentimentContainer,userComment.commentSentimentScore);
+    setHeaderProperties(commentHeaderColor,sentimentContainer,userComment.sentimentScore);
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
