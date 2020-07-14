@@ -19,14 +19,18 @@ import com.google.sps.usercomment.UserComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.cloud.translate.Detection;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.FetchOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
@@ -48,13 +52,33 @@ public class LoadCommentServlet extends HttpServlet {
 
   // Get the comment translation using Google's Translate API
   public String translateComment(String comment) throws IOException {
-     // Do the comment translation.
     Translate translateService = TranslateOptions.getDefaultInstance().getService();
+     // Do the comment translation.
     Translation commentTranslation =
         translateService.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = commentTranslation.getTranslatedText();
 
     return translatedText;
+  }
+
+  /** Gets the translated comment in the requested language code */
+  public String getComment(String comment, Entity commentEntity, DatastoreService datastore) throws IOException {
+    EmbeddedEntity listOfTranslatedComments = 
+      (EmbeddedEntity) commentEntity.getProperty("comments");
+    String translatedCommentInLanguageCode = 
+      (String) listOfTranslatedComments.getProperty(languageCode);
+
+    // Translate the comment if the translation doesn't exist
+    if (translatedCommentInLanguageCode == null) {
+      String translatedComment = translateComment(comment);
+     
+      listOfTranslatedComments.setProperty(languageCode,translatedComment);
+      commentEntity.setProperty("comments", listOfTranslatedComments);
+      datastore.put(commentEntity);
+
+      return translatedComment;
+    }
+    return translatedCommentInLanguageCode;
   }
 
   public void loadComments() throws IOException {
@@ -72,7 +96,7 @@ public class LoadCommentServlet extends HttpServlet {
       long id = commentEntity.getKey().getId();
       String comment = (String) commentEntity.getProperty("comment");
 
-      String translatedComment = translateComment(comment);
+      String translatedComment = getComment(comment,commentEntity,datastore);
 
       double sentimentScore = (double)commentEntity.getProperty("sentiment-score");
       String user = (String) commentEntity.getProperty("user");

@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.sps.usercomment.UserComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EmbeddedEntity;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.users.UserService;
@@ -26,6 +27,10 @@ import com.google.appengine.api.datastore.Query;
 import com.google.cloud.language.v1.Document;
 import com.google.cloud.language.v1.LanguageServiceClient;
 import com.google.cloud.language.v1.Sentiment;
+import com.google.cloud.translate.Detection;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -53,6 +58,18 @@ public class NewCommentServlet extends HttpServlet {
     return sentimentScore;
   }
   
+  /** Starts a simulated HashMap that will store the comment translations */
+  public EmbeddedEntity addCodeLanguage(String comment) throws IOException {
+    Translate translateService = TranslateOptions.getDefaultInstance().getService();
+    Detection detectedLanguage = translateService.detect(comment);
+    String languageCode = detectedLanguage.getLanguage();
+
+    EmbeddedEntity comments = new EmbeddedEntity();
+    comments.setProperty(languageCode,comment);
+
+    return comments;
+  }
+
   /** Write a new message to DataStore */
   private void toDatastore(String comment, String username, UserService userService) throws IOException {
     // Create a new entity to save in datastore 
@@ -64,6 +81,7 @@ public class NewCommentServlet extends HttpServlet {
     newComment.setProperty("sentiment-score", getCommentSentiment(comment));
     newComment.setProperty("email", userService.getCurrentUser().getEmail());
     newComment.setProperty("userId", userService.getCurrentUser().getUserId());
+    newComment.setProperty("comments", addCodeLanguage(comment));
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
