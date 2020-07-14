@@ -17,11 +17,11 @@
  */
 
 window.addEventListener('load', () => {
-  const commentSection = document.getElementById('comments_container').style;
-  const loginRequirementMessage = document.getElementById('login_requirement_message').style;
+  const commentSection = document.getElementById('comments_container');
+  const loginRequirementMessage = document.getElementById('login_requirement_message');
 
-  commentSection.display = 'none';
-  loginRequirementMessage.display = 'none';
+  commentSection.style.display = 'none';
+  loginRequirementMessage.style.display = 'none';
 
   verifyAuth();
   getSupportedLanguages();

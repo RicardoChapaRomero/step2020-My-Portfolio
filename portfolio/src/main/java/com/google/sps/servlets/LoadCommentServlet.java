@@ -70,13 +70,11 @@ public class LoadCommentServlet extends HttpServlet {
 
     // Translate the comment if the translation doesn't exist
     if (translatedCommentInLanguageCode == null) {
-      String translatedComment = translateComment(comment);
+      translatedCommentInLanguageCode = translateComment(comment);
      
-      listOfTranslatedComments.setProperty(languageCode,translatedComment);
+      listOfTranslatedComments.setProperty(languageCode,translatedCommentInLanguageCode);
       commentEntity.setProperty("comments", listOfTranslatedComments);
       datastore.put(commentEntity);
-
-      return translatedComment;
     }
     return translatedCommentInLanguageCode;
   }

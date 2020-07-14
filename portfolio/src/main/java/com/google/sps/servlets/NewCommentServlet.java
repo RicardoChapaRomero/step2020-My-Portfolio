@@ -59,7 +59,7 @@ public class NewCommentServlet extends HttpServlet {
   }
   
   /** Starts a simulated HashMap that will store the comment translations */
-  public EmbeddedEntity addCodeLanguage(String comment) throws IOException {
+  public EmbeddedEntity addTranslation(String comment) throws IOException {
     Translate translateService = TranslateOptions.getDefaultInstance().getService();
     Detection detectedLanguage = translateService.detect(comment);
     String languageCode = detectedLanguage.getLanguage();
@@ -81,7 +81,7 @@ public class NewCommentServlet extends HttpServlet {
     newComment.setProperty("sentiment-score", getCommentSentiment(comment));
     newComment.setProperty("email", userService.getCurrentUser().getEmail());
     newComment.setProperty("userId", userService.getCurrentUser().getUserId());
-    newComment.setProperty("comments", addCodeLanguage(comment));
+    newComment.setProperty("comments", addTranslation(comment));
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

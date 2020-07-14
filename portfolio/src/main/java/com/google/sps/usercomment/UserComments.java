@@ -22,18 +22,18 @@ public class UserComments {
   private String comment;
   private String email;
   private String userId;
-  private double commentSentimentScore;
+  private double sentimentScore;
   private long id;
 
   public UserComments(
     String user, String comment, String email, 
-    String userId, double commentSentimentScore, long id) {
+    String userId, double sentimentScore, long id) {
 
     this.user = user;
     this.comment = comment;
     this.email = email;
     this.userId = userId;
-    this.commentSentimentScore = commentSentimentScore;
+    this.sentimentScore = sentimentScore;
     this.id = id;
   }
 
@@ -54,7 +54,7 @@ public class UserComments {
   }
 
   public double getCommentSentiment() {
-    return this.commentSentimentScore;
+    return this.sentimentScore;
   }
 
   public long getID() {
@@ -77,8 +77,8 @@ public class UserComments {
     this.userId = userId;
   }
 
-  public void setCommentSentiment(double commentSentimentScore) {
-    this.commentSentimentScore = commentSentimentScore;
+  public void setCommentSentiment(double sentimentScore) {
+    this.sentimentScore = sentimentScore;
   }
 
   public void setID(long id) {
