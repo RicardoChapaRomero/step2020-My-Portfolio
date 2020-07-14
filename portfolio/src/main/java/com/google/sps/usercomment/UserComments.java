@@ -53,7 +53,7 @@ public class UserComments {
     return this.userId;
   }
 
-  public double getCommentSentiment() {
+  public double getSentimentScore() {
     return this.sentimentScore;
   }
 
@@ -77,7 +77,7 @@ public class UserComments {
     this.userId = userId;
   }
 
-  public void setCommentSentiment(double sentimentScore) {
+  public void setSentimentScore(double sentimentScore) {
     this.sentimentScore = sentimentScore;
   }
 
