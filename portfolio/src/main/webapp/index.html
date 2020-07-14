@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <script src="./scripts/auth.js"></script> 
+    <script src="./scripts/translate.js"></script> 
     <script src="./scripts/script.js"></script>
     <script src="./scripts/servlet.js"></script>
     <script src="./scripts/onload.js"></script>
@@ -85,18 +86,19 @@
               <form action="/load-comments" method="GET">
                 <div>
                   <label for="number-of-comments"> # of Comments: </label>
-                  <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="0" value="0">
+                  <input 
+                    type="number" 
+                    name="number-of-comments" 
+                    id="number-of-comments" 
+                    max="7" 
+                    min="0" 
+                    value="0"
+                  >
                 </div>
                 <br/>
                 <div>
                   <label for="language_selector">Language: </label>
-                  <select name="language_selector" id="language_selector">
-                    <option value="en">English</option>
-                    <option value="zh">Chinese</option>
-                    <option value="es">Spanish</option>
-                    <option value="hi">Hindi</option>
-                    <option value="ar">Arabic</option>
-                  </select>
+                  <select name="language_selector" id="language_selector"></select>
                 </div>
                 <br/><br/>
                 <input 

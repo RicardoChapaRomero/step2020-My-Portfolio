@@ -13,18 +13,21 @@
 // limitations under the License.
 
 /**
- * Calls all required on load functions
+ * Handles the Translate API requests
  */
 
-window.addEventListener('load', () => {
-  const commentSection = document.getElementById('comments_container').style;
-  const loginRequirementMessage = document.getElementById('login_requirement_message').style;
+/** Adds every language supported by Google's Translation API */
+function getSupportedLanguages() {
+  fetch('/supported-languages').then(response => response.json()).then((supportedLanguages) => {
+    const languageSelector = document.getElementById('language_selector');
 
-  commentSection.display = 'none';
-  loginRequirementMessage.display = 'none';
+    supportedLanguages.forEach((language) => {
+      const languageOption = document.createElement('option');
 
-  verifyAuth();
-  getSupportedLanguages();
-  setRandomImage();
-  setMaxNumberOfComments();
-});
+      languageOption.text = language.name;
+      languageOption.value = language.code;
+
+      languageSelector.appendChild(languageOption);
+    });
+  });
+}
