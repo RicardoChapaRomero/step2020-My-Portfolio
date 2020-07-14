@@ -16,6 +16,12 @@
  * Calls to Datastore servlet to load and add comments
  */
 
+ const SENTIMENT_PROPERTIES = {
+    happyProperties: {text: 'Happy', color:'rgba(139, 195, 74, 1)'},
+    neutralProperties: {text: 'Neutral', color:'rgba(189, 189, 189, 1)'},
+    angryProperties: {text: 'Angry', color:'rgba(244, 67, 54, 1)'}
+ };
+
 
 /** Takes the max number of comments available to the user from datastore */
 function setMaxNumberOfComments() {
@@ -76,10 +82,7 @@ function addCommentsToDOM(comments) {
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
 
-    /** Set header color */
-    commentHeaderColor.backgroundColor = setHeaderColor(userComment.commentSentimentScore);
-    /** Set Sentiment in DOM*/
-    sentimentContainer.textContent = setCommentSentiment(userComment.commentSentimentScore);
+    setHeaderProperties(commentHeaderColor,sentimentContainer,userComment.commentSentimentScore);
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
@@ -91,33 +94,25 @@ function addCommentsToDOM(comments) {
   }
 }
 
-// Set the header based on the sentiment of the comment
-/** @param {commentSentiment: number} @return {string} */
-function setHeaderColor(commentSentiment) {
-  if (commentSentiment >= 0.5) {
-    return 'rgba(139, 195, 74, 1)'; // Green
+// Set the header color and sentiment description based on the sentiment of the comment
+/** @param {commentHeaderColor:DOMObject, sentimentContainer:DOMObject, commentSentiment: number} */
+function setHeaderProperties(commentHeaderColor,sentimentContainer,commentSentimentScore) {
+  if (commentSentimentScore >= 0.5) {
+    commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.happyProperties.color;
+    sentimentContainer.textContent = SENTIMENT_PROPERTIES.happyProperties.text;
+    return;
   }
-  else if (commentSentiment >= -.5) {
-    return 'rgba(189, 189, 189, 1)'; // Gray
+  else if (commentSentimentScore >= -.5) {
+    commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.neutralProperties.color;
+    sentimentContainer.textContent = SENTIMENT_PROPERTIES.neutralProperties.text;
+    return;
   }
 
-  return 'rgba(244, 67, 54, 1)' // Red
+  commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.angryProperties.color;
+  sentimentContainer.textContent = SENTIMENT_PROPERTIES.angryProperties.text;
 }
 
-// Set the header based on the sentiment of the comment
-/** @param {commentSentiment: number} @return {string} */
-function setCommentSentiment(commentSentiment) {
-  if (commentSentiment >= 0.5) {
-    return 'Happy'; 
-  }
-  else if (commentSentiment >= -.5) {
-    return 'Neutral';  
-  }
-
-  return 'Angry' 
-}
-
-/** @param {{user: string, comment: string, email: string, userID: string, id: number}} */
+/** @param {user: string, comment: string, email: string, userID: string, id: number} */
 function handleDeleteCommentRequest(userComment) {
   fetch(`/handle-delete-comment?comment-userID=${userComment.userId}`)
     .then(response => response.text()).then((commentIsFromUser) => {
