@@ -206,26 +206,26 @@ body {
 }
 
 #auth_container {
-  width: 90%;
-  text-align: center;
-  position: absolute;
-  top: 45%;
   left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 45%;
   transform: translate(-50%,-50%);
+  width: 90%;
 }
 
 #auth_button {
+  border: 1px solid darkgrey;
   background-color: rgba(117, 117, 117, 1);
+  border-radius: 5px;
   color: white;
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
   padding: 20px 25px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-family: 'Roboto', sans-serif;
-  vertical-align: middle;
-  border: 1px solid darkgrey;
-  border-radius: 5px;
   transition: background-color 0.5s, color 0.2s;
+  vertical-align: middle;
 }
 
 #auth_button:hover{
@@ -246,8 +246,8 @@ body {
 }
 
 #image_and_description {
-  float: left;
   border-right: 1px solid darkgrey;
+  float: left;
   margin-right: 1em;
   margin-left: 1em;
   width: calc(50% - 1.5em);
@@ -328,27 +328,6 @@ body {
 #hidden_talents_wrapper {
   margin-top: 1em;
   margin-left: 1em;
-}
-
-/* Maps */
-
-#map_container {
-  background-color: var(--general-color);
-}
-
-#map_wrapper {
-  margin-top: 1em;
-  margin-left: 1em;
-}
-
-#map {
-  border: thin solid black;
-  border-radius: 8px;
-  height: 400px;
-  margin-bottom: 1em;
-  margin-right: auto;
-  margin-left: auto;
-  width: 90%;
 }
 
 /* Generic */
