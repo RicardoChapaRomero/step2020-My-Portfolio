@@ -19,11 +19,18 @@ import com.google.sps.usercomment.UserComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.cloud.translate.Detection;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
@@ -37,10 +44,40 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/load-comments")
 public class LoadCommentServlet extends HttpServlet {
 
-  /** @private {!Array<{String user, String comment, String email, String userID, long id}>} */
+  /** @private {!Array<{String user, String comment, String email, String userID,float commentSentiment, long id}>} */
   private List<UserComments> commentArray = new ArrayList<>();
-  private int numberOfComments; // Number of displayed comments selected by the user.
+  private int numberOfComments; // Number of displayed comments selected by the user
+  private String languageCode; // Language abreviation following ISO 639 standard
   public static final String REDIRECT_URL = "/"; // Redirect to Portfolio
+
+  // Get the comment translation using Google's Translate API
+  public String translateComment(String comment) throws IOException {
+    Translate translateService = TranslateOptions.getDefaultInstance().getService();
+     // Do the comment translation.
+    Translation commentTranslation =
+        translateService.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
+    String translatedText = commentTranslation.getTranslatedText();
+
+    return translatedText;
+  }
+
+  /** Gets the translated comment in the requested language code */
+  public String getComment(String comment, Entity commentEntity, DatastoreService datastore) throws IOException {
+    EmbeddedEntity listOfTranslatedComments = 
+      (EmbeddedEntity) commentEntity.getProperty("comments");
+    String translatedCommentInLanguageCode = 
+      (String) listOfTranslatedComments.getProperty(languageCode);
+
+    // Translate the comment if the translation doesn't exist
+    if (translatedCommentInLanguageCode == null) {
+      translatedCommentInLanguageCode = translateComment(comment);
+     
+      listOfTranslatedComments.setProperty(languageCode,translatedCommentInLanguageCode);
+      commentEntity.setProperty("comments", listOfTranslatedComments);
+      datastore.put(commentEntity);
+    }
+    return translatedCommentInLanguageCode;
+  }
 
   public void loadComments() throws IOException {
     Query commentsQuery = new Query("Comment"); // Get previous stored comments
@@ -49,17 +86,23 @@ public class LoadCommentServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService(); // Get datastore service
     
     // Prepare to instance the stored comments
-    Iterable<Entity> comments = datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
+    Iterable<Entity> comments = 
+      datastore.prepare(commentsQuery).asIterable(FetchOptions.Builder.withLimit(numberOfComments));
 
     for (Entity commentEntity : comments) {
       // Get the values of every stored comment
       long id = commentEntity.getKey().getId();
       String comment = (String) commentEntity.getProperty("comment");
+
+      String translatedComment = getComment(comment,commentEntity,datastore);
+
+      double sentimentScore = (double)commentEntity.getProperty("sentiment-score");
       String user = (String) commentEntity.getProperty("user");
       String email = (String) commentEntity.getProperty("email");
       String userId = (String) commentEntity.getProperty("userId");
 
-      UserComments userCommentEntity = new UserComments(user,comment,email,userId,id); 
+      UserComments userCommentEntity = 
+        new UserComments(user,translatedComment,email,userId,sentimentScore,id); 
       commentArray.add(userCommentEntity); // Add the value to the comments array
     }
   }
@@ -80,20 +123,29 @@ public class LoadCommentServlet extends HttpServlet {
     return selectedNumberOfComments;
   }
 
+  // Get the language into which the comments will be translated
+  public String getLanguageCode(HttpServletRequest request) throws IOException {
+    String languageCode = request.getParameter("language_code");
+
+    return languageCode;
+  }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    if(!userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
       response.sendRedirect(REDIRECT_URL);
       return;
     }
     
     numberOfComments = getNumberOfComments(request);
+    languageCode = getLanguageCode(request);
     loadComments();
-
+  
     /** Send Get response to the wepage */
-    response.setContentType("application/json;");
+    response.setContentType("application/json; charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
     response.getWriter().println(commentsToJson());
   }
 }

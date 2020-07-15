@@ -41,6 +41,7 @@ body {
   border: 1px solid darkgrey;
   border-radius: 8px; 
   outline: 0;
+  resize: none;
   width: 98%;
 }
 
@@ -49,7 +50,7 @@ body {
 #comment-display-container {
   border: 1px solid darkgrey;
   border-radius: 8px;
-  height: 200px;
+  height: 350px;
   margin-right: auto;
   margin-left: auto;
   overflow-y: scroll; 
@@ -70,27 +71,58 @@ body {
 #user-comment-header {
   border-bottom: 1px solid black; 
   border-radius: 8px 8px 0px 0px;
-  background-color: rgba(255, 193, 7, 1);
   border: none;
   color: white;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 #comment-header-wrapper{
-  display: inline-block;
+  flex: 25%;
+  overflow: hidden;
+  text-align: center;
+  width: 50%;
+}
+
+#sentiment_header_wrapper {
+  flex: 25%;
+  text-align: center;
+  width: 50%;
+}
+
+@media screen and (max-width: 992px) {
+  #comment-header-wrapper, #sentiment_header_wrapper{
+    flex: 50%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #user-comment-header {
+    flex-direction: column;
+  }
+
+   #comment-header-wrapper, #sentiment_header_wrapper{
+   width: 100%
+  }
+}
+
+#close-button-wrapper {
+  background-color: black;
+  border-radius: 0px 0px 8px 8px;
   text-align: center;
   width: 100%;
 }
 
-#close-button-wrapper {
-  background-color: rgba(244, 67, 54, 1);
-  border-radius: 0px 0px 8px 8px;
+#close_button_container {
+  display: inline-block;
   text-align: center;
   width: 100%;
 }
 
 .single-fa {
   display: inline !important;
+  color: white;
 }
 
 #close-button-wrapper:active {
@@ -154,7 +186,6 @@ body {
   color: var(--general-color);
   float: left;
   margin-left: 1em;
-  /* width: calc(50% - 1.5em); */
   flex-grow: 2;
 }
 
@@ -165,20 +196,45 @@ body {
 #header_media {
   display: inline-block;
   margin-right: 1em;
-  /* width: calc(50% - 1.5em); */
   flex-grow: 2;
 }
 
 #auth_wrapper {
-  /* width: calc(50% - 1.5em); */
   margin-left: 1em;
   flex-grow: 1;
+  position: relative;
 }
 
 #auth_container {
-  /* width: calc(50% - 1.5em); */
-  width: 90%;
+  left: 50%;
+  position: absolute;
   text-align: center;
+  top: 45%;
+  transform: translate(-50%,-50%);
+  width: 90%;
+}
+
+#auth_button {
+  border: 1px solid darkgrey;
+  background-color: rgba(117, 117, 117, 1);
+  border-radius: 5px;
+  color: white;
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  padding: 20px 25px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.5s, color 0.2s;
+  vertical-align: middle;
+}
+
+#auth_button:hover{
+  background-color: white;
+  color: rgba(117, 117, 117, 1);;
+}
+
+#auth_button:active{
+  transform: scale(1.1);
 }
 
 /* Peronsal and Profesional Information */
@@ -190,8 +246,8 @@ body {
 }
 
 #image_and_description {
-  float: left;
   border-right: 1px solid darkgrey;
+  float: left;
   margin-right: 1em;
   margin-left: 1em;
   width: calc(50% - 1.5em);
@@ -265,6 +321,8 @@ body {
 
 #hidden_talents_container {
   background-color: var(--general-color);
+  border-bottom: 1px solid darkgrey;
+  float: left;
 }
 
 #hidden_talents_wrapper {

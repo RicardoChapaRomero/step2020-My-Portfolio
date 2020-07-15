@@ -22,15 +22,19 @@ public class UserComments {
   private String comment;
   private String email;
   private String userId;
+  private double sentimentScore;
   private long id;
 
-  /** Constructor(String, String, long)*/
-  public UserComments(String userInput, String commentInput, String userEmail, String userID, long entityID) {
-    user = userInput;
-    comment = commentInput;
-    email = userEmail;
-    userId = userID;
-    id = entityID;
+  public UserComments(
+    String user, String comment, String email, 
+    String userId, double sentimentScore, long id) {
+
+    this.user = user;
+    this.comment = comment;
+    this.email = email;
+    this.userId = userId;
+    this.sentimentScore = sentimentScore;
+    this.id = id;
   }
 
   public String getUser() {
@@ -47,6 +51,10 @@ public class UserComments {
 
   public String getUserID() {
     return this.userId;
+  }
+
+  public double getSentimentScore() {
+    return this.sentimentScore;
   }
 
   public long getID() {
@@ -67,6 +75,10 @@ public class UserComments {
 
   public void setUserID(String userId) {
     this.userId = userId;
+  }
+
+  public void setSentimentScore(double sentimentScore) {
+    this.sentimentScore = sentimentScore;
   }
 
   public void setID(long id) {

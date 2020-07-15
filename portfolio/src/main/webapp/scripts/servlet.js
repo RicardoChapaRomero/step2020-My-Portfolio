@@ -16,6 +16,12 @@
  * Calls to Datastore servlet to load and add comments
  */
 
+ const SENTIMENT_PROPERTIES = {
+    happyProperties: {text: 'Happy', color:'rgba(139, 195, 74, 1)'},
+    neutralProperties: {text: 'Neutral', color:'rgba(189, 189, 189, 1)'},
+    angryProperties: {text: 'Angry', color:'rgba(244, 67, 54, 1)'}
+ };
+
 
 /** Takes the max number of comments available to the user from datastore */
 function setMaxNumberOfComments() {
@@ -29,8 +35,13 @@ function setMaxNumberOfComments() {
 
 /** Takes the number of comments the user wants to see and displays them */
 function loadComments() {
+  const commentWrapper = document.getElementById('comment-display-container');
   const numberOfComments = document.getElementById('number-of-comments').value;
-  fetch(`/load-comments?number-of-comments=${numberOfComments}`)
+  const languageCode = document.getElementById('language_selector').value;
+
+  commentWrapper.innerHTML = 'Loading Comments...'; // Loading Comment
+
+  fetch(`/load-comments?number-of-comments=${numberOfComments}&language_code=${languageCode}`)
     .then(response => {
       if (response.redirected) {
         alert('Login to load the comments');
@@ -48,13 +59,13 @@ function loadComments() {
 function removeCommentsFromDOM() {
   const commentWrapper = document.getElementById('comment-display-container');
 
-  while(commentWrapper.firstChild) { 
+  while (commentWrapper.firstChild) { 
     // While there are comments left, remove them
     commentWrapper.removeChild(commentWrapper.firstChild);
   }
 }
 
-/** @param {!Array<{user: string, comment: string, email: string, userID: string, id: number}>} */
+/** @param {!Array<{user: string, comment: string, email: string, userID: string,commentSentiment:number, id: number}>} */
 function addCommentsToDOM(comments) {
   const commentWrapper = document.getElementById('comment-display-container');
   
@@ -64,10 +75,14 @@ function addCommentsToDOM(comments) {
     /** Defined template of the comment card */
     const userCommentTemplate = document.getElementsByTagName('template')[0];
     const templateClone = userCommentTemplate.content.cloneNode(true);
+    const commentHeaderColor = templateClone.getElementById('user-comment-header').style;
+    const sentimentContainer = templateClone.getElementById('sentiment');
 
     /** Add the information to the card */
     templateClone.querySelector('b').textContent = userComment.user;
     templateClone.querySelector('p').textContent = userComment.comment;
+
+    setHeaderProperties(commentHeaderColor,sentimentContainer,userComment.sentimentScore);
 
     /** If the remove buttons is clicked, remove the comment */
     templateClone.getElementById('close-button-wrapper').addEventListener('click', () => {
@@ -79,7 +94,25 @@ function addCommentsToDOM(comments) {
   }
 }
 
-/** @param {{user: string, comment: string, email: string, userID: string, id: number}} */
+// Set the header color and sentiment description based on the sentiment of the comment
+/** @param {commentHeaderColor:DOMObject, sentimentContainer:DOMObject, commentSentiment: number} */
+function setHeaderProperties(commentHeaderColor,sentimentContainer,commentSentimentScore) {
+  if (commentSentimentScore >= 0.5) {
+    commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.happyProperties.color;
+    sentimentContainer.textContent = SENTIMENT_PROPERTIES.happyProperties.text;
+    return;
+  }
+  else if (commentSentimentScore >= -.5) {
+    commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.neutralProperties.color;
+    sentimentContainer.textContent = SENTIMENT_PROPERTIES.neutralProperties.text;
+    return;
+  }
+
+  commentHeaderColor.backgroundColor = SENTIMENT_PROPERTIES.angryProperties.color;
+  sentimentContainer.textContent = SENTIMENT_PROPERTIES.angryProperties.text;
+}
+
+/** @param {user: string, comment: string, email: string, userID: string, id: number} */
 function handleDeleteCommentRequest(userComment) {
   fetch(`/handle-delete-comment?comment-userID=${userComment.userId}`)
     .then(response => response.text()).then((commentIsFromUser) => {

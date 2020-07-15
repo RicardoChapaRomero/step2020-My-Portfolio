@@ -18,11 +18,19 @@ import com.google.gson.Gson;
 import com.google.sps.usercomment.UserComments;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EmbeddedEntity;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
+import com.google.cloud.translate.Detection;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -36,7 +44,32 @@ import javax.servlet.http.HttpServletResponse;
 public class NewCommentServlet extends HttpServlet {
 
   public static final String MAIN_PAGE_URL = "/";
+
+  // Get the comment sentiment using Google's Sentiment Analysis API
+  public float getCommentSentiment(String comment) throws IOException{
+    Document sentimentDoc =
+      Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(sentimentDoc).getDocumentSentiment();
+    float sentimentScore = sentiment.getScore();
+
+    languageService.close();
+
+    return sentimentScore;
+  }
   
+  /** Starts a simulated HashMap that will store the comment translations */
+  public EmbeddedEntity addTranslation(String comment) throws IOException {
+    Translate translateService = TranslateOptions.getDefaultInstance().getService();
+    Detection detectedLanguage = translateService.detect(comment);
+    String languageCode = detectedLanguage.getLanguage();
+
+    EmbeddedEntity comments = new EmbeddedEntity();
+    comments.setProperty(languageCode,comment);
+
+    return comments;
+  }
+
   /** Write a new message to DataStore */
   private void toDatastore(String comment, String username, UserService userService) throws IOException {
     // Create a new entity to save in datastore 
@@ -45,8 +78,10 @@ public class NewCommentServlet extends HttpServlet {
     // Set the entity's values { key: value } 
     newComment.setProperty("comment", comment); 
     newComment.setProperty("user", username);
+    newComment.setProperty("sentiment-score", getCommentSentiment(comment));
     newComment.setProperty("email", userService.getCurrentUser().getEmail());
     newComment.setProperty("userId", userService.getCurrentUser().getUserId());
+    newComment.setProperty("comments", addTranslation(comment));
 
     // Call to get datastore service
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -63,7 +98,7 @@ public class NewCommentServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
 
-    if(!userService.isUserLoggedIn()) {
+    if (!userService.isUserLoggedIn()) {
       doRedirect(response);
       return;
     }
@@ -73,13 +108,13 @@ public class NewCommentServlet extends HttpServlet {
     String username = request.getParameter("user-name");
 
     // Redirection if comment is empty or accidental click
-    if(comment == null || comment.length() == 0) {
+    if (comment == null || comment.length() == 0) {
       doRedirect(response);
       return;
     }
 
     // Anonymous for every comment that doesn't come with a name
-    if(username == null || username.length() == 0) {
+    if (username == null || username.length() == 0) {
       username = "Anonymous";
     }
 

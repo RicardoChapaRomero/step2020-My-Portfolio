@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="./styles/font-awesome-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <script src="./scripts/auth.js"></script>
+    <script src="./scripts/auth.js"></script> 
+    <script src="./scripts/translate.js"></script> 
     <script src="./scripts/script.js"></script>
     <script src="./scripts/servlet.js"></script>
     <script src="./scripts/onload.js"></script>
@@ -69,9 +70,12 @@
                   <div id="comment-header-wrapper">
                     <b class="username"></b>
                   </div>
+                  <div id="sentiment_header_wrapper">
+                    <b id="sentiment"></b>
+                  </div>
                 </div>
                 <p></p>
-                <div id="comment-header-wrapper">
+                <div id="close_button_container">
                   <div id="close-button-wrapper">
                     <i class= "single-fa fa fa-remove"></i>
                   </div>
@@ -80,8 +84,22 @@
             </template>
             <div id="comment-selector-container">
               <form action="/load-comments" method="GET">
-                <label for="number-of-comments"> Number of Comments: </label>
-                <input type="number" name="number-of-comments" id="number-of-comments" max="7" min="0" value="0">
+                <div>
+                  <label for="number-of-comments">Number of Comments: </label>
+                  <input 
+                    type="number" 
+                    name="number-of-comments" 
+                    id="number-of-comments" 
+                    max="7" 
+                    min="0" 
+                    value="0"
+                  >
+                </div>
+                <br/>
+                <div>
+                  <label for="language_selector">Language: </label>
+                  <select name="language_selector" id="language_selector"></select>
+                </div>
                 <br/><br/>
                 <input 
                   type="button" 
