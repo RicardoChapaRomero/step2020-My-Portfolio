@@ -139,6 +139,8 @@ public final class FindMeetingQuery {
 
     Collection<TimeRange> meetingTimesForAll = possibleMeetingTimes;
 
+    System.out.println(optionalAttendeesTimeList);
+
     if(optionalAttendeesTimeList.size() != 0) {
       while(optionalAttendeesTimeList.size() != 0) {
         TimeRange optionalTimeRange = optionalAttendeesTimeList.poll();
@@ -153,6 +155,10 @@ public final class FindMeetingQuery {
         }
       }
     }
+
+    System.out.println(possibleMeetingTimes);
+    System.out.println(meetingTimesForAll);
+
 
     return (meetingTimesForAll.isEmpty()) ? possibleMeetingTimes : meetingTimesForAll;
     
