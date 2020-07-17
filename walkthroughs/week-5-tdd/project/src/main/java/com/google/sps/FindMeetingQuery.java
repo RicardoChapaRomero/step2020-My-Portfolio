@@ -27,6 +27,8 @@ import java.util.Set;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>();
+    Collection<TimeRange> possibleMeetingTimesForOptinalAttendeees = new ArrayList<TimeRange>();
+
     final long meetingDuration = request.getDuration();
 
     if (TimeRange.WHOLE_DAY.duration() < meetingDuration) {
@@ -38,18 +40,27 @@ public final class FindMeetingQuery {
     }
 
     final Collection<String> meetingAttendees = request.getAttendees();
-    final PriorityQueue<TimeRange> eventTimesList= new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
+    final PriorityQueue<TimeRange> eventTimesList = 
+      new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
+    final PriorityQueue<TimeRange> optionalAttendeesTimeList = 
+      new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
     final List<TimeRange> compressedEvents = new ArrayList<>();
 
     for (Event singleEvent : events) {
+      boolean hasRequiredAttendees = false;
       Set<String> eventAttendees = singleEvent.getAttendees();
       Iterator<String> meetingAttendeesList = meetingAttendees.iterator();
 
       while (meetingAttendeesList.hasNext()) {
         if (eventAttendees.contains(meetingAttendeesList.next())) { 
           eventTimesList.add(singleEvent.getWhen());
+          hasRequiredAttendees = true;
           break;
         }
+      }
+
+      if(!hasRequiredAttendees) {
+        optionalAttendeesTimeList.add(singleEvent.getWhen());
       }
     }
 
@@ -61,21 +72,7 @@ public final class FindMeetingQuery {
     }
 
     else if (eventTimesList.size() == 1) {
-      TimeRange eventTime = eventTimesList.poll();
-      
-      if (eventTime.start() > TimeRange.START_OF_DAY && 
-         (eventTime.start() - TimeRange.START_OF_DAY >= meetingDuration)) {
-        TimeRange availableBeforeMeeting = 
-          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, eventTime.start(), false);
-        possibleMeetingTimes.add(availableBeforeMeeting);
-      }
-      if (eventTime.end() < TimeRange.END_OF_DAY && 
-         (TimeRange.END_OF_DAY - eventTime.end() >= meetingDuration)) {
-        TimeRange availableAfterMeeting = 
-          TimeRange.fromStartEnd(eventTime.end(), TimeRange.END_OF_DAY, true);
-        possibleMeetingTimes.add(availableAfterMeeting);
-      }
-      return possibleMeetingTimes;
+      return getTimeRangesFromSingleEvent(eventTimesList, meetingDuration);
     }
 
     TimeRange nextEvent = eventTimesList.poll();
@@ -139,9 +136,48 @@ public final class FindMeetingQuery {
        }
       }
     }
-    
-    return possibleMeetingTimes;
+
+    Collection<TimeRange> meetingTimesForAll = possibleMeetingTimes;
+
+    if(optionalAttendeesTimeList.size() != 0) {
+      while(optionalAttendeesTimeList.size() != 0) {
+        TimeRange optionalTimeRange = optionalAttendeesTimeList.poll();
+
+        if(possibleMeetingTimes.contains(optionalTimeRange)) {
+          for(Iterator<TimeRange> event = meetingTimesForAll.iterator(); event.hasNext();) {
+            if (event.next().equals(optionalTimeRange)) {
+              event.remove();
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return (meetingTimesForAll.isEmpty()) ? possibleMeetingTimes : meetingTimesForAll;
     
     //throw new UnsupportedOperationException("TODO: Implement this method.");
+  }
+
+  private Collection<TimeRange> getTimeRangesFromSingleEvent(
+    PriorityQueue<TimeRange> eventTimesList,
+    long meetingDuration
+    ) {
+
+      Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>();
+      TimeRange eventTime = eventTimesList.poll();
+      
+      if(eventTime.start() - TimeRange.START_OF_DAY >= meetingDuration) {
+        TimeRange availableBeforeMeeting = 
+          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, eventTime.start(), false);
+        possibleMeetingTimes.add(availableBeforeMeeting);
+      }
+      if(TimeRange.END_OF_DAY - eventTime.end() >= meetingDuration) {
+        TimeRange availableAfterMeeting = 
+          TimeRange.fromStartEnd(eventTime.end(), TimeRange.END_OF_DAY, true);
+        possibleMeetingTimes.add(availableAfterMeeting);
+      }
+
+      return possibleMeetingTimes;
   }
 }
