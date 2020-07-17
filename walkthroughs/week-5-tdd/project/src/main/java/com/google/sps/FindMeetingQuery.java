@@ -21,52 +21,125 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>(); //Arrays.asList();
-    System.out.println(request.getDuration());
+    Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>();
+    final long meetingDuration = request.getDuration();
 
-    if(TimeRange.WHOLE_DAY.duration() < request.getDuration()) {
+    if (TimeRange.WHOLE_DAY.duration() < meetingDuration) {
       return possibleMeetingTimes;
     }
     
-    if(events.isEmpty()) {
+    if (events.isEmpty()) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
-    Collection<String> meetingAttendees = request.getAttendees();
-    List<TimeRange> eventTimes = new ArrayList<TimeRange>();
+    final Collection<String> meetingAttendees = request.getAttendees();
+    final PriorityQueue<TimeRange> eventTimesList= new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
+    final List<TimeRange> compressedEvents = new ArrayList<>();
 
-    for(Iterator<Event> iterator = events.iterator(); iterator.hasNext();) {
-      Event event = iterator.next();
-      Set<String> eventAttendees = event.getAttendees();
-
+    for (Event singleEvent : events) {
+      Set<String> eventAttendees = singleEvent.getAttendees();
       Iterator<String> meetingAttendeesList = meetingAttendees.iterator();
 
-      while(meetingAttendeesList.hasNext()) {
-        if (eventAttendees.contains(meetingAttendeesList.next())) {
-          eventTimes.add(event.getWhen());
+      while (meetingAttendeesList.hasNext()) {
+        if (eventAttendees.contains(meetingAttendeesList.next())) { 
+          eventTimesList.add(singleEvent.getWhen());
           break;
         }
       }
     }
 
-    if (eventTimes.size() == 1) {
-      TimeRange eventTime = eventTimes.get(0);
-      if(eventTime.start() > TimeRange.START_OF_DAY && ((eventTime.start() - TimeRange.START_OF_DAY) >= request.getDuration())) {
-        TimeRange availableBeforeMeeting = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, eventTime.start(), false);
+    if (eventTimesList.size() == 0) {
+      possibleMeetingTimes.add(
+        TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true)
+      );
+      return possibleMeetingTimes;
+    }
+
+    else if (eventTimesList.size() == 1) {
+      TimeRange eventTime = eventTimesList.poll();
+      
+      if (eventTime.start() > TimeRange.START_OF_DAY && 
+         (eventTime.start() - TimeRange.START_OF_DAY >= meetingDuration)) {
+        TimeRange availableBeforeMeeting = 
+          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, eventTime.start(), false);
         possibleMeetingTimes.add(availableBeforeMeeting);
       }
-      if(eventTime.end() < TimeRange.END_OF_DAY && ((TimeRange.END_OF_DAY - eventTime.end()) >= request.getDuration())) {
-        TimeRange availableAfterMeeting = TimeRange.fromStartEnd(eventTime.end(), TimeRange.END_OF_DAY, true);
+      if (eventTime.end() < TimeRange.END_OF_DAY && 
+         (TimeRange.END_OF_DAY - eventTime.end() >= meetingDuration)) {
+        TimeRange availableAfterMeeting = 
+          TimeRange.fromStartEnd(eventTime.end(), TimeRange.END_OF_DAY, true);
         possibleMeetingTimes.add(availableAfterMeeting);
       }
       return possibleMeetingTimes;
     }
 
+    TimeRange nextEvent = eventTimesList.poll();
+    while (eventTimesList.size() != 0) {
+      TimeRange followingEvent = eventTimesList.poll();
 
+      if (nextEvent.overlaps(followingEvent)) {
+        int startTime = (nextEvent.start() < followingEvent.start()) ? 
+          nextEvent.start() : followingEvent.start();
+        int endTime = (nextEvent.end() > followingEvent.end()) ? 
+          nextEvent.end() : followingEvent.end();
+
+        compressedEvents.add(
+          TimeRange.fromStartDuration(startTime, endTime - startTime)
+        );
+
+        nextEvent = followingEvent;
+        continue;
+      }
+      compressedEvents.add(nextEvent);
+      compressedEvents.add(followingEvent);
+    }
+   
+    if (compressedEvents.size() == 1) {
+      if (compressedEvents.get(0).start() - TimeRange.START_OF_DAY >= meetingDuration) {
+        TimeRange availableBeforeMeeting = 
+          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, compressedEvents.get(0).start(), false);
+        possibleMeetingTimes.add(availableBeforeMeeting);
+      }
+      if (TimeRange.END_OF_DAY - compressedEvents.get(0).end() >= meetingDuration) {
+        TimeRange availableAfterMeeting = 
+          TimeRange.fromStartEnd(compressedEvents.get(0).end(), TimeRange.END_OF_DAY, true);
+        possibleMeetingTimes.add(availableAfterMeeting);
+      }
+      return possibleMeetingTimes;
+    }
+
+    for (int index = 0; index < compressedEvents.size(); index++) {
+      TimeRange singleEvent = compressedEvents.get(index);
+
+      if (index == 0) {
+        if (TimeRange.START_OF_DAY + meetingDuration < singleEvent.start()) {
+          TimeRange availableBeforeMeeting = 
+            TimeRange.fromStartEnd(TimeRange.START_OF_DAY, singleEvent.start(), false);
+          possibleMeetingTimes.add(availableBeforeMeeting);
+        }
+        continue;
+      }
+
+      if (singleEvent.start() - compressedEvents.get(index - 1).end() >= meetingDuration) {
+         TimeRange availableBetweenMeetings = 
+            TimeRange.fromStartEnd(compressedEvents.get(index - 1).end(), singleEvent.start(), false);
+          possibleMeetingTimes.add(availableBetweenMeetings);
+       } 
+
+      if (index == compressedEvents.size() - 1) {
+       if (TimeRange.END_OF_DAY - singleEvent.end() >= meetingDuration) {
+         TimeRange availableAfterMeeting = 
+            TimeRange.fromStartEnd(singleEvent.end(), TimeRange.END_OF_DAY, true);
+          possibleMeetingTimes.add(availableAfterMeeting);
+       }
+      }
+    }
+    
     return possibleMeetingTimes;
     
     //throw new UnsupportedOperationException("TODO: Implement this method.");
