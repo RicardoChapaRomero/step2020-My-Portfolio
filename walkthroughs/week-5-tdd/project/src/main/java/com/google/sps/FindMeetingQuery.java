@@ -26,13 +26,11 @@ import java.util.Set;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>();
-    Collection<TimeRange> possibleMeetingTimesForOptinalAttendeees = new ArrayList<TimeRange>();
-
+    Collection<TimeRange> meetingTimesForRequiredAttendees = new ArrayList<TimeRange>();
     final long meetingDuration = request.getDuration();
 
     if (TimeRange.WHOLE_DAY.duration() < meetingDuration) {
-      return possibleMeetingTimes;
+      return meetingTimesForRequiredAttendees;
     }
     
     if (events.isEmpty()) {
@@ -40,112 +38,45 @@ public final class FindMeetingQuery {
     }
 
     final Collection<String> meetingAttendees = request.getAttendees();
-    final PriorityQueue<TimeRange> eventTimesList = 
-      new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
+    final PriorityQueue<TimeRange> requiredAttendeesOccupiedTimes = 
+      getAttendeesOccupiedTimes(events, meetingAttendees, true);
     final PriorityQueue<TimeRange> optionalAttendeesTimeList = 
-      new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
-    final List<TimeRange> compressedEvents = new ArrayList<>();
+      getAttendeesOccupiedTimes(events, meetingAttendees, false);
 
-    for (Event singleEvent : events) {
-      boolean hasRequiredAttendees = false;
-      Set<String> eventAttendees = singleEvent.getAttendees();
-      Iterator<String> meetingAttendeesList = meetingAttendees.iterator();
 
-      while (meetingAttendeesList.hasNext()) {
-        if (eventAttendees.contains(meetingAttendeesList.next())) { 
-          eventTimesList.add(singleEvent.getWhen());
-          hasRequiredAttendees = true;
-          break;
-        }
-      }
-
-      if(!hasRequiredAttendees) {
-        optionalAttendeesTimeList.add(singleEvent.getWhen());
-      }
-    }
-
-    if (eventTimesList.size() == 0) {
-      possibleMeetingTimes.add(
-        TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true)
-      );
-      return possibleMeetingTimes;
-    }
-
-    else if (eventTimesList.size() == 1) {
-      return getTimeRangesFromSingleEvent(eventTimesList, meetingDuration);
-    }
-
-    TimeRange nextEvent = eventTimesList.poll();
-    while (eventTimesList.size() != 0) {
-      TimeRange followingEvent = eventTimesList.poll();
-
-      if (nextEvent.overlaps(followingEvent)) {
-        int startTime = (nextEvent.start() < followingEvent.start()) ? 
-          nextEvent.start() : followingEvent.start();
-        int endTime = (nextEvent.end() > followingEvent.end()) ? 
-          nextEvent.end() : followingEvent.end();
-
-        compressedEvents.add(
-          TimeRange.fromStartDuration(startTime, endTime - startTime)
+    if (requiredAttendeesOccupiedTimes.isEmpty()) {
+      if (optionalAttendeesTimeList.isEmpty()) {
+        meetingTimesForRequiredAttendees.add(
+          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true)
         );
-
-        nextEvent = followingEvent;
-        continue;
+        return meetingTimesForRequiredAttendees;
+      } else if(optionalAttendeesTimeList.size() == 1){
+        return getTimeRangesFromSingleEvent(optionalAttendeesTimeList, meetingDuration);
       }
-      compressedEvents.add(nextEvent);
-      compressedEvents.add(followingEvent);
     }
+
+    else if (requiredAttendeesOccupiedTimes.size() == 1) {
+      return getTimeRangesFromSingleEvent(requiredAttendeesOccupiedTimes, meetingDuration);
+    }
+
+    final List<TimeRange> compressedEvents = compressEvents(requiredAttendeesOccupiedTimes);
    
     if (compressedEvents.size() == 1) {
-      if (compressedEvents.get(0).start() - TimeRange.START_OF_DAY >= meetingDuration) {
-        TimeRange availableBeforeMeeting = 
-          TimeRange.fromStartEnd(TimeRange.START_OF_DAY, compressedEvents.get(0).start(), false);
-        possibleMeetingTimes.add(availableBeforeMeeting);
-      }
-      if (TimeRange.END_OF_DAY - compressedEvents.get(0).end() >= meetingDuration) {
-        TimeRange availableAfterMeeting = 
-          TimeRange.fromStartEnd(compressedEvents.get(0).end(), TimeRange.END_OF_DAY, true);
-        possibleMeetingTimes.add(availableAfterMeeting);
-      }
-      return possibleMeetingTimes;
+      PriorityQueue<TimeRange> compressedEvent = new PriorityQueue();
+      compressedEvent.addAll(compressedEvents);
+      
+      return getTimeRangesFromSingleEvent(compressedEvent, meetingDuration);
     }
 
-    for (int index = 0; index < compressedEvents.size(); index++) {
-      TimeRange singleEvent = compressedEvents.get(index);
+    meetingTimesForRequiredAttendees = getAvailableTimeRanges(compressedEvents, meetingDuration);
 
-      if (index == 0) {
-        if (TimeRange.START_OF_DAY + meetingDuration < singleEvent.start()) {
-          TimeRange availableBeforeMeeting = 
-            TimeRange.fromStartEnd(TimeRange.START_OF_DAY, singleEvent.start(), false);
-          possibleMeetingTimes.add(availableBeforeMeeting);
-        }
-        continue;
-      }
-
-      if (singleEvent.start() - compressedEvents.get(index - 1).end() >= meetingDuration) {
-         TimeRange availableBetweenMeetings = 
-            TimeRange.fromStartEnd(compressedEvents.get(index - 1).end(), singleEvent.start(), false);
-          possibleMeetingTimes.add(availableBetweenMeetings);
-       } 
-
-      if (index == compressedEvents.size() - 1) {
-       if (TimeRange.END_OF_DAY - singleEvent.end() >= meetingDuration) {
-         TimeRange availableAfterMeeting = 
-            TimeRange.fromStartEnd(singleEvent.end(), TimeRange.END_OF_DAY, true);
-          possibleMeetingTimes.add(availableAfterMeeting);
-       }
-      }
-    }
-
-    Collection<TimeRange> meetingTimesForAll = possibleMeetingTimes;
-
-    System.out.println(optionalAttendeesTimeList);
+    Collection<TimeRange> meetingTimesForAll = meetingTimesForRequiredAttendees;
 
     if(optionalAttendeesTimeList.size() != 0) {
       while(optionalAttendeesTimeList.size() != 0) {
         TimeRange optionalTimeRange = optionalAttendeesTimeList.poll();
 
-        if(possibleMeetingTimes.contains(optionalTimeRange)) {
+        if(meetingTimesForRequiredAttendees.contains(optionalTimeRange)) {
           for(Iterator<TimeRange> event = meetingTimesForAll.iterator(); event.hasNext();) {
             if (event.next().equals(optionalTimeRange)) {
               event.remove();
@@ -156,34 +87,120 @@ public final class FindMeetingQuery {
       }
     }
 
-    System.out.println(possibleMeetingTimes);
-    System.out.println(meetingTimesForAll);
-
-
-    return (meetingTimesForAll.isEmpty()) ? possibleMeetingTimes : meetingTimesForAll;
+    return (meetingTimesForAll.isEmpty()) ? meetingTimesForRequiredAttendees : meetingTimesForAll;
     
-    //throw new UnsupportedOperationException("TODO: Implement this method.");
+
   }
 
-  private Collection<TimeRange> getTimeRangesFromSingleEvent(
-    PriorityQueue<TimeRange> eventTimesList,
-    long meetingDuration
+  public PriorityQueue<TimeRange> getAttendeesOccupiedTimes(
+      Collection<Event> events, 
+      Collection<String> meetingAttendees, 
+      boolean lookForRequiredAttendees
     ) {
+  
+    PriorityQueue<TimeRange> attendeesOccupiedTimes = 
+      new PriorityQueue<TimeRange>(TimeRange.ORDER_BY_START);
 
-      Collection<TimeRange> possibleMeetingTimes = new ArrayList<TimeRange>();
-      TimeRange eventTime = eventTimesList.poll();
+    for (Event singleEvent : events) {
+      Set<String> eventAttendees = singleEvent.getAttendees();
+      Iterator<String> meetingRequestAttendeeList = meetingAttendees.iterator();
+      boolean hasRequestedAttendee = false;
+
+      while (meetingRequestAttendeeList.hasNext()) {
+        if (eventAttendees.contains(meetingRequestAttendeeList.next()) && lookForRequiredAttendees) { 
+          attendeesOccupiedTimes.add(singleEvent.getWhen());
+          hasRequestedAttendee = true;
+          break;
+        }
+      }
+
+      if(!hasRequestedAttendee && !lookForRequiredAttendees) {
+        attendeesOccupiedTimes.add(singleEvent.getWhen());
+      }
+    }
+    
+    return attendeesOccupiedTimes; 
+  }
+
+  public Collection<TimeRange> getTimeRangesFromSingleEvent(
+    PriorityQueue<TimeRange> requiredAttendeesOccupiedTimes,
+    long meetingDuration) {
+      Collection<TimeRange> meetingTimesForRequiredAttendees = new ArrayList<TimeRange>();
+      TimeRange eventTime = requiredAttendeesOccupiedTimes.poll();
       
       if(eventTime.start() - TimeRange.START_OF_DAY >= meetingDuration) {
         TimeRange availableBeforeMeeting = 
           TimeRange.fromStartEnd(TimeRange.START_OF_DAY, eventTime.start(), false);
-        possibleMeetingTimes.add(availableBeforeMeeting);
+        meetingTimesForRequiredAttendees.add(availableBeforeMeeting);
       }
       if(TimeRange.END_OF_DAY - eventTime.end() >= meetingDuration) {
         TimeRange availableAfterMeeting = 
           TimeRange.fromStartEnd(eventTime.end(), TimeRange.END_OF_DAY, true);
-        possibleMeetingTimes.add(availableAfterMeeting);
+        meetingTimesForRequiredAttendees.add(availableAfterMeeting);
       }
 
-      return possibleMeetingTimes;
+      return meetingTimesForRequiredAttendees;
+  }
+
+  public List<TimeRange> compressEvents(
+    PriorityQueue<TimeRange> requiredAttendeesOccupiedTimes) {
+      List<TimeRange> compressedEvents = new ArrayList<>();
+
+      TimeRange nextEvent = requiredAttendeesOccupiedTimes.poll();
+      while (requiredAttendeesOccupiedTimes.size() != 0) {
+        TimeRange followingEvent = requiredAttendeesOccupiedTimes.poll();
+
+        if (nextEvent.overlaps(followingEvent)) {
+          int startTime = (nextEvent.start() < followingEvent.start()) ? 
+            nextEvent.start() : followingEvent.start();
+          int endTime = (nextEvent.end() > followingEvent.end()) ? 
+            nextEvent.end() : followingEvent.end();
+
+          compressedEvents.add(
+            TimeRange.fromStartDuration(startTime, endTime - startTime)
+          );
+
+          nextEvent = followingEvent;
+          
+        } else {
+          compressedEvents.add(nextEvent);
+          compressedEvents.add(followingEvent);
+        }
+      }
+      return compressedEvents;
+  }
+
+  public Collection<TimeRange> getAvailableTimeRanges(
+    List<TimeRange> compressedEvents, long meetingDuration) {
+      Collection<TimeRange> meetingTimesForRequiredAttendees = new ArrayList<TimeRange>();
+
+      for (int index = 0; index < compressedEvents.size(); index++) {
+      TimeRange singleEvent = compressedEvents.get(index);
+
+        if (index == 0) {
+          if (TimeRange.START_OF_DAY + meetingDuration < singleEvent.start()) {
+            TimeRange availableBeforeMeeting = 
+              TimeRange.fromStartEnd(TimeRange.START_OF_DAY, singleEvent.start(), false);
+            meetingTimesForRequiredAttendees.add(availableBeforeMeeting);
+          }
+          continue;
+        }
+
+        if (singleEvent.start() - compressedEvents.get(index - 1).end() >= meetingDuration) {
+            TimeRange availableBetweenMeetings = 
+              TimeRange.fromStartEnd(compressedEvents.get(index - 1).end(), singleEvent.start(), false);
+            meetingTimesForRequiredAttendees.add(availableBetweenMeetings);
+          } 
+
+        if (index == compressedEvents.size() - 1) {
+          if (TimeRange.END_OF_DAY - singleEvent.end() >= meetingDuration) {
+            TimeRange availableAfterMeeting = 
+              TimeRange.fromStartEnd(singleEvent.end(), TimeRange.END_OF_DAY, true);
+            meetingTimesForRequiredAttendees.add(availableAfterMeeting);
+          }
+        }
+      }
+
+      return meetingTimesForRequiredAttendees;
   }
 }
