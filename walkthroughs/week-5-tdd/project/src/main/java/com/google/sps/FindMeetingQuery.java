@@ -148,7 +148,7 @@ public final class FindMeetingQuery {
           }
         }
 
-        if(!lookForRequiredAttendees) {
+        if (!lookForRequiredAttendees) {
           attendeesOccupiedTimes.add(singleEvent.getWhen());
         }
       }
