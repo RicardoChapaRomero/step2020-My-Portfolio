@@ -250,13 +250,15 @@ public final class FindMeetingQueryTest {
     // a meeting. This event should not affect the booking.
     Collection<Event> events = Arrays.asList(
       new Event("Event 1",
-        TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)));
+        TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)),
+      new Event("Event 2",
+        TimeRange.fromStartDuration(TIME_0930AM, DURATION_30_MINUTES), Arrays.asList(PERSON_C)));
 
     MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_B), DURATION_30_MINUTES);
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected = Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0900AM, false),
-            TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
+            TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
     Assert.assertEquals(expected, actual);
   }
 
