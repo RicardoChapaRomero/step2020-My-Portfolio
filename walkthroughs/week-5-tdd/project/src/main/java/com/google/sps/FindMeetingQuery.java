@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
-* Class to schedule meetings based on attendees free times.
-*/
-
 package com.google.sps;
 
 import java.util.Arrays;
@@ -27,6 +23,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Set;
+
+
+// Class to schedule meetings based on attendees free times.
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -53,10 +52,10 @@ public final class FindMeetingQuery {
     final PriorityQueue<TimeRange> optionalAttendeesTimeList = 
       getAttendeesOccupiedTimes(events, meetingAttendees, false);
 
-    /** 
-    * Look for time ranges for optional attendees 
-    * if required attendees all available all day 
-    */
+     
+    // Look for time ranges for optional attendees 
+    // if required attendees all available all day 
+    
     if (requiredAttendeesOccupiedTimes.isEmpty()) {
       if (optionalAttendeesTimeList.isEmpty()) {
         meetingTimesForRequiredAttendees.add(
@@ -80,9 +79,9 @@ public final class FindMeetingQuery {
         getTimeRangesFromSingleEvent(requiredAttendeesOccupiedTimes, meetingDuration);
     }
 
-    /**
-    * Convert all overlapping events in to compressed events for faster processing
-    */
+    
+    // Convert all overlapping events in to compressed events for faster processing
+    
     final List<TimeRange> compressedEvents = 
       compressEvents(requiredAttendeesOccupiedTimes);
    
@@ -98,12 +97,11 @@ public final class FindMeetingQuery {
 
     Collection<TimeRange> meetingTimesForAllAttendees = 
       meetingTimesForRequiredAttendees;
-
-    /**
-    * If the optional attendees have occupied times then 
-    * look for overlaps on required attendees times and take
-    * those times off available meeting times
-    */
+ 
+    // If the optional attendees have occupied times then 
+    // look for overlaps on required attendees times and take
+    // those times off available meeting times
+    
     while (optionalAttendeesTimeList.size() != 0) {
       TimeRange optionalTimeRange = optionalAttendeesTimeList.poll();
 
@@ -117,17 +115,17 @@ public final class FindMeetingQuery {
       }
     }
 
-    /**
-    * If there's no room for optional attendees then 
-    * return original time ranges for required attendees
-    */
+    
+    // If there's no room for optional attendees then 
+    // return original time ranges for required attendees
+    
     return (meetingTimesForAllAttendees.isEmpty()) ? 
       meetingTimesForRequiredAttendees : meetingTimesForAllAttendees;
   }
 
-  /**
-  * Gets an ordered queue of attendees occupied time ranges
-  */
+  
+  // Gets an ordered queue of attendees occupied time ranges
+  
   public PriorityQueue<TimeRange> getAttendeesOccupiedTimes(
     Collection<Event> events, 
     Collection<String> meetingAttendees, 
@@ -156,9 +154,8 @@ public final class FindMeetingQuery {
       return attendeesOccupiedTimes; 
   }
 
-  /**
-  * Gets available time ranges, before and after, a single event
-  */
+  // Gets available time ranges, before and after, a single event
+  
   public Collection<TimeRange> getTimeRangesFromSingleEvent(
     PriorityQueue<TimeRange> requiredAttendeesOccupiedTimes,
     long meetingDuration) {
@@ -180,9 +177,9 @@ public final class FindMeetingQuery {
       return meetingTimesForRequiredAttendees;
   }
 
-  /**
-  * Converts any overlapping events into compacted events
-  */
+  
+  // Converts any overlapping events into compacted events
+
   public List<TimeRange> compressEvents(
     PriorityQueue<TimeRange> requiredAttendeesOccupiedTimes) {
       List<TimeRange> compressedEvents = new ArrayList<>();
@@ -213,9 +210,8 @@ public final class FindMeetingQuery {
       return compressedEvents;
   }
 
-  /**
-  * Gets the list of avaiable time ranges for requested meeting
-  */
+  // Gets the list of avaiable time ranges for requested meeting
+
   public Collection<TimeRange> getAvailableTimeRanges(
     List<TimeRange> compressedEvents, long meetingDuration) {
       Collection<TimeRange> meetingTimesForRequiredAttendees = new ArrayList<TimeRange>();
