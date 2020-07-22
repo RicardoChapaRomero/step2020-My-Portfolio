@@ -54,7 +54,7 @@ public final class FindMeetingQuery {
 
      
     // Look for time ranges for optional attendees 
-    // if required attendees all available all day 
+    // if required attendees are available all day 
     
     if (requiredAttendeesOccupiedTimes.isEmpty()) {
       if (optionalAttendeesTimeList.isEmpty()) {
